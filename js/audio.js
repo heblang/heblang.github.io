@@ -565,7 +565,6 @@ function setupAudio(
     if (!includes(window.location.hostname, 'github')) {
       return;
     }
-    const aacSrc = document.getElementById('aac-src');
     const m4aSrc = document.getElementById('m4a-src');
     const mp3Src = document.getElementById('mp3-src');
     let src, path = window.location.pathname;
@@ -573,10 +572,6 @@ function setupAudio(
       path = path.substring(0, path.lastIndexOf('/') + 1)
     }
     const lfs = 'https://media.githubusercontent.com/media/heblang/heblang.github.io/main';
-    if (aacSrc && aacSrc.src) {
-      src = aacSrc.src.substring(aacSrc.src.indexOf(path))
-      aacSrc.src = `${lfs}${src}`;
-    }
     if (m4aSrc && m4aSrc.src) {
       src = m4aSrc.src.substring(m4aSrc.src.indexOf(path))
       m4aSrc.src = `${lfs}${src}`;
