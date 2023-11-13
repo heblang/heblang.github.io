@@ -561,27 +561,6 @@ function setupAudio(
     return str.indexOf(search) != -1;
   }
 
-  function fixAudioSrc() {
-    if (!includes(window.location.hostname, 'github')) {
-      return;
-    }
-    const m4aSrc = document.getElementById('m4a-src');
-    const mp3Src = document.getElementById('mp3-src');
-    let src, path = window.location.pathname;
-    if (path.endsWith('.html')) {
-      path = path.substring(0, path.lastIndexOf('/') + 1)
-    }
-    const lfs = 'https://media.githubusercontent.com/media/heblang/heblang.github.io/main';
-    if (m4aSrc && m4aSrc.src) {
-      src = m4aSrc.src.substring(m4aSrc.src.indexOf(path))
-      m4aSrc.src = `${lfs}${src}`;
-    }
-    if (mp3Src && mp3Src.src) {
-      src = mp3Src.src.substring(mp3Src.src.indexOf(path))
-      mp3Src.src = `${lfs}${src}`;
-    }
-  }
-
   function setSupportedRates() {
     for (let i = 0; i < speed.options.length; i++) {
       supportedRates.push(window.parseFloat(speed.options[i].value));
@@ -590,7 +569,6 @@ function setupAudio(
 
   setupLoop();
   setupChapterLoop();
-  fixAudioSrc();
   setSupportedRates();
 
   (audio.preload == 'none') && audio.load();
