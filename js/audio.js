@@ -572,7 +572,7 @@ function setupAudio(
     if (path.endsWith('.html')) {
       path = path.substring(0, path.lastIndexOf('/') + 1)
     }
-    const lfs = 'https://media.githubusercontent.com/media/aramlang/aramlang.github.io/main';
+    const lfs = 'https://media.githubusercontent.com/media/heblang/heblang.github.io/main';
     if (aacSrc && aacSrc.src) {
       src = aacSrc.src.substring(aacSrc.src.indexOf(path))
       aacSrc.src = `${lfs}${src}`;
