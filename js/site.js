@@ -1,16 +1,32 @@
 'use strict';
 
 (function () {
+  const fontFamily = document.getElementById('font-family');
   const niqqud = document.getElementById('niqqud');
   const transliterate = document.getElementById('transliterate');
   const syllables = document.getElementById('syllables');
   const stickyHeader = document.getElementById('sticky-header');
-  const passiveSupported = window.getPassiveSupported();
+  const passiveSupported = true;
 
-  if (!niqqud || !transliterate || !syllables || !stickyHeader) {
+  if (!niqqud || !transliterate || !syllables || !stickyHeader || !fontFamily) {
     console.error('Could not find required page element');
     return;
   }
+
+  fontFamily.addEventListener('change', function (event) {
+    event.stopImmediatePropagation();
+    let newFont = fontFamily.value;
+    var options = fontFamily.options;
+    for (let i = 0; i < options.length; i++) {
+      let oldFont = options[i].value;
+      if (oldFont == newFont) {
+        continue;
+      }
+      document.querySelectorAll(`.${oldFont}`).forEach(
+        element => element.classList.replace(oldFont, newFont)
+      );
+    }
+  }, (passiveSupported ? { passive: true } : false));
 
   function toggleText(event) {
     event.stopImmediatePropagation();

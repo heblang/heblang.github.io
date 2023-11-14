@@ -6,6 +6,7 @@
   <title>Bereshit - 1</title>
   <link rel="stylesheet" type="text/css" media="screen" href="../../font/font.css">
   <link rel="stylesheet" type="text/css" media="screen" href="../../css/site.css">
+  <link rel="stylesheet" type="text/css" media="screen" href="../../css/styles.css">
 </head>
 
 <body>
@@ -289,7 +290,6 @@
           <span class="label">
             <label for="speed">Speed</label>
             <select id="speed">
-              <option value="0.25" title="Slowest speed">0.25&times;</option>
               <option value="0.5" title="Slow speed">0.50&times;</option>
               <option value="0.75" title="Slower speed">0.75&times;</option>
               <option value="1" id="speed-1" selected title="Normal speed">Normal</option>
@@ -300,16 +300,20 @@
             </select>
           </span>
         </div>
-        <div title="Set speed back to Normal">
-          <button id="audio-reset">Reset</button>
+        <!-- Controls -->
+        <div>
+          <div id="loading"></div>
+          <div class="btn" id="playBtn"></div>
+          <div class="btn" id="pauseBtn"></div>
+        </div>
+        <div>
+          <div class="btn" id="volumeBtn"></div>
+        </div>
+        <div>
+
         </div>
       </div>
       <div class="center">
-        <audio id="audio" controls preload="none">
-          <source id="m4a-src" src="../../media/01_Genesis_001_001.m4a" type="audio/mp4">
-          <track id="audio-track" src="../../media/01_Genesis_001_001.txt" default label="Bereshit 1" kind="metadata" srclang="en-US" />
-          Your browser does not support the audio tag!
-        </audio>
       </div>
     </div>
     <div class="hcol">
@@ -417,11 +421,26 @@
     </div>
     <br>
   </main>
-  <script src="../../js/audio.js"></script>
+
+  <!-- Progress -->
+  <div id="progress"></div>
+
+  <!-- Playlist -->
+  <div id="playlist">
+    <div id="list"></div>
+  </div>
+
+  <!-- Volume -->
+  <div id="volume" class="fadeout">
+    <div id="barFull" class="bar"></div>
+    <div id="barEmpty" class="bar"></div>
+    <div id="sliderBtn"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../../js/howler.core.min.js"></script>
+  <script src="../../js/player.js"></script>
   <script src="../../js/site.js"></script>
-  <script>
-    setupAudio(['a', 'v', 'c', 'e', 't', 'g'], 'bereshit', 1);
-  </script>
 </body>
 
 </html>
