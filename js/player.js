@@ -12,8 +12,8 @@ elms.forEach(function(elm) {
 var Player = function(playlist) {
   this.playlist = playlist;
   this.index = 0;
-  this.highlighted = [];
-  this.cues = [
+  this.highlighted = {};
+  this.chapterCues = [
       [ 0.1, 1.5383408919123205, 2.2301177967274546, 2.9949768203577722, 3.413245707806932, 4.315797794583146, 4.75609808462392 ]
   ];
 };
@@ -47,11 +47,18 @@ Player.prototype = {
           loading.style.display = 'none';
         },
         onend: function() {
+          Object.entries(self.highlighted).forEach(([key, words]) => {
+            words.forEach(function(word) {
+              word.classList.remove('highlight');
+            });
+            delete self.highlighted[key]
+          });
           self.skip('next');
         },
         onpause: function() {
         },
         onstop: function() {
+
         },
         onseek: function() {
           // Start updating the progress of the track.
@@ -180,19 +187,26 @@ Player.prototype = {
 
     // Determine our current seek position.
     var seek = sound.seek() || 0;
-    var cue = self.cues[self.index];
-    var lastcue = cue[0];
-    for (var i = 0; i < cue.length; i++) {
-      var c = cue[i];
-      if (seek >= lastcue && seek < c) {
-        ['a', 'v', 'c', 'e', 't', 'g'].forEach(r => 
-          document.getElementById((self.index + 1) + '-' + i + r).classList.add('highlight')
-        );
+    var verseCues = self.chapterCues[self.index];
+    for (var i = 0; i < verseCues.length; i++) {
+      var cue = verseCues[i];
+      if (seek < cue) { // nothing to do for rest of the higher cues
         break;
       }
-      else {
-        lastcue = c;
+
+      var idPrefix = self.verseNo() + '-' + self.wordNo(i);
+      if (idPrefix in self.highlighted) { // word already highlighted, move to the next
+        continue;
       }
+
+      // word needs to be highlighted
+      console.log(idPrefix);
+      var words = self.highlighted[idPrefix] = [];
+      ['a', 'v', 'c', 'e', 't', 'g'].forEach(row => {
+        var word = document.getElementById(idPrefix + row)
+        word.classList.add('highlight')
+        words.push(word);
+      });
     }
 
     // If the sound is still playing, continue stepping.
@@ -228,15 +242,20 @@ Player.prototype = {
   },
 
   /**
-   * Format the time from seconds to M:SS.
-   * @param  {Number} secs Seconds to format.
-   * @return {String}      Formatted time.
+   * Get current verse number
+   * @return {Number}    Current verse number
    */
-  formatTime: function(secs) {
-    var minutes = Math.floor(secs / 60) || 0;
-    var seconds = (secs - minutes * 60) || 0;
+  verseNo: function() {
+    return this.index + 1;
+  },
 
-    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+  /**
+   * Get word number for a given word index
+   * @param  {Number} index Word index
+   * @return {Number}    Word number
+   */
+  wordNo: function(index) {
+    return index + 1;
   }
 };
 
