@@ -1,5 +1,9 @@
+'use strict';
+var tanakh = tanakh || {};
+// TODO put under an IIFE
+
 // Cache references to DOM elements.
-var elms = ['playBtn', 'pauseBtn', 'volumeBtn', 'progress', 'loading', 'playlist', 'list', 'volume', 'barEmpty', 'barFull', 'sliderBtn'];
+var elms = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn'];
 elms.forEach(function(elm) {
   window[elm] = document.getElementById(elm);
 });
@@ -38,7 +42,7 @@ Player.prototype = {
       sound = data.howl = new Howl({
         src: ['../../media/01_Genesis_' + data.file + '.m4a'],
         onplay: function() {
-          // Start updating the progress of the track.
+          // Start updating highlighted words.
           requestAnimationFrame(self.step.bind(self));
 
           pauseBtn.style.display = 'block';
@@ -61,7 +65,7 @@ Player.prototype = {
 
         },
         onseek: function() {
-          // Start updating the progress of the track.
+          // Start updating the highlighted words
           requestAnimationFrame(self.step.bind(self));
         }
       });
@@ -137,9 +141,6 @@ Player.prototype = {
       self.playlist[self.index].howl.stop();
     }
 
-    // Reset progress.
-    progress.style.width = '0%';
-
     // Play the new track.
     self.play(index);
   },
@@ -202,30 +203,18 @@ Player.prototype = {
       // word needs to be highlighted
       console.log(idPrefix);
       var words = self.highlighted[idPrefix] = [];
-      ['a', 'v', 'c', 'e', 't', 'g'].forEach(row => {
+      ['w', 'i', 't'].forEach(row => { // TODO get cached from site.js
         var word = document.getElementById(idPrefix + row)
         word.classList.add('highlight')
         words.push(word);
       });
+      break;
     }
 
     // If the sound is still playing, continue stepping.
     if (sound.playing()) {
       requestAnimationFrame(self.step.bind(self));
     }
-  },
-
-  /**
-   * Toggle the playlist display on/off.
-   */
-  togglePlaylist: function() {
-    var self = this;
-    var display = (playlist.style.display === 'block') ? 'none' : 'block';
-
-    setTimeout(function() {
-      playlist.style.display = display;
-    }, (display === 'block') ? 0 : 500);
-    playlist.className = (display === 'block') ? 'fadein' : 'fadeout';
   },
 
   /**
@@ -274,9 +263,6 @@ playBtn.addEventListener('click', function() {
 });
 pauseBtn.addEventListener('click', function() {
   player.pause();
-});
-playlist.addEventListener('click', function() {
-  player.togglePlaylist();
 });
 volumeBtn.addEventListener('click', function() {
   player.toggleVolume();
