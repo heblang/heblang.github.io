@@ -1,12 +1,10 @@
 'use strict';
-var tanakh = tanakh || {};
+if (!window.tanakh) {
+  window.tanakh = {};  
+}
+
 
 (function () {
-  var verses;
-  tanakh.initText = function(bookNo, chapterNo) {
-    verses = tanakh.books[bookNo][chapterNo];
-    populateText();
-  }
   
   tanakh.getPassiveSupported = function() {
     let passiveSupported = false;
@@ -32,28 +30,39 @@ var tanakh = tanakh || {};
   const transliterate = document.getElementById('transliterate');
   const syllables = document.getElementById('syllables');
   const stickyHeader = document.getElementById('sticky-header');
+  const bookAndChapter = document.getElementById('bc');
   const passiveSupported = tanakh.getPassiveSupported(); // let getPassiveSupported detect if true
 
-  if (!niqqud || !transliterate || !syllables || !stickyHeader || !fontFamily) {
+  if (!niqqud || !transliterate || !syllables || !stickyHeader || !fontFamily || !bookAndChapter) {
     console.error('Could not find required page element');
     return;
   }
 
-  var wordElems = {};
-  var interlinearElems = {};
-  var translitElems = {};
+  tanakh.chapterCues = [[]]; // 1 based indexes
+  let verses;
+  const wordElems = {};
+  const interlinearElems = {};
+  const translitElems = {};
+  
+  tanakh.initText = function(bookNo, chapterNo) {
+    verses = tanakh.books[bookNo][chapterNo];
+    bookAndChapter.innerText = tanakh.books[0] + ' ' + verses[0];
+    populateText();
+    console.log(tanakh.chapterCues);
+  }
 
   function populateText() {
-    for(var i = 1; i < verses.length; i++) {
-      var words = verses[i];
-      for (var j = 1; j < words.length; j++) {
-        var wobj = words[j];
-        var word = wobj.w;
-        var cue = wobj.c;
-        var interlinear = wobj.i;
-        var phonetic = wobj.p;
-        var latin = wobj.l;
-        var id = i + '-' + j;
+    for(let i = 1; i < verses.length; i++) {
+      var cues = [];
+      tanakh.chapterCues.push(cues);
+      let words = verses[i];
+      for (let j = 1; j < words.length; j++) {
+        let wobj = words[j];
+        let word = wobj.w;
+        let interlinear = wobj.i;
+        let phonetic = wobj.p;
+        let id = i + '-' + j;
+        cues.push(wobj.c);
 
         if (!wordElems[id]) wordElems[id] = document.getElementById(id + 'w');
         if (!interlinearElems[id]) interlinearElems[id] = document.getElementById(id + 'i');
@@ -68,7 +77,7 @@ var tanakh = tanakh || {};
   fontFamily.addEventListener('change', function (event) {
     event.stopImmediatePropagation();
     let newFont = fontFamily.value;
-    var options = fontFamily.options;
+    let options = fontFamily.options;
     for (let i = 0; i < options.length; i++) {
       let oldFont = options[i].value;
       if (oldFont == newFont) {

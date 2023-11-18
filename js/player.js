@@ -1,5 +1,8 @@
 'use strict';
-var tanakh = tanakh || {};
+if (!window.tanakh) {
+  window.tanakh = {};  
+}
+
 // TODO put under an IIFE
 
 // Cache references to DOM elements.
@@ -17,9 +20,6 @@ var Player = function(playlist) {
   this.playlist = playlist;
   this.index = 0;
   this.highlighted = {};
-  this.chapterCues = [
-      [ 0.1, 1.5383408919123205, 2.2301177967274546, 2.9949768203577722, 3.413245707806932, 4.315797794583146, 4.75609808462392 ]
-  ];
 };
 
 Player.prototype = {
@@ -188,7 +188,7 @@ Player.prototype = {
 
     // Determine our current seek position.
     var seek = sound.seek() || 0;
-    var verseCues = self.chapterCues[self.index];
+    var verseCues = tanakh.chapterCues[self.verseNo()];
     for (var i = 0; i < verseCues.length; i++) {
       var cue = verseCues[i];
       if (seek < cue) { // nothing to do for rest of the higher cues
@@ -201,7 +201,6 @@ Player.prototype = {
       }
 
       // word needs to be highlighted
-      console.log(idPrefix);
       var words = self.highlighted[idPrefix] = [];
       ['w', 'i', 't'].forEach(row => { // TODO get cached from site.js
         var word = document.getElementById(idPrefix + row)
