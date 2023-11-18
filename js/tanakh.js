@@ -8,7 +8,7 @@ tanakh.books = [
   [ // Book 1 - Bereshit
     ["Chapters"],
     [ // Chapter 1
-      ["פֶּרֶק א"],
+      ["א"],
       [ // Verse 1
         {},
         {
