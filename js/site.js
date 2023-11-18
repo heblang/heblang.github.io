@@ -43,16 +43,61 @@ if (!window.tanakh) {
   const wordElems = {};
   const interlinearElems = {};
   const translitElems = {};
-  // Consonants ONLY
-  const consonants = "\u05d0\u05d1\u05d2\u05d3\u05d4\u05d5\u05d6\u05d7\u05d8\u05d9\u05da\u05db\u05dc\u05dd\u05de\u05df\u05e0\u05e1\u05e2\u05e3\u05e4\u05e5\u05e6\u05e7\u05e8\u05e9\u05ea"
+  const bcCache = {};
+  // Consonants + maqaf
+  const consonants = "\u05d0\u05d1\u05d2\u05d3\u05d4\u05d5\u05d6\u05d7\u05d8\u05d9\u05da\u05db\u05dc\u05dd\u05de\u05df\u05e0\u05e1\u05e2\u05e3\u05e4\u05e5\u05e6\u05e7\u05e8\u05e9\u05ea\u05BE"
   // Vowels and shin/sin dots and sof pasuq
   const vowels = "\u05b0\u05b1\u05b2\u05b3\u05b4\u05b5\u05b6\u05b7\u05b8\u05b9\u05ba\u05bb\u05bc\u05c1\u05c2\u05C3"
-  // Accents plus ZWJ and CGJ but without maqaf or sof pasuq or blank
-  const accents ="\u0591\u0592\u0593\u0594\u0595\u0596\u0597\u0598\u0599\u059a\u059b\u059c\u059d\u059e\u059f\u05a0\u05a1\u05a2\u05a3\u05a4\u05a5\u05a6\u05a7\u05a8\u05a9\u05aa\u05ab\u05ac\u05ad\u05ae\u05bd\u05bf\u05c0\u05c4\u05c5\u200d\u034f"
   // Compiled Regular Expressions
   const regexConsonants = new RegExp(`[${consonants}]`, 'gu');
   const regexVowels = new RegExp(`[${consonants}${vowels}]`, 'gu');
-  const regexAccents = new RegExp(`[${consonants}${vowels}${accents}]`, 'gu');
+ 
+  tanakh.initText = function(bookNo, chapterNo) {
+    verses = tanakh.books[bookNo][chapterNo];
+
+    bookAndChapter.innerText = getBookAndChapter(getWordKey());   
+    for(let i = 1; i < verses.length; i++) {
+      var cues = [];
+      tanakh.chapterCues.push(cues);
+      let words = verses[i];
+      for (let j = 1; j < words.length; j++) {
+        let wobj = words[j];
+        let word = wobj.a;
+        let interlinear = wobj.i;
+        let id = i + '-' + j;
+        cues.push(wobj.t);
+
+        // cache DOM refs
+        wordElems[id] = document.getElementById(id + 'w');
+        interlinearElems[id] = document.getElementById(id + 'i');
+        translitElems[id] = document.getElementById(id + 't');
+
+        wordElems[id].innerText = word;
+        interlinearElems[id].innerText = interlinear;
+      }
+    }
+  }
+  
+  function toggleText(event) {
+    event.stopImmediatePropagation();
+
+    const key = getWordKey();
+    const filter = key == 'v' ? getVoweled : getConsonants;
+
+    bookAndChapter.innerText = getBookAndChapter(key);
+    for(let i = 1; i < verses.length; i++) {
+      let words = verses[i];
+      for (let j = 1; j < words.length; j++) {
+        let wobj = words[j];
+        let word = wobj[key]; 
+        if (!word) {
+          wobj[key] = word = filter(wobj.a);
+        }
+        wordElems[i + '-' + j].innerText = word;
+      }
+    }
+  }
+
   // Filtering Functions
   function getConsonants(text) {
     if (typeof text !== 'string') return '';
@@ -64,47 +109,37 @@ if (!window.tanakh) {
     return (text.match(regexVowels) || []).join('');
   }
 
-  function getAccented(text) {
-    if (typeof text !== 'string') return '';
-    return (text.match(regexAccents) || []).join('');
-  }
-
-  function getBookAndChapter(filter) {
-    return filter(tanakh.books[0][0]) + ' ' + filter('פֶּרֶק') + ' ' + filter(verses[0][0]);
-  }
-
-  function getWordFilter() {
-    return niqqud.value == 'vowels'
-      ? getVoweled
-      : niqqud.value == 'accents'
-        ? getAccented
-        : getConsonants;
-  }
-  
-  tanakh.initText = function(bookNo, chapterNo) {
-    verses = tanakh.books[bookNo][chapterNo];
-
-    bookAndChapter.innerText = getBookAndChapter(getWordFilter());   
-    for(let i = 1; i < verses.length; i++) {
-      var cues = [];
-      tanakh.chapterCues.push(cues);
-      let words = verses[i];
-      for (let j = 1; j < words.length; j++) {
-        let wobj = words[j];
-        let word = wobj.w;
-        let interlinear = wobj.i;
-        let phonetic = wobj.p;
-        let id = i + '-' + j;
-        cues.push(wobj.c);
-
-        wordElems[id] = document.getElementById(id + 'w');
-        interlinearElems[id] = document.getElementById(id + 'i');
-        translitElems[id] = document.getElementById(id + 't');
-        wordElems[id].innerText = getConsonants(word);
-        interlinearElems[id].innerText = interlinear;
-        translitElems[id].innerText = phonetic;
-      }
+  function getBookAndChapter(key) {
+    var cached = bcCache[key]
+    if (cached) {
+      return cached;
     }
+    switch (niqqud.value) {
+      case 'vowels':
+        cached = getVoweled(tanakh.books[0][0]) + ' ' + getVoweled('פֶּרֶק') + ' ' + getVoweled(verses[0][0]);
+        break;
+      case 'consonants':
+        cached = getConsonants(tanakh.books[0][0]) + ' ' + getConsonants('פֶּרֶק') + ' ' + getConsonants(verses[0][0]);
+        break;
+      default:
+        cached = tanakh.books[0][0] + ' פֶּרֶק ' + verses[0][0];
+        break;
+    }
+    bcCache[key] = cached
+    return cached;
+  }
+
+  function getWordKey() {
+    return niqqud.value == 'vowels'
+    ? 'v'
+    : niqqud.value == 'consonants'
+      ? 'c'
+      : 'a';
+  }
+  function getTranslit(text) {
+    return !text || syllables.checked
+      ? text
+      : text.replace(/·/g, '');
   }
 
   fontFamily.addEventListener('change', function (event) {
@@ -121,21 +156,6 @@ if (!window.tanakh) {
       );
     }
   }, (passiveSupported ? { passive: true } : false));
-
-  function toggleText(event) {
-    event.stopImmediatePropagation();
-
-    let filter = getWordFilter();
-    bookAndChapter.innerText = getBookAndChapter(filter);   
-    for(let i = 1; i < verses.length; i++) {
-      let words = verses[i];
-      for (let j = 1; j < words.length; j++) {
-        let word = words[j].w;
-        let id = i + '-' + j;
-        wordElems[id].innerText = filter(word);
-      }
-    }
-  }
 
   niqqud.addEventListener('change', toggleText, (passiveSupported ? { passive: true } : false));
 
