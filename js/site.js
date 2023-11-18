@@ -98,6 +98,25 @@ if (!window.tanakh) {
     }
   }
 
+  function toggleTranslit() {
+    const key = getTranslitKey();
+    for(let i = 1; i < verses.length; i++) {
+      let words = verses[i];
+      for (let j = 1; j < words.length; j++) {
+        let wobj = words[j];
+        let word = wobj[key]; 
+        if (!word) {
+          word = key == 'q' ? wobj.p : wobj.l;
+          if (!syllables.checked) {
+            word = word.replace(/·/g, '');
+          }
+          wobj[key] = word;
+        }
+        translitElems[i + '-' + j].innerText = word;
+      }
+    }
+  }
+
   // Filtering Functions
   function getConsonants(text) {
     if (typeof text !== 'string') return '';
@@ -136,12 +155,16 @@ if (!window.tanakh) {
       ? 'c'
       : 'a';
   }
-  function getTranslit(text) {
-    return !text || syllables.checked
-      ? text
-      : text.replace(/·/g, '');
-  }
 
+  function getTranslitKey() {
+    const sc = syllables.checked;
+    return transliterate.value == 'phonetic'
+    ? (sc ? 'p' : 'q')
+    : transliterate.value == 'latin'
+      ? (sc ? 'l' : 'm')
+      : (function() { throw new Error("Invalid invocation of getTranslitKey"); })();
+  }
+  
   fontFamily.addEventListener('change', function (event) {
     event.stopImmediatePropagation();
     let newFont = fontFamily.value;
@@ -162,30 +185,21 @@ if (!window.tanakh) {
   transliterate.addEventListener('change', function (event) {
     event.stopImmediatePropagation();
     if (transliterate.value == 'phonetic' || transliterate.value == 'latin') {
+      toggleTranslit();
       syllables.disabled = false;
-      let reveal = transliterate.value == 'academic' ? '.ntran[id$=t]' : '.ntran[id$=g]';
-      let hide = transliterate.value == 'academic' ? '.tran[id$=g]' : '.tran[id$=t]';
-      document.querySelectorAll(hide).forEach(
-        ntran => ntran.classList.replace('tran', 'ntran'));
-      document.querySelectorAll(reveal).forEach(
-        ntran => ntran.classList.replace('ntran', 'tran'));
+      document.querySelectorAll('.tran').forEach(
+        tran => tran.classList.remove('hide'));
     }
     else {
       syllables.disabled = true;
       document.querySelectorAll('.tran').forEach(
-        tran => tran.classList.replace('tran', 'ntran'));
+        tran => tran.classList.add('hide'));
     }
   }, (passiveSupported ? { passive: true } : false));
 
   syllables.addEventListener('click', function (event) {
     event.stopImmediatePropagation();
-    if (syllables.checked) {
-      document.querySelectorAll('span.h').forEach(
-        h => h.classList.replace('h', 's'));
-      return;
-    }
-    document.querySelectorAll('span.s').forEach(
-      s => s.classList.replace('s', 'h'));
+    toggleTranslit();
   }, (passiveSupported ? { passive: true } : false));
 
   stickyHeader.addEventListener('click', function (event) {
