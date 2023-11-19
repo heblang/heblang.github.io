@@ -4,7 +4,7 @@ if (!window.tanakh) {
 }
 
 tanakh.books = [
-  ["בְּרֵאשִׁ֖ית"],
+  ["בְּרֵאשִׁ֖ית", "Bereshit"],
   [ // Book 1 - Bereshit
     ["Chapters"],
     [ // Chapter 1

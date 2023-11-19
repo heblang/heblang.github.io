@@ -39,10 +39,12 @@ if (!window.tanakh) {
   }
 
   tanakh.chapterCues = [[]]; // 1 based indexes
+  tanakh.elements = {
+    word: {},
+    inter: {},
+    translit: {}
+  };
   let verses;
-  const wordElems = {};
-  const interlinearElems = {};
-  const translitElems = {};
   const bcCache = {};
   // Consonants + maqaf
   const consonants = "\u05d0\u05d1\u05d2\u05d3\u05d4\u05d5\u05d6\u05d7\u05d8\u05d9\u05da\u05db\u05dc\u05dd\u05de\u05df\u05e0\u05e1\u05e2\u05e3\u05e4\u05e5\u05e6\u05e7\u05e8\u05e9\u05ea\u05BE"
@@ -52,12 +54,23 @@ if (!window.tanakh) {
   const regexConsonants = new RegExp(`[${consonants}]`, 'gu');
   const regexVowels = new RegExp(`[${consonants}${vowels}]`, 'gu');
  
-  tanakh.initText = function(bookNo, chapterNo) {
+  tanakh.init = function(bookNo, chapterNo) {
     verses = tanakh.books[bookNo][chapterNo];
+    tanakh.current = {
+      book: {
+        a: tanakh.books[0][0],
+        p: tanakh.books[0][1],
+        n: bookNo
+      },
+      chapter: {
+        a: verses[0][0],
+        n: chapterNo
+      }
+    };
 
-    bookAndChapter.innerText = getBc(getWordKey());   
+    bookAndChapter.innerText = getBookAndChapter(getWordKey());   
     for(let i = 1; i < verses.length; i++) {
-      var cues = [];
+      var cues = [0];
       tanakh.chapterCues.push(cues);
       let words = verses[i];
       for (let j = 1; j < words.length; j++) {
@@ -68,14 +81,16 @@ if (!window.tanakh) {
         cues.push(wobj.t);
 
         // cache DOM refs
-        wordElems[id] = document.getElementById(id + 'w');
-        interlinearElems[id] = document.getElementById(id + 'i');
-        translitElems[id] = document.getElementById(id + 't');
+        tanakh.elements.word[id] = document.getElementById(id + 'w');
+        tanakh.elements.inter[id] = document.getElementById(id + 'i');
+        tanakh.elements.translit[id] = document.getElementById(id + 't');
 
-        wordElems[id].innerText = word;
-        interlinearElems[id].innerText = interlinear;
+        tanakh.elements.word[id].innerText = word;
+        tanakh.elements.inter[id].innerText = interlinear;
       }
     }
+
+    tanakh.initPlayer();
   }
   
   function toggleText(event) {
@@ -84,7 +99,7 @@ if (!window.tanakh) {
     const key = getWordKey();
     const filter = key == 'v' ? getVoweled : getConsonants;
 
-    bookAndChapter.innerText = getBc(key);
+    bookAndChapter.innerText = getBookAndChapter(key);
     for(let i = 1; i < verses.length; i++) {
       let words = verses[i];
       for (let j = 1; j < words.length; j++) {
@@ -93,7 +108,7 @@ if (!window.tanakh) {
         if (!word) {
           wobj[key] = word = filter(wobj.a);
         }
-        wordElems[i + '-' + j].innerText = word;
+        tanakh.elements.word[i + '-' + j].innerText = word;
       }
     }
   }
@@ -112,7 +127,7 @@ if (!window.tanakh) {
           }
           wobj[key] = word;
         }
-        translitElems[i + '-' + j].innerText = word;
+        tanakh.elements.translit[i + '-' + j].innerText = word;
       }
     }
   }
@@ -128,20 +143,22 @@ if (!window.tanakh) {
     return (text.match(regexVowels) || []).join('');
   }
 
-  function getBc(key) {
-    var cached = bcCache[key]
+  function getBookAndChapter(key) {
+    let cached = bcCache[key]
     if (cached) {
       return cached;
     }
+
+    const pereq = 'פֶּרֶק';
     switch (niqqud.value) {
       case 'vowels':
-        cached = getVoweled(tanakh.books[0][0]) + ' ' + getVoweled('פֶּרֶק') + ' ' + getVoweled(verses[0][0]);
+        cached = `${getVoweled(tanakh.current.book.a)} ${getVoweled(pereq)} ${tanakh.current.chapter.a}`;
         break;
       case 'consonants':
-        cached = getConsonants(tanakh.books[0][0]) + ' ' + getConsonants('פֶּרֶק') + ' ' + getConsonants(verses[0][0]);
+        cached = `${getConsonants(tanakh.current.book.a)} ${getConsonants(pereq)} ${tanakh.current.chapter.a}`;
         break;
       default:
-        cached = tanakh.books[0][0] + ' פֶּרֶק ' + verses[0][0];
+        cached = `${tanakh.current.book.a} ${pereq} ${tanakh.current.chapter.a}`;
         break;
     }
     bcCache[key] = cached

@@ -21,7 +21,7 @@ elemIds.forEach(function(elemId) {
  */
 let Player = function(playlist) {
   this.playlist = playlist;
-  this.index = 0;
+  this.index = 1;
   this.highlighted = {};
 };
 
@@ -43,7 +43,7 @@ Player.prototype = {
       sound = data.howl;
     } else {
       sound = data.howl = new Howl({
-        src: ['../../media/01_Bereshit_' + data.file + '.m4a'],
+        src: [data.file],
         onplay: function() {
           // Start updating highlighted words.
           requestAnimationFrame(self.step.bind(self));
@@ -65,7 +65,6 @@ Player.prototype = {
         onpause: function() {
         },
         onstop: function() {
-
         },
         onseek: function() {
           // Start updating the highlighted words
@@ -116,16 +115,16 @@ Player.prototype = {
     let self = this;
 
     // Get the next track based on the direction of the track.
-    let index = 0;
+    let index = 1;
     if (direction === 'prev') {
       index = self.index - 1;
-      if (index < 0) {
+      if (index <= 0) {
         index = self.playlist.length - 1;
       }
     } else {
       index = self.index + 1;
       if (index >= self.playlist.length) {
-        index = 0;
+        index = 1;
       }
     }
 
@@ -166,9 +165,9 @@ Player.prototype = {
 
   /**
    * Seek to a new position in the currently playing track.
-   * @param  {Number} per Percentage through the song to skip.
+   * @param  {Number} position Position to skip to in the song.
    */
-  seek: function(per) {
+  seek: function(position) {
     let self = this;
 
     // Get the Howl we want to manipulate.
@@ -176,12 +175,12 @@ Player.prototype = {
 
     // Convert the percent into a seek position.
     if (sound.playing()) {
-      sound.seek(sound.duration() * per);
+      sound.seek(position);
     }
   },
 
   /**
-   * The step called within requestAnimationFrame to update the playback position.
+   * The step called within requestAnimationFrame to update the highlight position.
    */
   step: function() {
     let self = this;
@@ -191,25 +190,25 @@ Player.prototype = {
 
     // Determine our current seek position.
     let seek = sound.seek() || 0;
-    let verseCues = tanakh.chapterCues[self.verseNo()];
-    for (let i = 0; i < verseCues.length; i++) {
+    let verseCues = tanakh.chapterCues[self.index];
+    for (let i = 1; i < verseCues.length; i++) {
       let cue = verseCues[i];
       if (seek < cue) { // nothing to do for rest of the higher cues
         break;
       }
 
-      let idPrefix = self.verseNo() + '-' + self.wordNo(i);
-      if (idPrefix in self.highlighted) { // word already highlighted, move to the next
+      let id = `${self.index}-${i}`;
+      if (id in self.highlighted) { // word already highlighted, move to the next
         continue;
       }
 
       // word needs to be highlighted
-      let words = self.highlighted[idPrefix] = [];
-      ['w', 'i', 't'].forEach(row => { // TODO get cached from site.js
-        let word = document.getElementById(idPrefix + row)
-        word.classList.add('highlight')
-        words.push(word);
-      });
+      let elems = self.highlighted[id] = [];  
+      for (const key in tanakh.elements) {
+        let elem = tanakh.elements[key][id];
+        elem.classList.add('highlight');
+        elems.push(elem);
+      }
       break;
     }
 
@@ -251,13 +250,23 @@ Player.prototype = {
 };
 
 // Setup our new audio player class and pass it the playlist.
-let player = new Player([
-  {
-    title: 'Bereshit 1:1',
-    file: '001_001',
-    howl: null
+let player;
+tanakh.initPlayer = function() {
+  const book = tanakh.current.book.p;
+  const bookNo = tanakh.current.book.n.toString().padStart(2, '0');
+  const chapterNo = tanakh.current.chapter.n.toString().padStart(3, '0');
+  const playlist = [{}]; // 1 based index
+  for(let i = 1; i < tanakh.chapterCues.length; i++) {
+    let verseNo = i.toString().padStart(3, '0');
+    playlist.push({
+      title: `${book} ${chapterNo}:${verseNo}`,
+      file: `../../media/${bookNo}_${book}_${chapterNo}_${verseNo}.m4a`,
+      howl: null 
+    });
+
+    player = new Player(playlist);
   }
-]);
+}
 
 // Bind our player controls.
 controls.playBtn.addEventListener('click', function() {
