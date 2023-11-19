@@ -43,7 +43,7 @@ Player.prototype = {
       sound = data.howl;
     } else {
       sound = data.howl = new Howl({
-        src: [data.file],
+        src: [`../../media/${data.file}`],
         onplay: function() {
           // Start updating highlighted words.
           requestAnimationFrame(self.step.bind(self));
@@ -69,6 +69,34 @@ Player.prototype = {
         onseek: function() {
           // Start updating the highlighted words
           requestAnimationFrame(self.step.bind(self));
+        },
+        onloaderror: function (soundId, e) {
+          let src = data.file;
+          switch (e) {
+            case 1:
+              alert('You aborted the audio playback.');
+              break;
+            case 2:
+              alert(
+                "'" + src + "'\n either does not exist or there was a network failure"
+              );
+              break;
+            case 3:
+              alert(
+                'The audio playback was aborted due to a corruption problem or because your browser does not support it.'
+              );
+              break;
+            case 4:
+              alert(
+                "'" +
+                src +
+                "' cannot be played.\n\nFile might not exist or is not supported."
+              );
+              break;
+            default:
+              alert('An unknown error occurred.');
+              break;
+          }
         }
       });
     }
@@ -260,7 +288,7 @@ tanakh.initPlayer = function() {
     let verseNo = i.toString().padStart(3, '0');
     playlist.push({
       title: `${book} ${chapterNo}:${verseNo}`,
-      file: `../../media/${bookNo}_${book}_${chapterNo}_${verseNo}.m4a`,
+      file: `${bookNo}_${book}_${chapterNo}_${verseNo}.m4a`,
       howl: null 
     });
 
