@@ -5,6 +5,7 @@ if (!window.tanakh) {
 
 // TODO put under an IIFE
 
+const passiveSupported = tanakh.getPassiveSupported(); // let getPassiveSupported detect if true
 // Cache references to DOM elements.
 var elms = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn'];
 elms.forEach(function(elm) {

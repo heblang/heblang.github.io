@@ -55,7 +55,7 @@ if (!window.tanakh) {
   tanakh.initText = function(bookNo, chapterNo) {
     verses = tanakh.books[bookNo][chapterNo];
 
-    bookAndChapter.innerText = getBookAndChapter(getWordKey());   
+    bookAndChapter.innerText = getBc(getWordKey());   
     for(let i = 1; i < verses.length; i++) {
       var cues = [];
       tanakh.chapterCues.push(cues);
@@ -84,7 +84,7 @@ if (!window.tanakh) {
     const key = getWordKey();
     const filter = key == 'v' ? getVoweled : getConsonants;
 
-    bookAndChapter.innerText = getBookAndChapter(key);
+    bookAndChapter.innerText = getBc(key);
     for(let i = 1; i < verses.length; i++) {
       let words = verses[i];
       for (let j = 1; j < words.length; j++) {
@@ -128,7 +128,7 @@ if (!window.tanakh) {
     return (text.match(regexVowels) || []).join('');
   }
 
-  function getBookAndChapter(key) {
+  function getBc(key) {
     var cached = bcCache[key]
     if (cached) {
       return cached;
