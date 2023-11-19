@@ -8,8 +8,8 @@ if (!window.tanakh) {
 const passiveSupported = tanakh.getPassiveSupported(); // let getPassiveSupported detect if true
 
 // Cache references to DOM elements.
-let controls = {};
-let elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn'];
+const controls = {};
+const elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn', 'startVerse', 'endVerse'];
 elemIds.forEach(function(elemId) {
   controls[elemId] = document.getElementById(elemId);
 });
@@ -70,7 +70,7 @@ Player.prototype = {
           // Start updating the highlighted words
           requestAnimationFrame(self.step.bind(self));
         },
-        onloaderror: function (soundId, e) {
+        onloaderror: function (_, e) {
           let src = data.file;
           switch (e) {
             case 1:
@@ -257,23 +257,6 @@ Player.prototype = {
       controls.volume.style.display = display;
     }, (display === 'block') ? 0 : 500);
     controls.volume.className = (display === 'block') ? 'fadein' : 'fadeout';
-  },
-
-  /**
-   * Get current verse number
-   * @return {Number}    Current verse number
-   */
-  verseNo: function() {
-    return this.index + 1;
-  },
-
-  /**
-   * Get word number for a given word index
-   * @param  {Number} index Word index
-   * @return {Number}    Word number
-   */
-  wordNo: function(index) {
-    return index + 1;
   }
 };
 
@@ -340,5 +323,35 @@ let move = function(event) {
 
 controls.volume.addEventListener('mousemove', move, (passiveSupported ? { passive: true } : false));
 controls.volume.addEventListener('touchmove', move, (passiveSupported ? { passive: true } : false));
+
+document.querySelector('main').addEventListener('click', function (event) {
+  event.stopImmediatePropagation();
+  const target = event.target;
+  if (!target || !target.id) { return; }
+
+  let id = target.id.match(/(\d+-\d+)/);
+  if (!id || !(id = id[0])) { return; }
+  const [verseId, wordId] = getVerseWord(id);
+  let verseCues, cue;
+  if (!verseId || !wordId || !(verseCues = tanakh.chapterCues[verseId]) || !(cue = verseCues[wordId])) { return; }
+
+  const verseNo = parseInt(verseId);
+  const startNo = parseInt(controls.startVerse.value);
+  const endNo = parseInt(controls.endVerse.value);
+  if (verseNo < startNo) {
+    controls.startVerse.value = verseId;
+  }
+
+  if (verseNo > endNo) {
+    controls.endVerse.value = verseId;
+  }
+
+  player.play(verseNo, cue);
+}, (passiveSupported ? { passive: true } : false));
+
+function getVerseWord(id) {
+  let split;
+  return id && (split = id.split('-')).length > 1 ? split : [null, null];
+}
 
 })();

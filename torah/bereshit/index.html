@@ -14,7 +14,7 @@
       <div class="book" title="בְּרֵאשִׁית א">
         Genesis 1
       </div>
-      <div class="grid-container">
+      <div class="gridContainer">
         <div>
           <span class="label">
             <input type="checkbox" id="loop" checked="true" title="Repet selected verses">
@@ -22,7 +22,7 @@
           </span>
         </div>
         <div>
-          <select id="start-verse">
+          <select id="startVerse">
             <option value="1" selected>1</option>
             <!--<option value="2">2</option>
             <option value="3">3</option>
@@ -58,7 +58,7 @@
         </div>
         <div>
           <span class="label">
-            &nbsp;-&nbsp;<select id="end-verse">
+            &nbsp;-&nbsp;<select id="endVerse">
               <option value="1">1</option>
               <!--<option value="2">2</option>
               <option value="3">3</option>
@@ -95,12 +95,12 @@
         </div>
         <div style="visibility:hidden;">
           <span class="label">
-            <input type="checkbox" id="chapter-loop" title="Repet selected chapters">
-            <label for="chapter-loop" title="Repet selected chapters">Loop&nbsp;Chapter&nbsp;</label>
+            <input type="checkbox" id="chapterLoop" title="Repet selected chapters">
+            <label for="chapterLoop" title="Repet selected chapters">Loop&nbsp;Chapter&nbsp;</label>
           </span>
         </div>
         <div style="visibility:hidden;">
-          <select id="start-chapter">
+          <select id="startChapter">
             <option value="1" selected>1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -155,7 +155,7 @@
         </div>
         <div style="visibility:hidden;">
           <span class="label">
-            &nbsp;-&nbsp;<select id="end-chapter">
+            &nbsp;-&nbsp;<select id="endChapter">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -212,14 +212,14 @@
       </div>
       <div class="srow">
         <div title="Select Hebrew Script">
-          <select id="font-family">
+          <select id="fontFamily">
             <option value="heb" selected>Ktav Ashuri</option>
             <option value="rashi">Ktav Rashi</option>
           </select>
         </div>
         <div title="Header will float, if checked" style="visibility: hidden;">
-          <input type="checkbox" id="sticky-header" checked="true">
-          <label for="sticky-header">Float Header</label>
+          <input type="checkbox" id="stickyHeader" checked="true">
+          <label for="stickyHeader">Float Header</label>
         </div>
       </div>
     </div>
@@ -228,7 +228,7 @@
         <a href="../index.html" title="תנ״ך">TaNaK</a>
         <a href="bereshit50.html" title="Go To Chapter 50">&lt;&nbsp;Prev</a>
         <span class="label" title="Navigate to selected chapter">
-          &nbsp;&nbsp;<select id="goto-chapter">
+          &nbsp;&nbsp;<select id="gotoChapter">
             <option value="1" title="Chapter: 1" selected>1</option>
             <option value="2" title="Go To Chapter 2">2</option>
             <option value="3" title="Go To Chapter 3">3</option>
@@ -291,11 +291,11 @@
             <select id="speed">
               <option value="0.5" title="Slow speed">0.50&times;</option>
               <option value="0.75" title="Slower speed">0.75&times;</option>
-              <option value="1" id="speed-1" selected title="Normal speed">Normal</option>
-              <option value="1.25" id="speed-1.25" title="Faster speed">1.25&times;</option>
-              <option value="1.5" id="speed-1.5" title="Fast speed">1.50&times;</option>
-              <option value="1.75" id="speed-1.75" title="Very Fast speed">1.75&times;</option>
-              <option value="2" id="speed-2" title="Fastest speed">2.00&times;</option>
+              <option value="1" selected title="Normal speed">Normal</option>
+              <option value="1.25" title="Faster speed">1.25&times;</option>
+              <option value="1.5" title="Fast speed">1.50&times;</option>
+              <option value="1.75" title="Very Fast speed">1.75&times;</option>
+              <option value="2" title="Fastest speed">2.00&times;</option>
             </select>
           </span>
         </div>
@@ -317,7 +317,7 @@
     </div>
     <div class="hcol">
       <div lang="he" class="heb t" title="Genesis Chapter 1">
-        <span id="bc"></span>
+        <span id="bookAndChapter"></span>
       </div>
       <div class="right" title="Show/hide vowels and punctuation">
         <span class="label">

@@ -25,15 +25,15 @@ if (!window.tanakh) {
     return passiveSupported;
   }
 
-  const fontFamily = document.getElementById('font-family');
-  const niqqud = document.getElementById('niqqud');
-  const transliterate = document.getElementById('transliterate');
-  const syllables = document.getElementById('syllables');
-  const stickyHeader = document.getElementById('sticky-header');
-  const bookAndChapter = document.getElementById('bc');
+  const controls = {};
+  const elemIds = ['fontFamily', 'niqqud', 'transliterate', 'syllables', 'stickyHeader', 'bookAndChapter'];
+  elemIds.forEach(function(elemId) {
+    controls[elemId] = document.getElementById(elemId);
+  });
+
   const passiveSupported = tanakh.getPassiveSupported(); // let getPassiveSupported detect if true
 
-  if (!niqqud || !transliterate || !syllables || !stickyHeader || !fontFamily || !bookAndChapter) {
+  if (!controls.niqqud || !controls.transliterate || !controls.syllables || !controls.stickyHeader || !controls.fontFamily || !controls.bookAndChapter) {
     console.error('Could not find required page element');
     return;
   }
@@ -68,7 +68,7 @@ if (!window.tanakh) {
       }
     };
 
-    bookAndChapter.innerText = getBookAndChapter(getWordKey());   
+    controls.bookAndChapter.innerText = getBookAndChapter(getWordKey());   
     for(let i = 1; i < verses.length; i++) {
       var cues = [0];
       tanakh.chapterCues.push(cues);
@@ -99,7 +99,7 @@ if (!window.tanakh) {
     const key = getWordKey();
     const filter = key == 'v' ? getVoweled : getConsonants;
 
-    bookAndChapter.innerText = getBookAndChapter(key);
+    controls.bookAndChapter.innerText = getBookAndChapter(key);
     for(let i = 1; i < verses.length; i++) {
       let words = verses[i];
       for (let j = 1; j < words.length; j++) {
@@ -122,7 +122,7 @@ if (!window.tanakh) {
         let word = wobj[key]; 
         if (!word) {
           word = key == 'q' ? wobj.p : wobj.l;
-          if (!syllables.checked) {
+          if (!controls.syllables.checked) {
             word = word.replace(/·/g, '');
           }
           wobj[key] = word;
@@ -150,7 +150,7 @@ if (!window.tanakh) {
     }
 
     const pereq = 'פֶּרֶק';
-    switch (niqqud.value) {
+    switch (controls.niqqud.value) {
       case 'vowels':
         cached = `${getVoweled(tanakh.current.book.a)} ${getVoweled(pereq)} ${tanakh.current.chapter.a}`;
         break;
@@ -166,26 +166,26 @@ if (!window.tanakh) {
   }
 
   function getWordKey() {
-    return niqqud.value == 'vowels'
+    return controls.niqqud.value == 'vowels'
     ? 'v'
-    : niqqud.value == 'consonants'
+    : controls.niqqud.value == 'consonants'
       ? 'c'
       : 'a';
   }
 
   function getTranslitKey() {
-    const sc = syllables.checked;
-    return transliterate.value == 'phonetic'
+    const sc = controls.syllables.checked;
+    return controls.transliterate.value == 'phonetic'
     ? (sc ? 'p' : 'q')
-    : transliterate.value == 'latin'
+    : controls.transliterate.value == 'latin'
       ? (sc ? 'l' : 'm')
       : (function() { throw new Error("Invalid invocation of getTranslitKey"); })();
   }
   
-  fontFamily.addEventListener('change', function (event) {
+  controls.fontFamily.addEventListener('change', function (event) {
     event.stopImmediatePropagation();
-    let newFont = fontFamily.value;
-    let options = fontFamily.options;
+    let newFont = controls.fontFamily.value;
+    let options = controls.fontFamily.options;
     for (let i = 0; i < options.length; i++) {
       let oldFont = options[i].value;
       if (oldFont == newFont) {
@@ -197,31 +197,31 @@ if (!window.tanakh) {
     }
   }, (passiveSupported ? { passive: true } : false));
 
-  niqqud.addEventListener('change', toggleText, (passiveSupported ? { passive: true } : false));
+  controls.niqqud.addEventListener('change', toggleText, (passiveSupported ? { passive: true } : false));
 
-  transliterate.addEventListener('change', function (event) {
+  controls.transliterate.addEventListener('change', function (event) {
     event.stopImmediatePropagation();
-    if (transliterate.value == 'phonetic' || transliterate.value == 'latin') {
+    if (controls.transliterate.value == 'phonetic' || controls.transliterate.value == 'latin') {
       toggleTranslit();
-      syllables.disabled = false;
+      controls.syllables.disabled = false;
       document.querySelectorAll('.tran').forEach(
         tran => tran.classList.remove('hide'));
     }
     else {
-      syllables.disabled = true;
+      controls.syllables.disabled = true;
       document.querySelectorAll('.tran').forEach(
         tran => tran.classList.add('hide'));
     }
   }, (passiveSupported ? { passive: true } : false));
 
-  syllables.addEventListener('click', function (event) {
+  controls.syllables.addEventListener('click', function (event) {
     event.stopImmediatePropagation();
     toggleTranslit();
   }, (passiveSupported ? { passive: true } : false));
 
-  stickyHeader.addEventListener('click', function (event) {
+  controls.stickyHeader.addEventListener('click', function (event) {
     event.stopImmediatePropagation();
-    if (stickyHeader.checked) {
+    if (controls.stickyHeader.checked) {
       document.getElementsByTagName('header')[0].classList.add('sticky');
     } else {
       document.getElementsByTagName('header')[0].classList.remove('sticky');
