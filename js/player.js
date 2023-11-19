@@ -3,13 +3,15 @@ if (!window.tanakh) {
   window.tanakh = {};  
 }
 
-// TODO put under an IIFE
+(function () {
 
 const passiveSupported = tanakh.getPassiveSupported(); // let getPassiveSupported detect if true
+
 // Cache references to DOM elements.
-var elms = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn'];
-elms.forEach(function(elm) {
-  window[elm] = document.getElementById(elm);
+let controls = {};
+let elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn'];
+elemIds.forEach(function(elemId) {
+  controls[elemId] = document.getElementById(elemId);
 });
 
 /**
@@ -17,7 +19,7 @@ elms.forEach(function(elm) {
  * Includes all methods for playing, skipping, updating the display, etc.
  * @param {Array} playlist Array of objects with playlist song details ({title, file, howl}).
  */
-var Player = function(playlist) {
+let Player = function(playlist) {
   this.playlist = playlist;
   this.index = 0;
   this.highlighted = {};
@@ -29,11 +31,11 @@ Player.prototype = {
    * @param  {Number} index Index of the song in the playlist (leave empty to play the first or current).
    */
   play: function(index) {
-    var self = this;
-    var sound;
+    let self = this;
+    let sound;
 
     index = typeof index === 'number' ? index : self.index;
-    var data = self.playlist[index];
+    let data = self.playlist[index];
 
     // If we already loaded this track, use the current one.
     // Otherwise, setup and load a new Howl.
@@ -41,7 +43,7 @@ Player.prototype = {
       sound = data.howl;
     } else {
       sound = data.howl = new Howl({
-        src: ['../../media/01_Genesis_' + data.file + '.m4a'],
+        src: ['../../media/01_Bereshit_' + data.file + '.m4a'],
         onplay: function() {
           // Start updating highlighted words.
           requestAnimationFrame(self.step.bind(self));
@@ -49,7 +51,7 @@ Player.prototype = {
           pauseBtn.style.display = 'block';
         },
         onload: function() {
-          loading.style.display = 'none';
+          controls.loading.style.display = 'none';
         },
         onend: function() {
           Object.entries(self.highlighted).forEach(([key, words]) => {
@@ -77,12 +79,12 @@ Player.prototype = {
 
     // Show the pause button.
     if (sound.state() === 'loaded') {
-      playBtn.style.display = 'none';
-      pauseBtn.style.display = 'block';
+      controls.playBtn.style.display = 'none';
+      controls.pauseBtn.style.display = 'block';
     } else {
-      loading.style.display = 'block';
-      playBtn.style.display = 'none';
-      pauseBtn.style.display = 'none';
+      controls.loading.style.display = 'block';
+      controls.playBtn.style.display = 'none';
+      controls.pauseBtn.style.display = 'none';
     }
 
     // Keep track of the index we are currently playing.
@@ -93,17 +95,17 @@ Player.prototype = {
    * Pause the currently playing track.
    */
   pause: function() {
-    var self = this;
+    let self = this;
 
     // Get the Howl we want to manipulate.
-    var sound = self.playlist[self.index].howl;
+    let sound = self.playlist[self.index].howl;
 
     // Puase the sound.
     sound.pause();
 
     // Show the play button.
-    playBtn.style.display = 'block';
-    pauseBtn.style.display = 'none';
+    controls.playBtn.style.display = 'block';
+    controls.pauseBtn.style.display = 'none';
   },
 
   /**
@@ -111,10 +113,10 @@ Player.prototype = {
    * @param  {String} direction 'next' or 'prev'.
    */
   skip: function(direction) {
-    var self = this;
+    let self = this;
 
     // Get the next track based on the direction of the track.
-    var index = 0;
+    let index = 0;
     if (direction === 'prev') {
       index = self.index - 1;
       if (index < 0) {
@@ -135,7 +137,7 @@ Player.prototype = {
    * @param  {Number} index Index in the playlist.
    */
   skipTo: function(index) {
-    var self = this;
+    let self = this;
 
     // Stop the current track.
     if (self.playlist[self.index].howl) {
@@ -151,15 +153,15 @@ Player.prototype = {
    * @param  {Number} val Volume between 0 and 1.
    */
   volume: function(val) {
-    var self = this;
+    let self = this;
 
     // Update the global volume (affecting all Howls).
     Howler.volume(val);
 
     // Update the display on the slider.
-    var barWidth = (val * 90) / 100;
-    barFull.style.width = (barWidth * 100) + '%';
-    sliderBtn.style.left = (window.innerWidth * barWidth + window.innerWidth * 0.05 - 25) + 'px';
+    let barWidth = (val * 90) / 100;
+    controls.barFull.style.width = (barWidth * 100) + '%';
+    controls.sliderBtn.style.left = (window.innerWidth * barWidth + window.innerWidth * 0.05 - 25) + 'px';
   },
 
   /**
@@ -167,10 +169,10 @@ Player.prototype = {
    * @param  {Number} per Percentage through the song to skip.
    */
   seek: function(per) {
-    var self = this;
+    let self = this;
 
     // Get the Howl we want to manipulate.
-    var sound = self.playlist[self.index].howl;
+    let sound = self.playlist[self.index].howl;
 
     // Convert the percent into a seek position.
     if (sound.playing()) {
@@ -182,29 +184,29 @@ Player.prototype = {
    * The step called within requestAnimationFrame to update the playback position.
    */
   step: function() {
-    var self = this;
+    let self = this;
 
     // Get the Howl we want to manipulate.
-    var sound = self.playlist[self.index].howl;
+    let sound = self.playlist[self.index].howl;
 
     // Determine our current seek position.
-    var seek = sound.seek() || 0;
-    var verseCues = tanakh.chapterCues[self.verseNo()];
-    for (var i = 0; i < verseCues.length; i++) {
-      var cue = verseCues[i];
+    let seek = sound.seek() || 0;
+    let verseCues = tanakh.chapterCues[self.verseNo()];
+    for (let i = 0; i < verseCues.length; i++) {
+      let cue = verseCues[i];
       if (seek < cue) { // nothing to do for rest of the higher cues
         break;
       }
 
-      var idPrefix = self.verseNo() + '-' + self.wordNo(i);
+      let idPrefix = self.verseNo() + '-' + self.wordNo(i);
       if (idPrefix in self.highlighted) { // word already highlighted, move to the next
         continue;
       }
 
       // word needs to be highlighted
-      var words = self.highlighted[idPrefix] = [];
+      let words = self.highlighted[idPrefix] = [];
       ['w', 'i', 't'].forEach(row => { // TODO get cached from site.js
-        var word = document.getElementById(idPrefix + row)
+        let word = document.getElementById(idPrefix + row)
         word.classList.add('highlight')
         words.push(word);
       });
@@ -221,13 +223,13 @@ Player.prototype = {
    * Toggle the volume display on/off.
    */
   toggleVolume: function() {
-    var self = this;
-    var display = (volume.style.display === 'block') ? 'none' : 'block';
+    let self = this;
+    let display = (controls.volume.style.display === 'block') ? 'none' : 'block';
 
     setTimeout(function() {
-      volume.style.display = display;
+      controls.volume.style.display = display;
     }, (display === 'block') ? 0 : 500);
-    volume.className = (display === 'block') ? 'fadein' : 'fadeout';
+    controls.volume.className = (display === 'block') ? 'fadein' : 'fadeout';
   },
 
   /**
@@ -249,55 +251,57 @@ Player.prototype = {
 };
 
 // Setup our new audio player class and pass it the playlist.
-var player = new Player([
+let player = new Player([
   {
-    title: 'Genesis 1:1',
+    title: 'Bereshit 1:1',
     file: '001_001',
     howl: null
   }
 ]);
 
 // Bind our player controls.
-playBtn.addEventListener('click', function() {
+controls.playBtn.addEventListener('click', function() {
   player.play();
-});
-pauseBtn.addEventListener('click', function() {
+}, (passiveSupported ? { passive: true } : false));
+controls.pauseBtn.addEventListener('click', function() {
   player.pause();
-});
-volumeBtn.addEventListener('click', function() {
+}, (passiveSupported ? { passive: true } : false));
+controls.volumeBtn.addEventListener('click', function() {
   player.toggleVolume();
-});
-volume.addEventListener('click', function() {
+}, (passiveSupported ? { passive: true } : false));
+controls.volume.addEventListener('click', function() {
   player.toggleVolume();
-});
+}, (passiveSupported ? { passive: true } : false));
 
 // Setup the event listeners to enable dragging of volume slider.
-barEmpty.addEventListener('click', function(event) {
-  var per = event.layerX / parseFloat(barEmpty.scrollWidth);
+controls.barEmpty.addEventListener('click', function(event) {
+  let per = event.layerX / parseFloat(controls.barEmpty.scrollWidth);
   player.volume(per);
-});
-sliderBtn.addEventListener('mousedown', function() {
+}, (passiveSupported ? { passive: true } : false));
+controls.sliderBtn.addEventListener('mousedown', function() {
   window.sliderDown = true;
-});
-sliderBtn.addEventListener('touchstart', function() {
+}, (passiveSupported ? { passive: true } : false));
+controls.sliderBtn.addEventListener('touchstart', function() {
   window.sliderDown = true;
-});
-volume.addEventListener('mouseup', function() {
+}, (passiveSupported ? { passive: true } : false));
+controls.volume.addEventListener('mouseup', function() {
   window.sliderDown = false;
-});
-volume.addEventListener('touchend', function() {
+}, (passiveSupported ? { passive: true } : false));
+controls.volume.addEventListener('touchend', function() {
   window.sliderDown = false;
-});
+}, (passiveSupported ? { passive: true } : false));
 
-var move = function(event) {
+let move = function(event) {
   if (window.sliderDown) {
-    var x = event.clientX || event.touches[0].clientX;
-    var startX = window.innerWidth * 0.05;
-    var layerX = x - startX;
-    var per = Math.min(1, Math.max(0, layerX / parseFloat(barEmpty.scrollWidth)));
+    let x = event.clientX || event.touches[0].clientX;
+    let startX = window.innerWidth * 0.05;
+    let layerX = x - startX;
+    let per = Math.min(1, Math.max(0, layerX / parseFloat(controls.barEmpty.scrollWidth)));
     player.volume(per);
   }
 };
 
-volume.addEventListener('mousemove', move);
-volume.addEventListener('touchmove', move);
+controls.volume.addEventListener('mousemove', move, (passiveSupported ? { passive: true } : false));
+controls.volume.addEventListener('touchmove', move, (passiveSupported ? { passive: true } : false));
+
+})();
