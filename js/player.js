@@ -9,7 +9,7 @@ const passiveSupported = tanakh.getPassiveSupported(); // let getPassiveSupporte
 
 // Cache references to DOM elements.
 const controls = {};
-const elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn', 'startVerse', 'endVerse', 'loop'];
+const elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn', 'startVerse', 'endVerse', 'loop', 'speed'];
 elemIds.forEach(function(elemId) {
   controls[elemId] = document.getElementById(elemId);
 });
@@ -54,15 +54,23 @@ Player.prototype = {
     } else {
       sound = data.howl = new Howl({
         src: [`../../media/${data.file}`],
+        html5: true,
         preload: true,
         onplay: function() {
+          controls.loading.style.display = 'none';
+          controls.playBtn.style.display = 'none';
+          controls.pauseBtn.style.display = 'block';
+          
           self.clearHighlighted();
           // Start highlighting words.
           requestAnimationFrame(self.step.bind(self));
-          pauseBtn.style.display = 'block';
         },
         onload: function() {
           controls.loading.style.display = 'none';
+          let rate = parseFloat(controls.speed.value);
+          if (rate != 1) {
+            sound.rate(rate)
+          }
         },
         onend: function() {
           self.clearHighlighted();
@@ -116,14 +124,17 @@ Player.prototype = {
     sound.play();
 
     // Show the pause button.
-    if (sound.state() === 'loaded') {
-      controls.playBtn.style.display = 'none';
-      controls.pauseBtn.style.display = 'block';
-    } else {
-      controls.loading.style.display = 'block';
-      controls.playBtn.style.display = 'none';
-      controls.pauseBtn.style.display = 'none';
-    }
+    requestAnimationFrame(function() {
+      if (sound.state() === 'unloaded') {
+        controls.loading.style.display = 'block';
+        controls.playBtn.style.display = 'none';
+        controls.pauseBtn.style.display = 'none';
+      } else {
+        controls.loading.style.display = 'none';
+        controls.playBtn.style.display = 'none';
+        controls.pauseBtn.style.display = 'block';
+      }
+  });
 
     // Keep track of the index we are currently playing.
     self.index = index;
@@ -215,6 +226,21 @@ Player.prototype = {
     controls.sliderBtn.style.left = (window.innerWidth * barWidth + window.innerWidth * 0.05 - 25) + 'px';
   },
 
+  /**
+   * Set playback rate.
+   * @param  {Number} rate Rate between 0.5 and 4.
+   */
+  rate: function(rate) {
+    let self = this;
+
+    // enumerate Howls and set the rate for all.
+    for(let i = 1; i < self.playlist.length; i++) {
+      if (self.playlist[i].howl) {
+        self.playlist[i].howl.rate(rate);
+      }
+    }
+  },
+  
   /**
    * Seek to a new position in the currently playing track.
    * @param  {Number} position Position to skip to in the song.
@@ -354,6 +380,16 @@ let move = function(event) {
 
 controls.volume.addEventListener('mousemove', move, (passiveSupported ? { passive: true } : false));
 controls.volume.addEventListener('touchmove', move, (passiveSupported ? { passive: true } : false));
+
+controls.speed.addEventListener('change', function (event) {
+  event.stopImmediatePropagation();
+  let target = event.target;
+  if (!target || !target.id || !target.id.startsWith('speed')) {
+    return;
+  }
+  let rate = parseFloat(target.value);
+  player.rate(rate);
+}, (passiveSupported ? { passive: true } : false));
 
 document.querySelector('main').addEventListener('click', function (event) {
   event.stopImmediatePropagation();
