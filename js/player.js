@@ -9,7 +9,7 @@ const passiveSupported = tanakh.getPassiveSupported(); // let getPassiveSupporte
 
 // Cache references to DOM elements.
 const controls = {};
-const elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn', 'startVerse', 'endVerse'];
+const elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn', 'startVerse', 'endVerse', 'loop'];
 elemIds.forEach(function(elemId) {
   controls[elemId] = document.getElementById(elemId);
 });
@@ -23,14 +23,24 @@ let Player = function(playlist) {
   this.playlist = playlist;
   this.index = 1;
   this.highlighted = {};
+  this.start = 0;
+  this.clearHighlighted = function() {
+    Object.entries(this.highlighted).forEach(([key, words]) => {
+      words.forEach(function(word) {
+        word.classList.remove('highlight');
+      });
+      delete this.highlighted[key]
+    });
+  }
 };
 
 Player.prototype = {
   /**
    * Play a song in the playlist.
    * @param  {Number} index Index of the song in the playlist (leave empty to play the first or current).
+   * @param  {Number} position Seek position inside the track.
    */
-  play: function(index) {
+  play: function(index, position) {
     let self = this;
     let sound;
 
@@ -44,22 +54,19 @@ Player.prototype = {
     } else {
       sound = data.howl = new Howl({
         src: [`../../media/${data.file}`],
+        preload: true,
         onplay: function() {
-          // Start updating highlighted words.
+          self.clearHighlighted();
+          // Start highlighting words.
           requestAnimationFrame(self.step.bind(self));
-
           pauseBtn.style.display = 'block';
         },
         onload: function() {
           controls.loading.style.display = 'none';
         },
         onend: function() {
-          Object.entries(self.highlighted).forEach(([key, words]) => {
-            words.forEach(function(word) {
-              word.classList.remove('highlight');
-            });
-            delete self.highlighted[key]
-          });
+          self.clearHighlighted();
+          self.start = 0;
           self.skip('next');
         },
         onpause: function() {
@@ -67,8 +74,6 @@ Player.prototype = {
         onstop: function() {
         },
         onseek: function() {
-          // Start updating the highlighted words
-          requestAnimationFrame(self.step.bind(self));
         },
         onloaderror: function (_, e) {
           let src = data.file;
@@ -102,6 +107,12 @@ Player.prototype = {
     }
 
     // Begin playing the sound.
+    if (position) {
+      self.start = position;
+      sound.once('play', function() {
+        sound.seek(position);
+      });
+    }
     sound.play();
 
     // Show the pause button.
@@ -146,33 +157,46 @@ Player.prototype = {
     let index = 1;
     if (direction === 'prev') {
       index = self.index - 1;
-      if (index <= 0) {
-        index = self.playlist.length - 1;
+      if (index <= 0 || index < parseInt(controls.startVerse.value)) {
+        index = controls.endVerse.value;
+        if (controls.loop.checked) {
+          self.skipTo(index);
+        }
+      }
+      else {
+        self.skipTo(index);
       }
     } else {
       index = self.index + 1;
-      if (index >= self.playlist.length) {
-        index = 1;
+      if (index >= self.playlist.length || index > parseInt(controls.endVerse.value)) {
+        index = parseInt(controls.startVerse.value);
+        if (controls.loop.checked) {
+          self.skipTo(index);
+        }
       }
-    }
-
-    self.skipTo(index);
+      else {
+        self.skipTo(index);
+      }
+    }    
   },
 
   /**
    * Skip to a specific track based on its playlist index.
    * @param  {Number} index Index in the playlist.
+   * @param  {Number} position Seek position inside the track.
    */
-  skipTo: function(index) {
+  skipTo: function(index, position) {
     let self = this;
 
     // Stop the current track.
     if (self.playlist[self.index].howl) {
       self.playlist[self.index].howl.stop();
+      self.clearHighlighted();
+      self.start = 0;
     }
 
     // Play the new track.
-    self.play(index);
+    self.play(index, position);
   },
 
   /**
@@ -215,35 +239,42 @@ Player.prototype = {
 
     // Get the Howl we want to manipulate.
     let sound = self.playlist[self.index].howl;
+    if (!sound.playing()) {
+      return;
+    }
 
     // Determine our current seek position.
     let seek = sound.seek() || 0;
-    let verseCues = tanakh.chapterCues[self.index];
-    for (let i = 1; i < verseCues.length; i++) {
-      let cue = verseCues[i];
-      if (seek < cue) { // nothing to do for rest of the higher cues
+    if (seek >= self.start) {
+      let verseCues = tanakh.chapterCues[self.index];
+      for (let i = 1; i < verseCues.length; i++) {
+        let cue = verseCues[i];
+        if (seek < cue) { // nothing to do for rest of the higher cues
+          break;
+        }
+
+        if (cue < self.start) {
+          continue;
+        }
+
+        let id = `${self.index}-${i}`;
+        if (id in self.highlighted) { // word already highlighted, move to the next
+          continue;
+        }
+
+        // word needs to be highlighted
+        let elems = self.highlighted[id] = [];  
+        for (const key in tanakh.elements) {
+          let elem = tanakh.elements[key][id];
+          elem.classList.add('highlight');
+          elems.push(elem);
+        }
         break;
       }
-
-      let id = `${self.index}-${i}`;
-      if (id in self.highlighted) { // word already highlighted, move to the next
-        continue;
-      }
-
-      // word needs to be highlighted
-      let elems = self.highlighted[id] = [];  
-      for (const key in tanakh.elements) {
-        let elem = tanakh.elements[key][id];
-        elem.classList.add('highlight');
-        elems.push(elem);
-      }
-      break;
     }
 
     // If the sound is still playing, continue stepping.
-    if (sound.playing()) {
-      requestAnimationFrame(self.step.bind(self));
-    }
+    requestAnimationFrame(self.step.bind(self));
   },
 
   /**
@@ -346,7 +377,7 @@ document.querySelector('main').addEventListener('click', function (event) {
     controls.endVerse.value = verseId;
   }
 
-  player.play(verseNo, cue);
+  player.skipTo(verseNo, cue);
 }, (passiveSupported ? { passive: true } : false));
 
 function getVerseWord(id) {
