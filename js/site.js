@@ -85,7 +85,7 @@ if (!window.tanakh) {
         tanakh.elements.inter[id] = document.getElementById(id + 'i');
         tanakh.elements.translit[id] = document.getElementById(id + 't');
 
-        tanakh.elements.word[id].innerText = word;
+        tanakh.elements.word[id].innerText = getConsonants(word);
         tanakh.elements.inter[id].innerText = interlinear;
       }
     }
