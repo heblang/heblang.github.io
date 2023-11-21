@@ -57,16 +57,14 @@ Player.prototype = {
         html5: true,
         preload: true,
         onplay: function() {
-          controls.loading.style.display = 'none';
-          controls.playBtn.style.display = 'none';
-          controls.pauseBtn.style.display = 'block';
+          self.enable('pauseBtn');
           
           self.clearHighlighted();
           // Start highlighting words.
           requestAnimationFrame(self.step.bind(self));
         },
         onload: function() {
-          controls.loading.style.display = 'none';
+          self.enable('playBtn');
           let rate = parseFloat(controls.speed.value);
           if (rate != 1) {
             sound.rate(rate)
@@ -127,15 +125,11 @@ Player.prototype = {
     // Show the pause button.
     requestAnimationFrame(function() {
       if (sound.state() === 'unloaded') {
-        controls.loading.style.display = 'block';
-        controls.playBtn.style.display = 'none';
-        controls.pauseBtn.style.display = 'none';
+        self.enable('loading');
       } else {
-        controls.loading.style.display = 'none';
-        controls.playBtn.style.display = 'none';
-        controls.pauseBtn.style.display = 'block';
+        self.enable('pauseBtn');
       }
-  });
+    });
 
     // Keep track of the index we are currently playing.
     self.index = index;
@@ -154,8 +148,7 @@ Player.prototype = {
     sound.pause();
 
     // Show the play button.
-    controls.playBtn.style.display = 'block';
-    controls.pauseBtn.style.display = 'none';
+    self.enable('playBtn');
   },
 
   /**
@@ -314,6 +307,12 @@ Player.prototype = {
       controls.volume.style.display = display;
     }, (display === 'block') ? 0 : 500);
     controls.volume.className = (display === 'block') ? 'fadein' : 'fadeout';
+  },
+
+  enable: function(button) {
+    controls.loading.style.display = button === 'loading' ? 'block' : 'none';
+    controls.playBtn.style.display =  button === 'playBtn' ? 'block' : 'none';
+    controls.pauseBtn.style.display =  button === 'pauseBtn' ? 'block' : 'none';
   }
 };
 
