@@ -74,6 +74,7 @@ Player.prototype = {
           self.clearHighlighted();
           self.start = 0;
           sound.seek(0);
+          self.enable('playBtn');
           self.skip('next');
         },
         onpause: function() {
