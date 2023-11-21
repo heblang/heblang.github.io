@@ -23,7 +23,6 @@ let Player = function(playlist) {
   this.playlist = playlist;
   this.index = 1;
   this.highlighted = {};
-  this.start = 0;
   this.clearHighlighted = function() {
     Object.entries(this.highlighted).forEach(([key, words]) => {
       words.forEach(function(word) {
@@ -58,8 +57,6 @@ Player.prototype = {
         preload: true,
         onplay: function() {
           self.enable('pauseBtn');
-          
-          self.clearHighlighted();
           // Start highlighting words.
           requestAnimationFrame(self.step.bind(self));
         },
@@ -72,7 +69,6 @@ Player.prototype = {
         },
         onend: function() {
           self.clearHighlighted();
-          self.start = 0;
           sound.seek(0);
           self.enable('playBtn');
           self.skip('next');
@@ -80,6 +76,7 @@ Player.prototype = {
         onpause: function() {
         },
         onstop: function() {
+          sound.seek(0);
         },
         onseek: function() {
         },
@@ -116,12 +113,19 @@ Player.prototype = {
 
     // Begin playing the sound.
     if (position) {
-      self.start = position;
-      sound.once('play', function() {
+      if (sound.playing()) {
         sound.seek(position);
-      });
+      }
+      else {
+        sound.once('play', function() {
+          sound.seek(position);
+        });
+      }
     }
-    sound.play();
+
+    if (!sound.playing()) {
+      sound.play();
+    }
 
     // Show the pause button.
     requestAnimationFrame(function() {
@@ -195,10 +199,12 @@ Player.prototype = {
     let self = this;
 
     // Stop the current track.
-    if (self.playlist[self.index].howl) {
-      self.playlist[self.index].howl.stop();
+    const sound = self.playlist[self.index].howl
+    if (sound) {
+      if (index != self.index) {
+        sound.stop();
+      }
       self.clearHighlighted();
-      self.start = 0;
     }
 
     // Play the new track.
@@ -246,7 +252,6 @@ Player.prototype = {
     // Get the Howl we want to manipulate.
     let sound = self.playlist[self.index].howl;
 
-    // Convert the percent into a seek position.
     if (sound.playing()) {
       sound.seek(position);
     }
@@ -263,36 +268,29 @@ Player.prototype = {
 
     // Determine our current seek position.
     let seek = sound.seek() || 0;
-    if (seek >= self.start) {
-      let verseCues = tanakh.chapterCues[self.index];
-      for (let i = 1; i < verseCues.length; i++) {
-        let cue = verseCues[i];
-        if (seek < cue) { // nothing to do for rest of the higher cues
-          break;
-        }
-
-        if (cue < self.start) {
-          continue;
-        }
-
-        let id = `${self.index}-${i}`;
-        if (id in self.highlighted) { // word already highlighted, move to the next
-          continue;
-        }
-
-        // word needs to be highlighted
-        let elems = self.highlighted[id] = [];  
-        for (const key in tanakh.elements) {
-          let elem = tanakh.elements[key][id];
-          elem.classList.add('highlight');
-          elems.push(elem);
-        }
+    let verseCues = tanakh.chapterCues[self.index];
+    for (let i = self.findClosestIndex(verseCues, seek); i < verseCues.length; i++) {
+      if (i <= 0) {
         break;
       }
+
+      let id = `${self.index}-${i}`;
+      if (id in self.highlighted) { // word already highlighted, move to the next
+        break;
+      }
+
+      // word needs to be highlighted
+      let elems = self.highlighted[id] = [];  
+      for (const key in tanakh.elements) {
+        let elem = tanakh.elements[key][id];
+        elem.classList.add('highlight');
+        elems.push(elem);
+      }
+      break;
     }
 
     // If the sound is still playing, continue stepping.
-    if (sound.playing()) {
+    if (sound.playing() || sound.state != 'unloaded') {
       requestAnimationFrame(self.step.bind(self));
     }
   },
@@ -314,6 +312,18 @@ Player.prototype = {
     controls.loading.style.display = button === 'loading' ? 'block' : 'none';
     controls.playBtn.style.display =  button === 'playBtn' ? 'block' : 'none';
     controls.pauseBtn.style.display =  button === 'pauseBtn' ? 'block' : 'none';
+  },
+
+  findClosestIndex: function(cues, seek) {
+    let i = 0;
+    for(; i < cues.length; i++) {
+      let val = cues[i];
+      let diff = seek - val;
+      if (diff < 0) {
+        break;
+      }
+    }
+    return i - 1;
   }
 };
 
