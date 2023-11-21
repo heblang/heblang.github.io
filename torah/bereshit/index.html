@@ -14,7 +14,7 @@
       <div class="book" title="בְּרֵאשִׁית א">
         Genesis 1
       </div>
-      <div class="grid-container">
+      <div class="gridContainer">
         <div>
           <span class="label">
             <input type="checkbox" id="loop" checked="true" title="Repet selected verses">
@@ -22,7 +22,7 @@
           </span>
         </div>
         <div>
-          <select id="start-verse">
+          <select id="startVerse">
             <option value="1" selected>1</option>
             <!--<option value="2">2</option>
             <option value="3">3</option>
@@ -58,7 +58,7 @@
         </div>
         <div>
           <span class="label">
-            &nbsp;-&nbsp;<select id="end-verse">
+            &nbsp;-&nbsp;<select id="endVerse">
               <option value="1">1</option>
               <!--<option value="2">2</option>
               <option value="3">3</option>
@@ -95,12 +95,12 @@
         </div>
         <div style="visibility:hidden;">
           <span class="label">
-            <input type="checkbox" id="chapter-loop" title="Repet selected chapters">
-            <label for="chapter-loop" title="Repet selected chapters">Loop&nbsp;Chapter&nbsp;</label>
+            <input type="checkbox" id="chapterLoop" title="Repet selected chapters">
+            <label for="chapterLoop" title="Repet selected chapters">Loop&nbsp;Chapter&nbsp;</label>
           </span>
         </div>
         <div style="visibility:hidden;">
-          <select id="start-chapter">
+          <select id="startChapter">
             <option value="1" selected>1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -155,7 +155,7 @@
         </div>
         <div style="visibility:hidden;">
           <span class="label">
-            &nbsp;-&nbsp;<select id="end-chapter">
+            &nbsp;-&nbsp;<select id="endChapter">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -212,14 +212,14 @@
       </div>
       <div class="srow">
         <div title="Select Hebrew Script">
-          <select id="font-family">
+          <select id="fontFamily">
             <option value="heb" selected>Ktav Ashuri</option>
             <option value="rashi">Ktav Rashi</option>
           </select>
         </div>
         <div title="Header will float, if checked" style="visibility: hidden;">
-          <input type="checkbox" id="sticky-header" checked="true">
-          <label for="sticky-header">Float Header</label>
+          <input type="checkbox" id="stickyHeader" checked="true">
+          <label for="stickyHeader">Float Header</label>
         </div>
       </div>
     </div>
@@ -228,7 +228,7 @@
         <a href="../index.html" title="תנ״ך">TaNaK</a>
         <a href="bereshit50.html" title="Go To Chapter 50">&lt;&nbsp;Prev</a>
         <span class="label" title="Navigate to selected chapter">
-          &nbsp;&nbsp;<select id="goto-chapter">
+          &nbsp;&nbsp;<select id="gotoChapter">
             <option value="1" title="Chapter: 1" selected>1</option>
             <option value="2" title="Go To Chapter 2">2</option>
             <option value="3" title="Go To Chapter 3">3</option>
@@ -289,34 +289,36 @@
           <span class="label">
             <label for="speed">Speed</label>
             <select id="speed">
-              <option value="0.25" title="Slowest speed">0.25&times;</option>
               <option value="0.5" title="Slow speed">0.50&times;</option>
               <option value="0.75" title="Slower speed">0.75&times;</option>
-              <option value="1" id="speed-1" selected title="Normal speed">Normal</option>
-              <option value="1.25" id="speed-1.25" title="Faster speed">1.25&times;</option>
-              <option value="1.5" id="speed-1.5" title="Fast speed">1.50&times;</option>
-              <option value="1.75" id="speed-1.75" title="Very Fast speed">1.75&times;</option>
-              <option value="2" id="speed-2" title="Fastest speed">2.00&times;</option>
+              <option value="1" selected title="Normal speed">Normal</option>
+              <option value="1.25" title="Faster speed">1.25&times;</option>
+              <option value="1.5" title="Fast speed">1.50&times;</option>
+              <option value="1.75" title="Very Fast speed">1.75&times;</option>
+              <option value="2" title="Fastest speed">2.00&times;</option>
             </select>
+            &nbsp;
           </span>
         </div>
-        <div title="Set speed back to Normal">
-          <button id="audio-reset">Reset</button>
+        <!-- Controls -->
+        <div>
+          <div id="loading"></div>
+          <div class="btn" id="playBtn"></div>
+          <div class="btn" id="pauseBtn"></div>
+        </div>
+        <div>
+          <div class="btn" id="volumeBtn" style="margin-left: 5px;"></div>
+        </div>
+        <div>
+
         </div>
       </div>
       <div class="center">
-        <audio id="audio" controls preload="none">
-          <source id="m4a-src" src="../../media/01_Genesis_001_001.m4a" type="audio/mp4">
-          <track id="audio-track" src="../../media/01_Genesis_001_001.txt" default label="Bereshit 1" kind="metadata" srclang="en-US" />
-          Your browser does not support the audio tag!
-        </audio>
       </div>
     </div>
     <div class="hcol">
       <div lang="he" class="heb t" title="Genesis Chapter 1">
-        <span id="b-a" class="hide">בְּרֵאשִׁ֖ית פֶּרֶק א</span>
-        <span id="b-v" class="hide">בְּרֵאשִׁית פֶּרֶק א</span>
-        <span id="b-c" class="show">בראשית פּרק א</span>
+        <span id="bookAndChapter"></span>
       </div>
       <div class="right" title="Show/hide vowels and punctuation">
         <span class="label">
@@ -324,7 +326,7 @@
           <select id="niqqud">
             <option value="consonants" selected>None</option>
             <option value="vowels">Vowels</option>
-            <option value="cantillation">Accents</option>
+            <option value="accents">Accents&nbsp;</option>
           </select>
         </span>
       </div>
@@ -333,8 +335,8 @@
           <label for="transliterate" title="תַּעֲתִּיק">Translit</label>
           <select id="transliterate">
             <option value="none" selected>None</option>
-            <option value="general">Phonetic</option>
-            <option value="academic">Precise</option>
+            <option value="phonetic">Phonetic</option>
+            <option value="latin">Precise</option>
           </select>
         </span>
       </div>
@@ -350,77 +352,64 @@
     <div class="row">
       <div class="col">
         <div class="no">
-          <a href="#up" title="Go Up" lang="he" class="heb r">א&nbsp;</a><br>
-          <a href="#up" title="Go Up" class="enn">1&nbsp;</a>
+          <a href="#" title="Go Up" lang="he" class="heb r">א&nbsp;</a><br>
+          <a href="#" title="Go Up" class="enn">1&nbsp;</a>
         </div>
-        <div class="eng"><a href="#up" title="Go Up">&nbsp;&nbsp;</a></div>
-        <div class="ntran"><a href="#up" title="Go Up">&nbsp;&nbsp;</a></div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
       </div>
       <div class="col">
-        <div id="1-1a" lang="he" class="heb t hide">בְּרֵאשִׁ֖ית</div>
-        <div id="1-1v" lang="he" class="heb t hide">בְּרֵאשִׁית</div>
-        <div id="1-1c" lang="he" class="heb t show">בראשית</div>
-        <div id="1-1e" class="eng">In the beginning</div>
-        <div id="1-1t" class="ntran">bə<span class="h">·</span>rê<span class="h">·</span>šîṯ</div>
-        <div id="1-1g" class="ntran">be<span class="h">·</span>re<span class="h">·</span>Shit</div>
+        <div id="1-1w" lang="he" class="heb t"></div>
+        <div id="1-1i" class="eng"></div>
+        <div id="1-1t" class="tran hide"></div>
       </div>
       <div class="col">
-        <div id="1-2a" lang="he" class="heb t hide">בָּרָ֣א</div>
-        <div id="1-2v" lang="he" class="heb t hide">בָּרָא</div>
-        <div id="1-2c" lang="he" class="heb t show">ברא</div>
-        <div id="1-2e" class="eng">created</div>
-        <div id="1-2t" class="ntran">bā<span class="h">·</span>rā</div>
-        <div id="1-2g" class="ntran">ba<span class="h">·</span>Ra</div>
+        <div id="1-2w" lang="he" class="heb t"></div>
+        <div id="1-2i" class="eng"></div>
+        <div id="1-2t" class="tran hide"></div>
       </div>
       <div class="col">
-        <div id="1-3a" lang="he" class="heb t hide">אֱלֹהִ֑ים</div>
-        <div id="1-3v" lang="he" class="heb t hide">אֱלֹהִים</div>
-        <div id="1-3c" lang="he" class="heb t show">אלהים</div>
-        <div id="1-3e" class="eng">God</div>
-        <div id="1-3t" class="ntran">’ĕ<span class="h">·</span>lō<span class="h">·</span>hîm</div>
-        <div id="1-3g" class="ntran">E<span class="h">·</span>lo<span class="h">·</span>Him;</div>
+        <div id="1-3w" lang="he" class="heb t"></div>
+        <div id="1-3i" class="eng"></div>
+        <div id="1-3t" class="tran hide"></div>
       </div>
       <div class="col">
-        <div id="1-4a" lang="he" class="heb t hide">אֵ֥ת</div>
-        <div id="1-4v" lang="he" class="heb t hide">אֵת</div>
-        <div id="1-4c" lang="he" class="heb t show">את</div>
-        <div id="1-4e" class="eng">&nbsp;</div>
-        <div id="1-4t" class="ntran">ēṯ</div>
-        <div id="1-4g" class="ntran">'et</div>
+        <div id="1-4w" lang="he" class="heb t"></div>
+        <div id="1-4i" class="eng"></div>
+        <div id="1-4t" class="tran hide"></div>
       </div>
       <div class="col">
-        <div id="1-5a" lang="he" class="heb t hide">הַשָּׁמַ֖יִם</div>
-        <div id="1-5v" lang="he" class="heb t hide">הַשָּׁמַיִם</div>
-        <div id="1-5c" lang="he" class="heb t show">השמים</div>
-        <div id="1-5e" class="eng">the heavens</div>
-        <div id="1-5t" class="ntran">haš<span class="h">·</span>šā<span class="h">·</span>ma<span class="h">·</span>yim
-        </div>
-        <div id="1-5g" class="ntran">hash<span class="h">·</span>sha<span class="h">·</span>Ma<span
-            class="h">·</span>yim</div>
+        <div id="1-5w" lang="he" class="heb t"></div>
+        <div id="1-5i" class="eng"></div>
+        <div id="1-5t" class="tran hide"></div>
       </div>
       <div class="col">
-        <div id="1-6a" lang="he" class="heb t hide">וְאֵ֥ת</div>
-        <div id="1-6v" lang="he" class="heb t hide">וְאֵת</div>
-        <div id="1-6c" lang="he" class="heb t show">ואת</div>
-        <div id="1-6e" class="eng">and</div>
-        <div id="1-6t" class="ntran">wə<span class="h">·</span>’êṯ</div>
-        <div id="1-6g" class="ntran">ve<span class="h">·</span>'Et</div>
+        <div id="1-6w" lang="he" class="heb t"></div>
+        <div id="1-6i" class="eng"></div>
+        <div id="1-6t" class="tran hide"></div>
       </div>
       <div class="col">
-        <div id="1-7a" lang="he" class="heb t hide">הָאָֽרֶץ׃</div>
-        <div id="1-7v" lang="he" class="heb t hide">הָאָרֶץ׃</div>
-        <div id="1-7c" lang="he" class="heb t show">הארץ׃</div>
-        <div id="1-7e" class="eng">the earth</div>
-        <div id="1-7t" class="ntran">hā<span class="h">·</span>’ā<span class="h">·</span>reṣ</div>
-        <div id="1-7g" class="ntran">ha<span class="h">·</span>'A<span class="h">·</span>retz.</div>
+        <div id="1-7w" lang="he" class="heb t"></div>
+        <div id="1-7i" class="eng"></div>
+        <div id="1-7t" class="tran hide"></div>
       </div>
     </div>
     <br>
   </main>
-  <script src="../../js/audio.js"></script>
+
+   <!-- Volume -->
+  <div id="volume" class="fadeout">
+    <div id="barFull" class="bar"></div>
+    <div id="barEmpty" class="bar"></div>
+    <div id="sliderBtn"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../../js/howler.core.min.js"></script>
+  <script src="../../js/tanakh.js"></script>
   <script src="../../js/site.js"></script>
+  <script src="../../js/player.js"></script>
   <script>
-    setupAudio(['a', 'v', 'c', 'e', 't', 'g'], 'bereshit', 1);
+    tanakh.init(1, 1);
   </script>
 </body>
 
