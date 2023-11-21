@@ -75,6 +75,7 @@ Player.prototype = {
         onend: function() {
           self.clearHighlighted();
           self.start = 0;
+          sound.seek(0);
           self.skip('next');
         },
         onpause: function() {
@@ -265,9 +266,6 @@ Player.prototype = {
 
     // Get the Howl we want to manipulate.
     let sound = self.playlist[self.index].howl;
-    if (!sound.playing()) {
-      return;
-    }
 
     // Determine our current seek position.
     let seek = sound.seek() || 0;
@@ -300,7 +298,9 @@ Player.prototype = {
     }
 
     // If the sound is still playing, continue stepping.
-    requestAnimationFrame(self.step.bind(self));
+    if (sound.playing()) {
+      requestAnimationFrame(self.step.bind(self));
+    }
   },
 
   /**
