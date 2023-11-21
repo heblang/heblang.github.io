@@ -172,6 +172,9 @@ Player.prototype = {
         if (controls.loop.checked) {
           self.skipTo(index);
         }
+        else {
+          self.index = index;
+        }
       }
       else {
         self.skipTo(index);
@@ -182,6 +185,9 @@ Player.prototype = {
         index = parseInt(controls.startVerse.value);
         if (controls.loop.checked) {
           self.skipTo(index);
+        }
+        else {
+          self.index = index;
         }
       }
       else {
