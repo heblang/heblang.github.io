@@ -12,16 +12,19 @@ def get_audio_length(audio_file):
 def extract_verse_number(filename):
     match = re.search(r'_(\d{3})\.', filename)  
     return match.group(1) if match else None
+
+def index_exists(array, index):
+    return 0 <= index < len(array)
     
 def get_tier_text(tier_name, index, sefaria_words, inter_words):
     if tier_name == 'Accents':
-        return sefaria_words[index-1]
+        return sefaria_words[index-1] if index_exists(sefaria_words, index-1) else ''
     elif tier_name == 'English':
-        return inter_words[str(index)]['English']
+        return inter_words[str(index)]['English'] if str(index) in inter_words else ''
     elif tier_name == 'Phonetic':
-        return inter_words[str(index)]['Phonetic']
+        return inter_words[str(index)]['Phonetic'] if str(index) in inter_words else ''
     elif tier_name == 'Latin':
-        return inter_words[str(index)]['Translit']
+        return inter_words[str(index)]['Translit'] if str(index) in inter_words else ''
  
 def json_to_textgrid(json_data, xmax, sefaria_words, inter_words):
     # Create a header for the TextGrid file
