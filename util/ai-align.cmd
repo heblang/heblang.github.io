@@ -5,7 +5,7 @@ IF "%~1"=="" (
     exit /b
 )
 
-set AUDIOFILE=.\%1.
+set AUDIOFILE=%1.
 
 IF EXIST %AUDIOFILE%m4a (
     DEL %AUDIOFILE%m4a
