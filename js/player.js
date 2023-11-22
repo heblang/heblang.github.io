@@ -81,6 +81,9 @@ Player.prototype = {
         onseek: function() {
           self.requestHighlight();
         },
+        onplayerror: function(_, e) {
+          alert(`Error playing audio ${e}`);
+        },
         onloaderror: function (_, e) {
           let src = data.file;
           switch (e) {
