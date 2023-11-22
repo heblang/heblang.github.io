@@ -58,7 +58,7 @@ Player.prototype = {
         onplay: function() {
           self.enable('pauseBtn');
           // Start highlighting words.
-          requestAnimationFrame(self.step.bind(self));
+          self.requestHighlight();
         },
         onload: function() {
           self.enable('playBtn');
@@ -79,7 +79,7 @@ Player.prototype = {
           sound.seek(0);
         },
         onseek: function() {
-          requestAnimationFrame(self.step.bind(self));
+          self.requestHighlight();
         },
         onloaderror: function (_, e) {
           let src = data.file;
@@ -128,7 +128,7 @@ Player.prototype = {
       sound.play();
     }
 
-    // Show the pause button.
+    // Show the pause button but with a little delay to allow audio to load first
     setTimeout(() => {
       if (sound.state() === 'unloaded') {
         self.enable('loading');
@@ -298,8 +298,15 @@ Player.prototype = {
 
     // If the sound is still playing, continue stepping.
     if (sound.playing()) {
-      requestAnimationFrame(self.step.bind(self));
+      self.requestHighlight();
     }
+  },
+
+  requestHighlight: function() {
+    const self = this;
+    setTimeout(() => {
+      requestAnimationFrame(self.step.bind(self));
+    } , 50);
   },
 
   /**
