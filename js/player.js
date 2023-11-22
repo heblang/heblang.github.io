@@ -79,6 +79,7 @@ Player.prototype = {
           sound.seek(0);
         },
         onseek: function() {
+          requestAnimationFrame(self.step.bind(self));
         },
         onloaderror: function (_, e) {
           let src = data.file;
@@ -296,7 +297,7 @@ Player.prototype = {
     }
 
     // If the sound is still playing, continue stepping.
-    if (sound.playing() || sound.state != 'unloaded') {
+    if (sound.playing()) {
       requestAnimationFrame(self.step.bind(self));
     }
   },
