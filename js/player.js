@@ -128,13 +128,13 @@ Player.prototype = {
     }
 
     // Show the pause button.
-    requestAnimationFrame(function() {
+    setTimeout(() => {
       if (sound.state() === 'unloaded') {
         self.enable('loading');
       } else {
         self.enable('pauseBtn');
       }
-    });
+    }, 0.05);
 
     // Keep track of the index we are currently playing.
     self.index = index;
