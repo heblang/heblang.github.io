@@ -71,7 +71,6 @@ if (!window.tanakh) {
           },
           onend: function () {
             self.clearHighlighted();
-            sound.seek(0);
             self.enable('playBtn');
             self.skip('next');
             console.log('onend');
