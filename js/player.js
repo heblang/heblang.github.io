@@ -56,12 +56,10 @@ if (!window.tanakh) {
           html5: true,
           preload: true,
           onplay: function () {
-            console.log('onplay');
             self.enable('pauseBtn');
             self.requestHighlight();
           },
           onload: function () {
-            console.log('onload');
             self.enable('playBtn');
             let rate = parseFloat(controls.speed.value);
             if (rate != 1) {
@@ -69,27 +67,21 @@ if (!window.tanakh) {
             }
           },
           onend: function () {
-            console.log('onend');
             self.clearHighlighted();
             self.enable('playBtn');
             self.skip('next');
           },
           onpause: function () {
-            console.log('onpause');
           },
           onstop: function () {
-            console.log('onstop');
           },
           onseek: function () {
-            console.log('onseek');
             self.requestHighlight();
           },
           onplayerror: function (_, e) {
-            console.log(`onplayerror: ${e}`);
             alert(`Error playing audio ${e}`);
           },
           onloaderror: function (_, e) {
-            console.log(`onloaderror: ${e}`);
             let src = data.file;
             switch (e) {
               case 1:
