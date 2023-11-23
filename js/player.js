@@ -318,9 +318,7 @@ if (!window.tanakh) {
 
     requestHighlight: function () {
       const self = this;
-      setTimeout(() => {
-        requestAnimationFrame(self.step.bind(self));
-      }, 50);
+      requestAnimationFrame(self.step.bind(self));
     },
 
     /**
