@@ -4,7 +4,6 @@ if (!window.tanakh) {
 }
 
 (function () {
-
   const passiveSupported = tanakh.getPassiveSupported(); // let getPassiveSupported detect if true
 
   // Cache references to DOM elements.
@@ -13,6 +12,18 @@ if (!window.tanakh) {
   elemIds.forEach(function (elemId) {
     controls[elemId] = document.getElementById(elemId);
   });
+
+  const extensions = (function () {
+    const userAgent = navigator.userAgent;
+    const isMobileEdge = userAgent.includes('Edg') && (
+      userAgent.includes('Mobile') || userAgent.includes('Android') || userAgent.includes('iPhone'));
+    const extensions = {
+      ext1: isMobileEdge ? 'mp3' : 'm4a',
+      ext2: isMobileEdge ? 'm4a' : 'mp3'
+    };
+    console.log(extensions);
+    return extensions;
+  })();
 
   /**
    * Player class containing the state of our playlist and where we are in it.
@@ -52,7 +63,7 @@ if (!window.tanakh) {
         sound = data.howl;
       } else {
         sound = data.howl = new Howl({
-          src: [`../../media/${data.file}.m4a`, `../../media/${data.file}.mp3`],
+          src: [`../../media/${data.file}.${extensions.ext1}`, `../../media/${data.file}.${extensions.ext2}`],
           html5: true,
           preload: true,
           onplay: function () {
