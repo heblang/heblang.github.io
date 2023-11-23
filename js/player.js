@@ -134,6 +134,12 @@ if (!window.tanakh) {
 
       if (!sound.playing()) {
         sound.play();
+        const duration = Howler.ctx.currentTime;
+        const current = sound.seek();
+        console.log({
+          duration: duration,
+          current
+        })
       }
 
       // Show the pause button but with a little delay to allow audio to load first
@@ -280,8 +286,7 @@ if (!window.tanakh) {
     /**
      * The step called within requestAnimationFrame to update the highlight position.
      */
-    step: function (timestamp) {
-      console.log(timestamp);
+    step: function () {
       let self = this;
 
       // Get the Howl we want to manipulate.
