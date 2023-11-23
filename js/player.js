@@ -52,7 +52,7 @@ if (!window.tanakh) {
         sound = data.howl;
       } else {
         sound = data.howl = new Howl({
-          src: [`../../media/${data.file}`],
+          src: [`../../media/${data.file}mp3`, `../../media/${data.file}m4a`],
           html5: true,
           preload: true,
           onplay: function () {
@@ -134,12 +134,6 @@ if (!window.tanakh) {
 
       if (!sound.playing()) {
         sound.play();
-        const duration = sound.duration();
-        const current = sound.seek();
-        console.log({
-          duration: duration,
-          current
-        })
       }
 
       // Show the pause button but with a little delay to allow audio to load first
@@ -369,7 +363,7 @@ if (!window.tanakh) {
       let verseNo = i.toString().padStart(3, '0');
       playlist.push({
         title: `${book} ${chapterNo}:${verseNo}`,
-        file: `${bookNo}_${book}_${chapterNo}_${verseNo}.m4a`,
+        file: `${bookNo}_${book}_${chapterNo}_${verseNo}.`,
         howl: null
       });
 
