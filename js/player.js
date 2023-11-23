@@ -31,6 +31,7 @@ if (!window.tanakh) {
    * @param {Array} playlist Array of objects with playlist song details ({title, file, howl}).
    */
   const Player = function (playlist) {
+    Howler.html5PoolSize = playlist.length; // TODO might not need this
     this.playlist = playlist;
     this.index = 1;
     this.highlighted = {};
@@ -64,6 +65,7 @@ if (!window.tanakh) {
       } else {
         sound = data.howl = new Howl({
           src: [`../../media/${data.file}.${extensions.ext1}`, `../../media/${data.file}.${extensions.ext2}`],
+          pool: this.playlist.length,
           html5: true,
           preload: true,
           onplay: function () {
