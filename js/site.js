@@ -1,12 +1,12 @@
 'use strict';
 if (!window.tanakh) {
-  window.tanakh = {};  
+  window.tanakh = {};
 }
 
 
 (function () {
-  
-  tanakh.getPassiveSupported = function() {
+
+  tanakh.getPassiveSupported = function () {
     let passiveSupported = false;
     try {
       const options = {
@@ -16,7 +16,7 @@ if (!window.tanakh) {
           return false;
         }
       };
-  
+
       window.addEventListener("test", null, options);
       window.removeEventListener("test", null, options);
     } catch (err) {
@@ -27,7 +27,7 @@ if (!window.tanakh) {
 
   const controls = {};
   const elemIds = ['fontFamily', 'niqqud', 'transliterate', 'syllables', 'stickyHeader', 'bookAndChapter'];
-  elemIds.forEach(function(elemId) {
+  elemIds.forEach(function (elemId) {
     controls[elemId] = document.getElementById(elemId);
   });
 
@@ -53,8 +53,8 @@ if (!window.tanakh) {
   // Compiled Regular Expressions
   const regexConsonants = new RegExp(`[${consonants}]`, 'gu');
   const regexVowels = new RegExp(`[${consonants}${vowels}]`, 'gu');
- 
-  tanakh.init = function(bookNo, chapterNo) {
+
+  tanakh.init = function (bookNo, chapterNo) {
     verses = tanakh.books[bookNo][chapterNo];
     tanakh.current = {
       book: {
@@ -68,8 +68,8 @@ if (!window.tanakh) {
       }
     };
 
-    controls.bookAndChapter.innerText = getBookAndChapter(getWordKey());   
-    for(let i = 1; i < verses.length; i++) {
+    controls.bookAndChapter.innerText = getBookAndChapter(getWordKey());
+    for (let i = 1; i < verses.length; i++) {
       var cues = [0];
       tanakh.chapterCues.push(cues);
       let words = verses[i];
@@ -92,7 +92,7 @@ if (!window.tanakh) {
 
     tanakh.initPlayer();
   }
-  
+
   function toggleText(event) {
     event.stopImmediatePropagation();
 
@@ -100,11 +100,11 @@ if (!window.tanakh) {
     const filter = key == 'v' ? getVoweled : getConsonants;
 
     controls.bookAndChapter.innerText = getBookAndChapter(key);
-    for(let i = 1; i < verses.length; i++) {
+    for (let i = 1; i < verses.length; i++) {
       let words = verses[i];
       for (let j = 1; j < words.length; j++) {
         let wobj = words[j];
-        let word = wobj[key]; 
+        let word = wobj[key];
         if (!word) {
           wobj[key] = word = filter(wobj.a);
         }
@@ -115,11 +115,11 @@ if (!window.tanakh) {
 
   function toggleTranslit() {
     const key = getTranslitKey();
-    for(let i = 1; i < verses.length; i++) {
+    for (let i = 1; i < verses.length; i++) {
       let words = verses[i];
       for (let j = 1; j < words.length; j++) {
         let wobj = words[j];
-        let word = wobj[key]; 
+        let word = wobj[key];
         if (!word) {
           word = key == 'q' ? wobj.p : wobj.l;
           if (!controls.syllables.checked) {
@@ -167,21 +167,21 @@ if (!window.tanakh) {
 
   function getWordKey() {
     return controls.niqqud.value == 'vowels'
-    ? 'v'
-    : controls.niqqud.value == 'consonants'
-      ? 'c'
-      : 'a';
+      ? 'v'
+      : controls.niqqud.value == 'consonants'
+        ? 'c'
+        : 'a';
   }
 
   function getTranslitKey() {
     const sc = controls.syllables.checked;
     return controls.transliterate.value == 'phonetic'
-    ? (sc ? 'p' : 'q')
-    : controls.transliterate.value == 'latin'
-      ? (sc ? 'l' : 'm')
-      : (function() { throw new Error("Invalid invocation of getTranslitKey"); })();
+      ? (sc ? 'p' : 'q')
+      : controls.transliterate.value == 'latin'
+        ? (sc ? 'l' : 'm')
+        : (function () { throw new Error("Invalid invocation of getTranslitKey"); })();
   }
-  
+
   controls.fontFamily.addEventListener('change', function (event) {
     event.stopImmediatePropagation();
     let newFont = controls.fontFamily.value;

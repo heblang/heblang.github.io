@@ -1,6 +1,6 @@
 'use strict';
 if (!window.tanakh) {
-  window.tanakh = {};  
+  window.tanakh = {};
 }
 
 tanakh.books = [
