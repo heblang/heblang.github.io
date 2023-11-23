@@ -52,7 +52,7 @@ if (!window.tanakh) {
         sound = data.howl;
       } else {
         sound = data.howl = new Howl({
-          src: [`../../media/${data.file}mp3`, `../../media/${data.file}m4a`],
+          src: [`../../media/${data.file}.mp3`, `../../media/${data.file}.m4a`],
           html5: true,
           preload: true,
           onplay: function () {
@@ -363,7 +363,7 @@ if (!window.tanakh) {
       let verseNo = i.toString().padStart(3, '0');
       playlist.push({
         title: `${book} ${chapterNo}:${verseNo}`,
-        file: `${bookNo}_${book}_${chapterNo}_${verseNo}.`,
+        file: `${bookNo}_${book}_${chapterNo}_${verseNo}`,
         howl: null
       });
 
