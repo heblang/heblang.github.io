@@ -58,7 +58,6 @@ if (!window.tanakh) {
           onplay: function () {
             console.log('onplay');
             self.enable('pauseBtn');
-            // Start highlighting words.
             self.requestHighlight();
           },
           onload: function () {
@@ -80,7 +79,6 @@ if (!window.tanakh) {
           },
           onstop: function () {
             console.log('onstop');
-            sound.seek(0);
           },
           onseek: function () {
             console.log('onseek');
@@ -218,9 +216,7 @@ if (!window.tanakh) {
       // Stop the current track.
       const sound = self.getSound();
       if (sound) {
-        if (index != self.index) {
-          sound.stop();
-        }
+        sound.stop();
         self.clearHighlighted();
       }
 
