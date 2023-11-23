@@ -19,7 +19,7 @@ if (!window.tanakh) {
    * Includes all methods for playing, skipping, updating the display, etc.
    * @param {Array} playlist Array of objects with playlist song details ({title, file, howl}).
    */
-  let Player = function (playlist) {
+  const Player = function (playlist) {
     this.playlist = playlist;
     this.index = 1;
     this.highlighted = {};
@@ -151,7 +151,7 @@ if (!window.tanakh) {
       let self = this;
 
       // Get the Howl we want to manipulate.
-      let sound = self.playlist[self.index].howl;
+      let sound = self.getSound();
 
       // Puase the sound.
       sound.pause();
@@ -209,7 +209,7 @@ if (!window.tanakh) {
       let self = this;
 
       // Stop the current track.
-      const sound = self.playlist[self.index].howl
+      const sound = self.getSound();
       if (sound) {
         if (index != self.index) {
           sound.stop();
@@ -260,11 +260,18 @@ if (!window.tanakh) {
       let self = this;
 
       // Get the Howl we want to manipulate.
-      let sound = self.playlist[self.index].howl;
+      let sound = self.getSound();
 
       if (sound.playing()) {
         sound.seek(position);
       }
+    },
+
+    getSound: function () {
+      let self = this;
+      // Get the Howl we want to manipulate.
+      let sound = self.playlist[self.index].howl;
+      return sound;
     },
 
     /**
@@ -274,7 +281,7 @@ if (!window.tanakh) {
       let self = this;
 
       // Get the Howl we want to manipulate.
-      let sound = self.playlist[self.index].howl;
+      let sound = self.getSound();
 
       // Determine our current seek position.
       let seek = sound.seek() || 0;
@@ -442,49 +449,49 @@ if (!window.tanakh) {
 
     player.skipTo(verseNo, cue);
   }, (passiveSupported ? { passive: true } : false));
-  /*
-    startVerse.addEventListener('change', function (event) {
-      event.stopImmediatePropagation();
-      const start = parseInt(startVerse.value);
-      const end = parseInt(endVerse.value);
-  
-      if (start > end) {
-        endVerse.value = startVerse.value;
-        setEndTimeFromCue();
-      }
-  
-      setStartTimeFromCue();
-  
-      if (!loop.checked || !isLoaded()) {
-        return;
-      }
-  
-      if (audio.currentTime < startTime || audio.currentTime > endTime) {
-        seekStart();
-      }
-    }, (passiveSupported ? { passive: true } : false));
-  
-    endVerse.addEventListener('change', function (event) {
-      event.stopImmediatePropagation();
-      const start = parseInt(startVerse.value);
-      const end = parseInt(endVerse.value);
-  
-      if (start > end) {
-        startVerse.value = endVerse.value;
-        setStartTimeFromCue();
-      }
-  
-      setEndTimeFromCue();
-  
-      if (!loop.checked || !isLoaded()) {
-        return;
-      }
-  
-      if (audio.currentTime < startTime || audio.currentTime > endTime) {
-        seekStart();
-      }
-    }, (passiveSupported ? { passive: true } : false));
-  */
+
+  startVerse.addEventListener('change', function (event) {
+    event.stopImmediatePropagation();
+    let start = parseInt(startVerse.value);
+    let end = parseInt(endVerse.value);
+
+    if (start > end) {
+      endVerse.value = startVerse.value;
+      start = end = parseInt(startVerse.value);
+    }
+
+    const isPlaying = player.getSound().playing();
+    if (!controls.loop.checked || !isPlaying) {
+      return;
+    }
+
+    const current = player.index;
+    if (current < start || current > end) {
+      player.skipTo(start);
+    }
+  }, (passiveSupported ? { passive: true } : false));
+
+  endVerse.addEventListener('change', function (event) {
+    event.stopImmediatePropagation();
+    let start = parseInt(startVerse.value);
+    let end = parseInt(endVerse.value);
+
+    if (start > end) {
+      startVerse.value = endVerse.value;
+      start = end = parseInt(startVerse.value);
+    }
+
+    const isPlaying = player.getSound().playing();
+    if (!controls.loop.checked || !isPlaying) {
+      return;
+    }
+
+    const current = player.index;
+    if (current < start || current > end) {
+      player.skipTo(start);
+    }
+  }, (passiveSupported ? { passive: true } : false));
+
   function getVerseWord(id) {
     let split;
     return id && (split = id.split('-')).length > 1 ? split : [null, null];
