@@ -134,7 +134,7 @@ if (!window.tanakh) {
 
       if (!sound.playing()) {
         sound.play();
-        const duration = Howler.ctx.currentTime;
+        const duration = sound.duration();
         const current = sound.seek();
         console.log({
           duration: duration,
