@@ -52,7 +52,7 @@ if (!window.tanakh) {
         sound = data.howl;
       } else {
         sound = data.howl = new Howl({
-          src: [`../../media/${data.file}.mp3`, `../../media/${data.file}.m4a`],
+          src: [`../../media/${data.file}.m4a`, `../../media/${data.file}.mp3`],
           html5: true,
           preload: true,
           onplay: function () {
