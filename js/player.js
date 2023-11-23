@@ -59,6 +59,7 @@ if (!window.tanakh) {
             self.enable('pauseBtn');
             // Start highlighting words.
             self.requestHighlight();
+            console.log('onplay');
           },
           onload: function () {
             self.enable('playBtn');
@@ -66,25 +67,32 @@ if (!window.tanakh) {
             if (rate != 1) {
               sound.rate(rate)
             }
+            console.log('onload');
           },
           onend: function () {
             self.clearHighlighted();
             sound.seek(0);
             self.enable('playBtn');
             self.skip('next');
+            console.log('onend');
           },
           onpause: function () {
+            console.log('onpause');
           },
           onstop: function () {
             sound.seek(0);
+            console.log('onstop');
           },
           onseek: function () {
             self.requestHighlight();
+            console.log('onseek');
           },
           onplayerror: function (_, e) {
             alert(`Error playing audio ${e}`);
+            console.log(`onplayerror: ${e}`);
           },
           onloaderror: function (_, e) {
+            console.log(`onloaderror: ${e}`);
             let src = data.file;
             switch (e) {
               case 1:
@@ -277,11 +285,12 @@ if (!window.tanakh) {
     /**
      * The step called within requestAnimationFrame to update the highlight position.
      */
-    step: function () {
+    step: function (timestamp) {
       let self = this;
 
       // Get the Howl we want to manipulate.
       let sound = self.getSound();
+      console.log(timestamp);
 
       // Determine our current seek position.
       let seek = sound.seek() || 0;
