@@ -56,39 +56,39 @@ if (!window.tanakh) {
           html5: true,
           preload: true,
           onplay: function () {
+            console.log('onplay');
             self.enable('pauseBtn');
             // Start highlighting words.
             self.requestHighlight();
-            console.log('onplay');
           },
           onload: function () {
+            console.log('onload');
             self.enable('playBtn');
             let rate = parseFloat(controls.speed.value);
             if (rate != 1) {
               sound.rate(rate)
             }
-            console.log('onload');
           },
           onend: function () {
+            console.log('onend');
             self.clearHighlighted();
             self.enable('playBtn');
             self.skip('next');
-            console.log('onend');
           },
           onpause: function () {
             console.log('onpause');
           },
           onstop: function () {
-            sound.seek(0);
             console.log('onstop');
+            sound.seek(0);
           },
           onseek: function () {
-            self.requestHighlight();
             console.log('onseek');
+            self.requestHighlight();
           },
           onplayerror: function (_, e) {
-            alert(`Error playing audio ${e}`);
             console.log(`onplayerror: ${e}`);
+            alert(`Error playing audio ${e}`);
           },
           onloaderror: function (_, e) {
             console.log(`onloaderror: ${e}`);
@@ -285,11 +285,11 @@ if (!window.tanakh) {
      * The step called within requestAnimationFrame to update the highlight position.
      */
     step: function (timestamp) {
+      console.log(timestamp);
       let self = this;
 
       // Get the Howl we want to manipulate.
       let sound = self.getSound();
-      console.log(timestamp);
 
       // Determine our current seek position.
       let seek = sound.seek() || 0;
