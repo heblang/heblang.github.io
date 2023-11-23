@@ -469,8 +469,14 @@ if (!window.tanakh) {
       start = end = parseInt(startVerse.value);
     }
 
-    const isPlaying = player.getSound().playing();
-    if (!controls.loop.checked || !isPlaying) {
+    if (!controls.loop.checked) {
+      return;
+    }
+    const sound = player.getSound();
+    if (!sound) {
+      return;
+    }
+    if (!sound.playing()) {
       return;
     }
 
@@ -490,8 +496,14 @@ if (!window.tanakh) {
       start = end = parseInt(startVerse.value);
     }
 
-    const isPlaying = player.getSound().playing();
-    if (!controls.loop.checked || !isPlaying) {
+    if (!controls.loop.checked) {
+      return;
+    }
+    const sound = player.getSound();
+    if (!sound) {
+      return;
+    }
+    if (!sound.playing()) {
       return;
     }
 
