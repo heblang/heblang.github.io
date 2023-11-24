@@ -4,6 +4,9 @@ window.tanakh || (window.tanakh = {});
 (() => {
   const page = {};
 
+  page.isMobileEdge = navigator.userAgent.includes('Edg') && (
+    navigator.userAgent.includes('Mobile') || navigator.userAgent.includes('Android') || navigator.userAgent.includes('iPhone'));
+
   // let getPassiveSupported detect if true
   const passiveSupported = page.passiveSupported = (() => {
     let passiveSupported = false;
