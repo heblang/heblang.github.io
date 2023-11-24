@@ -8,7 +8,9 @@ if (!window.tanakh) {
 
   // Cache references to DOM elements.
   const controls = {};
-  const elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn', 'startVerse', 'endVerse', 'loop', 'speed'];
+  const elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty',
+    'barFull', 'sliderBtn', 'startVerse', 'endVerse', 'loop', 'speed', 'loadingScreen'];
+
   elemIds.forEach(function (elemId) {
     controls[elemId] = document.getElementById(elemId);
   });
@@ -21,9 +23,14 @@ if (!window.tanakh) {
       ext1: isMobileEdge ? 'mp3' : 'm4a',
       ext2: isMobileEdge ? 'm4a' : 'mp3'
     };
-    console.log(extensions);
     return extensions;
   })();
+
+  document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(function () {
+      controls.loadingScreen.style.display = 'none';
+    }, 500);
+  });
 
   /**
    * Player class containing the state of our playlist and where we are in it.
@@ -31,7 +38,6 @@ if (!window.tanakh) {
    * @param {Array} playlist Array of objects with playlist song details ({title, file, howl}).
    */
   const Player = function (playlist) {
-    Howler.html5PoolSize = playlist.length; // TODO might not need this
     this.playlist = playlist;
     this.index = 1;
     this.highlighted = {};
