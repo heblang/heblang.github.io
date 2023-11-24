@@ -1,21 +1,21 @@
 'use strict';
-if (!window.tanakh) {
-  window.tanakh = {};
-}
 
-(function () {
-  const passiveSupported = tanakh.getPassiveSupported(); // let getPassiveSupported detect if true
+document.addEventListener('pageCompleted', (event) => {
+  const page = event.detail;
+  const passiveSupported = page.passiveSupported; // let getPassiveSupported detect if true
 
   // Cache references to DOM elements.
   const controls = {};
-  const elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty',
-    'barFull', 'sliderBtn', 'startVerse', 'endVerse', 'loop', 'speed', 'loadingScreen'];
+  const elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn', 'startVerse', 'endVerse', 'loop', 'speed', 'loadingScreen'];
+  for (let i = 0; i < elemIds.length; i++) {
+    const elemId = elemIds[i];
+    if (!(controls[elemId] = document.getElementById(elemId))) {
+      console.error(`Could not find page element with id ${elemId}`);
+      return;
+    }
+  }
 
-  elemIds.forEach(function (elemId) {
-    controls[elemId] = document.getElementById(elemId);
-  });
-
-  const extensions = (function () {
+  const extensions = (() => {
     const userAgent = navigator.userAgent;
     const isMobileEdge = userAgent.includes('Edg') && (
       userAgent.includes('Mobile') || userAgent.includes('Android') || userAgent.includes('iPhone'));
@@ -26,12 +26,6 @@ if (!window.tanakh) {
     return extensions;
   })();
 
-  document.addEventListener("DOMContentLoaded", function () {
-    setTimeout(function () {
-      controls.loadingScreen.style.display = 'none';
-    }, 500);
-  });
-
   /**
    * Player class containing the state of our playlist and where we are in it.
    * Includes all methods for playing, skipping, updating the display, etc.
@@ -41,17 +35,19 @@ if (!window.tanakh) {
     this.playlist = playlist;
     this.index = 1;
     this.highlighted = {};
-    this.clearHighlighted = function () {
-      Object.entries(this.highlighted).forEach(([key, words]) => {
-        words.forEach(function (word) {
-          word.classList.remove('highlight');
-        });
-        delete this.highlighted[key]
-      });
-    }
   };
 
   Player.prototype = {
+    clearHighlighted: function () {
+      let self = this;
+      Object.entries(self.highlighted).forEach(([key, words]) => {
+        words.forEach(function (word) {
+          word.classList.remove('highlight');
+        });
+        delete self.highlighted[key]
+      });
+    },
+
     /**
      * Play a song in the playlist.
      * @param  {Number} index Index of the song in the playlist (leave empty to play the first or current).
@@ -71,7 +67,7 @@ if (!window.tanakh) {
       } else {
         sound = data.howl = new Howl({
           src: [`../../media/${data.file}.${extensions.ext1}`, `../../media/${data.file}.${extensions.ext2}`],
-          pool: this.playlist.length,
+          pool: self.playlist.length,
           html5: true,
           preload: true,
           onplay: function () {
@@ -240,8 +236,6 @@ if (!window.tanakh) {
      * @param  {Number} val Volume between 0 and 1.
      */
     volume: function (val) {
-      let self = this;
-
       // Update the global volume (affecting all Howls).
       Howler.volume(val);
 
@@ -299,7 +293,7 @@ if (!window.tanakh) {
 
       // Determine our current seek position.
       let seek = sound.seek() || 0;
-      let verseCues = tanakh.chapterCues[self.index];
+      let verseCues = page.cues[self.index];
       for (let i = self.findClosestIndex(verseCues, seek); i < verseCues.length; i++) {
         if (i <= 0) {
           break;
@@ -312,8 +306,8 @@ if (!window.tanakh) {
 
         // word needs to be highlighted
         let elems = self.highlighted[id] = [];
-        for (const key in tanakh.elements) {
-          let elem = tanakh.elements[key][id];
+        for (const key in page.elements) {
+          let elem = page.elements[key][id];
           elem.classList.add('highlight');
           elems.push(elem);
         }
@@ -364,57 +358,56 @@ if (!window.tanakh) {
   };
 
   // Setup our new audio player class and pass it the playlist.
-  let player;
-  tanakh.initPlayer = function () {
-    const book = tanakh.current.book.p;
-    const bookNo = tanakh.current.book.n.toString().padStart(2, '0');
-    const chapterNo = tanakh.current.chapter.n.toString().padStart(3, '0');
+  let player = (() => {
+    const book = page.info.book.p;
+    const bookNo = page.info.book.n.toString().padStart(2, '0');
+    const chapterNo = page.info.chapter.n.toString().padStart(3, '0');
     const playlist = [{}]; // 1 based index
-    for (let i = 1; i < tanakh.chapterCues.length; i++) {
+    for (let i = 1; i < page.cues.length; i++) {
       let verseNo = i.toString().padStart(3, '0');
       playlist.push({
         title: `${book} ${chapterNo}:${verseNo}`,
         file: `${bookNo}_${book}_${chapterNo}_${verseNo}`,
         howl: null
       });
-
-      player = new Player(playlist);
     }
-  }
+    controls.loadingScreen.style.display = 'none';
+    return new Player(playlist);
+  })();
 
   // Bind our player controls.
-  controls.playBtn.addEventListener('click', function () {
+  controls.playBtn.addEventListener('click', () => {
     player.play();
   }, (passiveSupported ? { passive: true } : false));
-  controls.pauseBtn.addEventListener('click', function () {
+  controls.pauseBtn.addEventListener('click', () => {
     player.pause();
   }, (passiveSupported ? { passive: true } : false));
-  controls.volumeBtn.addEventListener('click', function () {
+  controls.volumeBtn.addEventListener('click', () => {
     player.toggleVolume();
   }, (passiveSupported ? { passive: true } : false));
-  controls.volume.addEventListener('click', function () {
+  controls.volume.addEventListener('click', () => {
     player.toggleVolume();
   }, (passiveSupported ? { passive: true } : false));
 
   // Setup the event listeners to enable dragging of volume slider.
-  controls.barEmpty.addEventListener('click', function (event) {
+  controls.barEmpty.addEventListener('click', (event) => {
     let per = event.layerX / parseFloat(controls.barEmpty.scrollWidth);
     player.volume(per);
   }, (passiveSupported ? { passive: true } : false));
-  controls.sliderBtn.addEventListener('mousedown', function () {
+  controls.sliderBtn.addEventListener('mousedown', () => {
     window.sliderDown = true;
   }, (passiveSupported ? { passive: true } : false));
-  controls.sliderBtn.addEventListener('touchstart', function () {
+  controls.sliderBtn.addEventListener('touchstart', () => {
     window.sliderDown = true;
   }, (passiveSupported ? { passive: true } : false));
-  controls.volume.addEventListener('mouseup', function () {
+  controls.volume.addEventListener('mouseup', () => {
     window.sliderDown = false;
   }, (passiveSupported ? { passive: true } : false));
-  controls.volume.addEventListener('touchend', function () {
+  controls.volume.addEventListener('touchend', () => {
     window.sliderDown = false;
   }, (passiveSupported ? { passive: true } : false));
 
-  let move = function (event) {
+  let move = (event) => {
     if (window.sliderDown) {
       let x = event.clientX || event.touches[0].clientX;
       let startX = window.innerWidth * 0.05;
@@ -427,7 +420,7 @@ if (!window.tanakh) {
   controls.volume.addEventListener('mousemove', move, (passiveSupported ? { passive: true } : false));
   controls.volume.addEventListener('touchmove', move, (passiveSupported ? { passive: true } : false));
 
-  controls.speed.addEventListener('change', function (event) {
+  controls.speed.addEventListener('change', (event) => {
     event.stopImmediatePropagation();
     let target = event.target;
     if (!target || !target.id || !target.id.startsWith('speed')) {
@@ -437,7 +430,7 @@ if (!window.tanakh) {
     player.rate(rate);
   }, (passiveSupported ? { passive: true } : false));
 
-  document.querySelector('main').addEventListener('click', function (event) {
+  document.querySelector('main').addEventListener('click', (event) => {
     event.stopImmediatePropagation();
     const target = event.target;
     if (!target || !target.id) { return; }
@@ -446,7 +439,7 @@ if (!window.tanakh) {
     if (!id || !(id = id[0])) { return; }
     const [verseId, wordId] = getVerseWord(id);
     let verseCues, cue;
-    if (!verseId || !wordId || !(verseCues = tanakh.chapterCues[verseId]) || !(cue = verseCues[wordId])) { return; }
+    if (!verseId || !wordId || !(verseCues = page.cues[verseId]) || !(cue = verseCues[wordId])) { return; }
 
     const verseNo = parseInt(verseId);
     const startNo = parseInt(controls.startVerse.value);
@@ -462,7 +455,7 @@ if (!window.tanakh) {
     player.skipTo(verseNo, cue);
   }, (passiveSupported ? { passive: true } : false));
 
-  startVerse.addEventListener('change', function (event) {
+  startVerse.addEventListener('change', (event) => {
     event.stopImmediatePropagation();
     let start = parseInt(startVerse.value);
     let end = parseInt(endVerse.value);
@@ -489,7 +482,7 @@ if (!window.tanakh) {
     }
   }, (passiveSupported ? { passive: true } : false));
 
-  endVerse.addEventListener('change', function (event) {
+  endVerse.addEventListener('change', (event) => {
     event.stopImmediatePropagation();
     let start = parseInt(startVerse.value);
     let end = parseInt(endVerse.value);
@@ -520,4 +513,4 @@ if (!window.tanakh) {
     let split;
     return id && (split = id.split('-')).length > 1 ? split : [null, null];
   }
-})();
+});
