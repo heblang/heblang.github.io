@@ -6,7 +6,7 @@ document.addEventListener('pageCompleted', (event) => {
 
   // Cache references to DOM elements.
   const controls = {};
-  const elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn', 'startVerse', 'endVerse', 'loop', 'speed', 'loadingScreen'];
+  const elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn', 'startVerse', 'endVerse', 'loop', 'speed', 'loadingScreen', 'wordPause'];
   for (let i = 0; i < elemIds.length; i++) {
     const elemId = elemIds[i];
     if (!(controls[elemId] = document.getElementById(elemId))) {
@@ -21,6 +21,7 @@ document.addEventListener('pageCompleted', (event) => {
       this.highlighted = {};
       this.index = 1;
       this.requestHighlightId = 0;
+      this.startWord = 1;
     }
     get sound() {
       return this.playlist[this.index].howl;
@@ -41,27 +42,40 @@ document.addEventListener('pageCompleted', (event) => {
       this.enable('playBtn');
     }
     step() {
-      const sound = this.sound;
+      const self = this;
+      const sound = self.sound;
       if (!sound.playing()) {
-        this.requestHighlight();
         return;
       }
 
       // Determine our current seek position.
       const seek = sound.seek() || 0;
-      const verseCues = page.cues[this.index];
-      for (let i = this.findClosestIndex(seek); i < verseCues.length; i++) {
+      const verseCues = page.cues[self.index];
+      for (let i = self.findClosestIndex(seek); i < verseCues.length; i++) {
         if (i <= 0) {
           break;
         }
 
-        let id = `${this.index}-${i}`;
-        if (id in this.highlighted) { // word already highlighted, move to the next
+        let id = `${self.index}-${i}`;
+        if (id in self.highlighted) { // word already highlighted, move on
           break;
         }
 
+        if (controls.wordPause.checked && i > self.startWord) {
+          // let volume = sound.volume;
+          // sound.fade(volume, 0, 100);
+          sound.pause();
+          const currentIndex = self.index;
+          self.wordPaused = setTimeout(() => {
+            if (currentIndex == self.index) {
+              sound.play();
+            }
+            // sound.volume(volume);
+          }, 1200);
+        }
+
         // word needs to be highlighted
-        let elems = this.highlighted[id] = [];
+        let elems = self.highlighted[id] = [];
         for (const key in page.elements) {
           let elem = page.elements[key][id];
           elem.classList.add('highlight');
@@ -69,8 +83,6 @@ document.addEventListener('pageCompleted', (event) => {
         }
         break;
       }
-
-      this.requestHighlight();
     }
     skip(direction) {
       // Get the next track based on the direction of the track.
@@ -106,6 +118,10 @@ document.addEventListener('pageCompleted', (event) => {
       }
     }
     skipTo(index, position) {
+      if (!position) {
+        this.startWord = 1;
+      }
+      player.clearWordPaused();
       let sound = this.sound;
       if (this.index != index) {
         sound.pause();
@@ -129,10 +145,9 @@ document.addEventListener('pageCompleted', (event) => {
     }
     requestHighlight() {
       // to simplify logic, we will continually poll for highlight once first interaction with audio
-      this.requestHighlightId = (window.requestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.msRequestAnimationFrame)(this.step.bind(this));
+      if (!this.requestHighlightId) {
+        this.requestHighlightId = window.setInterval(this.step.bind(this), 20);
+      }
     }
     findClosestIndex(seek) {
       const cues = page.cues[this.index];
@@ -154,6 +169,12 @@ document.addEventListener('pageCompleted', (event) => {
         });
         delete self.highlighted[key];
       });
+    }
+    clearWordPaused() {
+      if (this.wordPaused) {
+        clearTimeout(this.wordPaused);
+        this.wordPaused = 0;
+      }
     }
     volume(val) {
       // Update the global volume (affecting all Howls).
@@ -198,7 +219,7 @@ document.addEventListener('pageCompleted', (event) => {
       const title = `${book} ${chapterNo}:${verseNo}`;
       const file = `${bookNo}_${book}_${chapterNo}_${verseNo}`;
       const howl = new Howl({
-        src: [`../../media/${file}.${ext[0]}`, `../../media/${file}.${ext[1]}`],
+        src: [`../../media/${file}.${ext[0]}`],
         html5: true,
         preload: true,
         onplayerror: function (_, e) {
@@ -247,10 +268,15 @@ document.addEventListener('pageCompleted', (event) => {
 
   // Bind our player controls.
   controls.playBtn.addEventListener('click', () => {
+    player.clearWordPaused();
     player.play();
   }, (passiveSupported ? { passive: true } : false));
   controls.pauseBtn.addEventListener('click', () => {
+    player.clearWordPaused();
     player.pause();
+  }, (passiveSupported ? { passive: true } : false));
+  controls.wordPause.addEventListener('click', () => {
+    player.clearWordPaused();
   }, (passiveSupported ? { passive: true } : false));
   controls.volumeBtn.addEventListener('click', () => {
     player.toggleVolume();
@@ -322,7 +348,8 @@ document.addEventListener('pageCompleted', (event) => {
       controls.endVerse.value = verseId;
     }
 
-    player.skipTo(verseNo, cue + 0.01);
+    player.startWord = wordId;
+    player.skipTo(verseNo, cue);
   }, (passiveSupported ? { passive: true } : false));
 
   startVerse.addEventListener('change', (event) => {
