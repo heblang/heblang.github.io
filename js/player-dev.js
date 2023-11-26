@@ -15,291 +15,53 @@ document.addEventListener('pageCompleted', (event) => {
     }
   }
 
-  const extensions = {
-    ext1: page.isMobileEdge ? 'mp3' : 'm4a',
-    ext2: page.isMobileEdge ? 'm4a' : 'mp3'
-  };
-
-  /**
-   * Player class containing the state of our playlist and where we are in it.
-   * Includes all methods for playing, skipping, updating the display, etc.
-   * @param {Array} playlist Array of objects with playlist song details ({title, file, howl}).
-   */
-  const Player = function (playlist) {
-    this.playlist = playlist;
-    this.index = 1;
-    this.highlighted = {};
-  };
-
-  Player.prototype = {
-    clearHighlighted: function () {
-      let self = this;
-      Object.entries(self.highlighted).forEach(([key, words]) => {
-        words.forEach(function (word) {
-          word.classList.remove('highlight');
-        });
-        delete self.highlighted[key]
-      });
-    },
-
-    /**
-     * Play a song in the playlist.
-     * @param  {Number} index Index of the song in the playlist (leave empty to play the first or current).
-     * @param  {Number} position Seek position inside the track.
-     */
-    play: function (index, position) {
-      let self = this;
-      let sound;
-
-      index = typeof index === 'number' ? index : self.index;
-      let data = self.playlist[index];
-
-      // If we already loaded this track, use the current one.
-      // Otherwise, setup and load a new Howl.
-      if (data.howl) {
-        sound = data.howl;
-      } else {
-        sound = data.howl = new Howl({
-          src: [`../../media/${data.file}.${extensions.ext1}`, `../../media/${data.file}.${extensions.ext2}`],
-          pool: self.playlist.length,
-          html5: true,
-          preload: true,
-          onplay: function () {
-            self.enable('pauseBtn');
-            self.requestHighlight();
-          },
-          onload: function () {
-            self.enable('playBtn');
-            let rate = parseFloat(controls.speed.value);
-            if (rate != 1) {
-              sound.rate(rate)
-            }
-          },
-          onend: function () {
-            self.clearHighlighted();
-            self.enable('playBtn');
-            self.skip('next');
-          },
-          onpause: function () {
-          },
-          onstop: function () {
-          },
-          onseek: function () {
-            self.requestHighlight();
-          },
-          onplayerror: function (_, e) {
-            alert(`Error playing audio ${e}`);
-          },
-          onloaderror: function (_, e) {
-            let src = data.file;
-            switch (e) {
-              case 1:
-                alert('You aborted the audio playback.');
-                break;
-              case 2:
-                alert(
-                  "'" + src + "'\n either does not exist or there was a network failure"
-                );
-                break;
-              case 3:
-                alert(
-                  'The audio playback was aborted due to a corruption problem or because your browser does not support it.'
-                );
-                break;
-              case 4:
-                alert(
-                  "'" +
-                  src +
-                  "' cannot be played.\n\nFile might not exist or is not supported."
-                );
-                break;
-              default:
-                alert('An unknown error occurred.');
-                break;
-            }
-          }
-        });
-      }
-
-      // Begin playing the sound.
-      if (position) {
-        if (sound.playing()) {
-          sound.seek(position);
-        }
-        else {
-          sound.once('play', function () {
-            sound.seek(position);
-          });
-        }
-      }
-
+  class Player {
+    constructor(playlist) {
+      this.playlist = playlist;
+      this.highlighted = {};
+      this.index = 1;
+      this.requestHighlightId = 0;
+    }
+    get sound() {
+      return this.playlist[this.index].howl;
+    }
+    play() {
+      const sound = this.sound;
       if (!sound.playing()) {
         sound.play();
+        this.enable('pauseBtn');
       }
-
-      // Show the pause button but with a little delay to allow audio to load first
-      setTimeout(() => {
-        if (sound.state() === 'unloaded') {
-          self.enable('loading');
-        } else {
-          self.enable('pauseBtn');
-        }
-      }, 0.05);
-
-      // Keep track of the index we are currently playing.
-      self.index = index;
-    },
-
-    /**
-     * Pause the currently playing track.
-     */
-    pause: function () {
-      let self = this;
-
-      // Get the Howl we want to manipulate.
-      let sound = self.getSound();
-
-      // Puase the sound.
+      if (!this.requestHighlightId) {
+        this.requestHighlight();
+      }
+    }
+    pause() {
+      const sound = this.sound;
       sound.pause();
-
-      // Show the play button.
-      self.enable('playBtn');
-    },
-
-    /**
-     * Skip to the next or previous track.
-     * @param  {String} direction 'next' or 'prev'.
-     */
-    skip: function (direction) {
-      let self = this;
-
-      // Get the next track based on the direction of the track.
-      let index = 1;
-      if (direction === 'prev') {
-        index = self.index - 1;
-        if (index <= 0 || index < parseInt(controls.startVerse.value)) {
-          index = controls.endVerse.value;
-          if (controls.loop.checked) {
-            self.skipTo(index);
-          }
-          else {
-            self.index = index;
-          }
-        }
-        else {
-          self.skipTo(index);
-        }
-      } else {
-        index = self.index + 1;
-        if (index >= self.playlist.length || index > parseInt(controls.endVerse.value)) {
-          index = parseInt(controls.startVerse.value);
-          if (controls.loop.checked) {
-            self.skipTo(index);
-          }
-          else {
-            self.index = index;
-          }
-        }
-        else {
-          self.skipTo(index);
-        }
+      this.enable('playBtn');
+    }
+    step() {
+      const sound = this.sound;
+      if (!sound.playing()) {
+        this.requestHighlight();
+        return;
       }
-    },
-
-    /**
-     * Skip to a specific track based on its playlist index.
-     * @param  {Number} index Index in the playlist.
-     * @param  {Number} position Seek position inside the track.
-     */
-    skipTo: function (index, position) {
-      let self = this;
-
-      // Stop the current track.
-      const sound = self.getSound();
-      if (sound) {
-        sound.stop();
-        self.clearHighlighted();
-      }
-
-      // Play the new track.
-      self.play(index, position);
-    },
-
-    /**
-     * Set the volume and update the volume slider display.
-     * @param  {Number} val Volume between 0 and 1.
-     */
-    volume: function (val) {
-      // Update the global volume (affecting all Howls).
-      Howler.volume(val);
-
-      // Update the display on the slider.
-      let barWidth = (val * 90) / 100;
-      controls.barFull.style.width = (barWidth * 100) + '%';
-      controls.sliderBtn.style.left = (window.innerWidth * barWidth + window.innerWidth * 0.05 - 25) + 'px';
-    },
-
-    /**
-     * Set playback rate.
-     * @param  {Number} rate Rate between 0.5 and 4.
-     */
-    rate: function (rate) {
-      let self = this;
-
-      // enumerate Howls and set the rate for all.
-      for (let i = 1; i < self.playlist.length; i++) {
-        if (self.playlist[i].howl) {
-          self.playlist[i].howl.rate(rate);
-        }
-      }
-    },
-
-    /**
-     * Seek to a new position in the currently playing track.
-     * @param  {Number} position Position to skip to in the song.
-     */
-    seek: function (position) {
-      let self = this;
-
-      // Get the Howl we want to manipulate.
-      let sound = self.getSound();
-
-      if (sound.playing()) {
-        sound.seek(position);
-      }
-    },
-
-    getSound: function () {
-      let self = this;
-      // Get the Howl we want to manipulate.
-      let sound = self.playlist[self.index].howl;
-      return sound;
-    },
-
-    /**
-     * The step called within requestAnimationFrame to update the highlight position.
-     */
-    step: function () {
-      let self = this;
-
-      // Get the Howl we want to manipulate.
-      let sound = self.getSound();
 
       // Determine our current seek position.
-      let seek = sound.seek() || 0;
-      let verseCues = page.cues[self.index];
-      for (let i = self.findClosestIndex(verseCues, seek); i < verseCues.length; i++) {
+      const seek = sound.seek() || 0;
+      const verseCues = page.cues[this.index];
+      for (let i = this.findClosestIndex(seek); i < verseCues.length; i++) {
         if (i <= 0) {
           break;
         }
 
-        let id = `${self.index}-${i}`;
-        if (id in self.highlighted) { // word already highlighted, move to the next
+        let id = `${this.index}-${i}`;
+        if (id in this.highlighted) { // word already highlighted, move to the next
           break;
         }
 
         // word needs to be highlighted
-        let elems = self.highlighted[id] = [];
+        let elems = this.highlighted[id] = [];
         for (const key in page.elements) {
           let elem = page.elements[key][id];
           elem.classList.add('highlight');
@@ -308,37 +70,72 @@ document.addEventListener('pageCompleted', (event) => {
         break;
       }
 
-      // If the sound is still playing, continue stepping.
-      if (sound.playing()) {
-        self.requestHighlight();
+      this.requestHighlight();
+    }
+    skip(direction) {
+      // Get the next track based on the direction of the track.
+      let index = 1;
+      if (direction === 'prev') {
+        index = this.index - 1;
+        if (index < 1 || index < parseInt(controls.startVerse.value)) {
+          index = controls.endVerse.value;
+          if (controls.loop.checked) {
+            this.skipTo(index);
+          }
+          else {
+            this.index = index;
+          }
+        }
+        else {
+          this.skipTo(index);
+        }
+      } else {
+        index = this.index + 1;
+        if (index >= this.playlist.length || index > parseInt(controls.endVerse.value)) {
+          index = parseInt(controls.startVerse.value);
+          if (controls.loop.checked) {
+            this.skipTo(index);
+          }
+          else {
+            this.index = index;
+          }
+        }
+        else {
+          this.skipTo(index);
+        }
       }
-    },
+    }
+    skipTo(index, position) {
+      let sound = this.sound;
+      if (this.index != index) {
+        sound.pause();
+        sound.seek(0);
 
-    requestHighlight: function () {
-      const self = this;
-      requestAnimationFrame(self.step.bind(self));
-    },
+        this.index = index;
+        sound = this.sound
+      }
 
-    /**
-     * Toggle the volume display on/off.
-     */
-    toggleVolume: function () {
-      let self = this;
-      let display = (controls.volume.style.display === 'block') ? 'none' : 'block';
+      if (position) {
+        sound.seek(position);
+      }
 
-      setTimeout(function () {
-        controls.volume.style.display = display;
-      }, (display === 'block') ? 0 : 500);
-      controls.volume.className = (display === 'block') ? 'fadein' : 'fadeout';
-    },
-
-    enable: function (button) {
+      this.clearHighlighted();
+      this.play();
+    }
+    enable(button) {
       controls.loading.style.display = button === 'loading' ? 'block' : 'none';
       controls.playBtn.style.display = button === 'playBtn' ? 'block' : 'none';
       controls.pauseBtn.style.display = button === 'pauseBtn' ? 'block' : 'none';
-    },
-
-    findClosestIndex: function (cues, seek) {
+    }
+    requestHighlight() {
+      // to simplify logic, we will continually poll for highlight once first interaction with audio
+      this.requestHighlightId = (window.requestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.msRequestAnimationFrame)(this.step.bind(this));
+    }
+    findClosestIndex(seek) {
+      const cues = page.cues[this.index];
       let i = 0;
       for (; i < cues.length; i++) {
         let val = cues[i];
@@ -349,23 +146,102 @@ document.addEventListener('pageCompleted', (event) => {
       }
       return i - 1;
     }
-  };
+    clearHighlighted() {
+      let self = this;
+      Object.entries(self.highlighted).forEach(([key, words]) => {
+        words.forEach((word) => {
+          word.classList.remove('highlight');
+        });
+        delete self.highlighted[key];
+      });
+    }
+    volume(val) {
+      // Update the global volume (affecting all Howls).
+      Howler.volume(val);
+
+      // Update the display on the slider.
+      let barWidth = (val * 90) / 100;
+      controls.barFull.style.width = (barWidth * 100) + '%';
+      controls.sliderBtn.style.left = (window.innerWidth * barWidth + window.innerWidth * 0.05 - 25) + 'px';
+    }
+    toggleVolume() {
+      let self = this;
+      let display = (controls.volume.style.display === 'block') ? 'none' : 'block';
+
+      setTimeout(() => {
+        controls.volume.style.display = display;
+      }, (display === 'block') ? 0 : 500);
+      controls.volume.className = (display === 'block') ? 'fadein' : 'fadeout';
+    }
+    rate(rate) {
+      // enumerate Howls and set the rate for all.
+      for (let i = 1; i < this.playlist.length; i++) {
+        if (this.playlist[i].howl) {
+          this.playlist[i].howl.rate(rate);
+        }
+      }
+    }
+  }
 
   // Setup our new audio player class and pass it the playlist.
-  let player = (() => {
+  const player = (() => {
     const book = page.info.book.p;
     const bookNo = page.info.book.n.toString().padStart(2, '0');
     const chapterNo = page.info.chapter.n.toString().padStart(3, '0');
     const playlist = [{}]; // 1 based index
-    for (let i = 1; i < page.cues.length; i++) {
-      let verseNo = i.toString().padStart(3, '0');
-      playlist.push({
-        title: `${book} ${chapterNo}:${verseNo}`,
-        file: `${bookNo}_${book}_${chapterNo}_${verseNo}`,
-        howl: null
+    const playlistLength = page.cues.length - 1;
+    let unloadedTracks = playlistLength;
+    const ext = [page.isMobileEdge ? 'mp3' : 'm4a', page.isMobileEdge ? 'm4a' : 'mp3'];
+
+    for (let i = 1; i <= playlistLength; i++) {
+      const verseNo = i.toString().padStart(3, '0');
+      const title = `${book} ${chapterNo}:${verseNo}`;
+      const file = `${bookNo}_${book}_${chapterNo}_${verseNo}`;
+      const howl = new Howl({
+        src: [`../../media/${file}.${ext[0]}`, `../../media/${file}.${ext[1]}`],
+        html5: true,
+        preload: true,
+        onplayerror: function (_, e) {
+          alert(`Error playing audio ${e}`);
+          controls.loadingScreen.style.display = 'none';
+        },
+        onloaderror: function (_, e) {
+          switch (e) {
+            case 1:
+              alert('You aborted the audio playback.');
+              break;
+            case 2:
+              alert(
+                `'${file}'\n either does not exist or there was a network failure`
+              );
+              break;
+            case 3:
+              alert(
+                'The audio playback was aborted due to a corruption problem or because your browser does not support it.'
+              );
+              break;
+            case 4:
+              alert(`'${file}' cannot be played.\n\nFile might not exist or is not supported.`);
+              break;
+            default:
+              alert('An unknown error occurred.');
+              break;
+          }
+          controls.loadingScreen.style.display = 'none';
+        },
+        onend: function () {
+          player.clearHighlighted();
+          player.enable('playBtn');
+          player.skip('next');
+        },
       });
+      howl.once('load', () => {
+        if (--unloadedTracks < 1) {
+          controls.loadingScreen.style.display = 'none';
+        }
+      });
+      playlist.push({ title, howl });
     }
-    controls.loadingScreen.style.display = 'none';
     return new Player(playlist);
   })();
 
@@ -462,7 +338,7 @@ document.addEventListener('pageCompleted', (event) => {
     if (!controls.loop.checked) {
       return;
     }
-    const sound = player.getSound();
+    const sound = player.sound;
     if (!sound) {
       return;
     }
@@ -489,7 +365,7 @@ document.addEventListener('pageCompleted', (event) => {
     if (!controls.loop.checked) {
       return;
     }
-    const sound = player.getSound();
+    const sound = player.sound;
     if (!sound) {
       return;
     }
