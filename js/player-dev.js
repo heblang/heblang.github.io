@@ -62,15 +62,12 @@ document.addEventListener('pageCompleted', (event) => {
         }
 
         if (controls.wordPause.checked && i > self.startWord) {
-          // let volume = sound.volume;
-          // sound.fade(volume, 0, 100);
           sound.pause();
           const currentIndex = self.index;
           self.wordPaused = setTimeout(() => {
             if (currentIndex == self.index) {
               sound.play();
             }
-            // sound.volume(volume);
           }, 1200);
         }
 
