@@ -322,7 +322,7 @@ document.addEventListener('pageCompleted', (event) => {
       controls.endVerse.value = verseId;
     }
 
-    player.skipTo(verseNo, cue);
+    player.skipTo(verseNo, cue + 0.01);
   }, (passiveSupported ? { passive: true } : false));
 
   startVerse.addEventListener('change', (event) => {
