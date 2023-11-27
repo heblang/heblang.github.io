@@ -143,7 +143,7 @@ document.addEventListener('pageCompleted', (event) => {
     requestHighlight() {
       // to simplify logic, we will continually poll for highlight once first interaction with audio
       if (!this.requestHighlightId) {
-        this.requestHighlightId = window.setInterval(this.step.bind(this), 20);
+        this.requestHighlightId = window.setInterval(this.step.bind(this), 10);
       }
     }
     findClosestIndex(seek) {
