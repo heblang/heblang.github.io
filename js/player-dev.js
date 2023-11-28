@@ -61,7 +61,7 @@ document.addEventListener('pageCompleted', (event) => {
           break;
         }
 
-        if (controls.wordPause.checked && i > self.startWord) {
+        /*if (controls.wordPause.checked && i > self.startWord) {
           sound.pause();
           const currentIndex = self.index;
           self.wordPaused = setTimeout(() => {
@@ -69,7 +69,7 @@ document.addEventListener('pageCompleted', (event) => {
               sound.play();
             }
           }, 1200);
-        }
+        }*/
 
         // word needs to be highlighted
         let elems = self.highlighted[id] = [];
@@ -150,7 +150,7 @@ document.addEventListener('pageCompleted', (event) => {
       const cues = page.cues[this.index];
       let i = 0;
       for (; i < cues.length; i++) {
-        let val = cues[i];
+        let val = cues[i] + (i ? i - 1 : i);
         let diff = seek - val;
         if (diff < 0) {
           break;
@@ -216,7 +216,7 @@ document.addEventListener('pageCompleted', (event) => {
       const title = `${book} ${chapterNo}:${verseNo}`;
       const file = `${bookNo}_${book}_${chapterNo}_${verseNo}`;
       const howl = new Howl({
-        src: [`../../media/${file}.${ext[0]}`],
+        src: [`../../media/P_${file}.${ext[0]}`],
         html5: true,
         preload: true,
         onplayerror: function (_, e) {
