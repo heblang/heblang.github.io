@@ -296,9 +296,6 @@ document.addEventListener('pageCompleted', (event) => {
     player.clearPauseTimeout();
     player.pause();
   }, (passiveSupported ? { passive: true } : false));
-  controls.wordPause.addEventListener('click', () => {
-    player.clearPauseTimeout();
-  }, (passiveSupported ? { passive: true } : false));
   controls.volumeBtn.addEventListener('click', () => {
     player.toggleVolume();
   }, (passiveSupported ? { passive: true } : false));
