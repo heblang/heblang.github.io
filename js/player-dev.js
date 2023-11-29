@@ -15,13 +15,35 @@ document.addEventListener('pageCompleted', (event) => {
     }
   }
 
+  const getCueStart = function (verseCues, wordId) {
+    return verseCues[wordId].s + (hasPause() ? (wordId > 0 ? (wordId - 1) : 0) : 0); // add wordId - 1 seconds if pause
+  }
+
+  const getCueEnd = function (verseCues, wordId) {
+    return verseCues[wordId].e + (hasPause() ? (wordId > 0 ? (wordId - 1) : 0) : 0); // add wordId - 1 seconds if pause
+  }
+
+  const hasPause = function () {
+    return parseInt(controls.wordPause.value) > 0;
+  }
+
+  const usePauseTimer = function () {
+    return parseInt(controls.wordPause.value) > 1;
+  }
+
+  const getPauseTime = function () {
+    const val = parseInt(controls.wordPause.value);
+    return val > 1 ? (val - 1) * 1000 : 0;
+  }
+
   class Player {
     constructor(playlist) {
       this.playlist = playlist;
       this.highlighted = {};
+      this.paused = {};
       this.index = 1;
       this.requestHighlightId = 0;
-      this.startWord = 1;
+      this.startWord = 1; // to prevent pausing before saying the word
     }
     get sound() {
       return this.playlist[this.index].howl;
@@ -58,18 +80,18 @@ document.addEventListener('pageCompleted', (event) => {
 
         let id = `${self.index}-${i}`;
         if (id in self.highlighted) { // word already highlighted, move on
+          if (usePauseTimer() && seek > (getCueEnd(verseCues, i) + 0.3) && !self.paused[id] && sound.playing()) {
+            const currentIndex = self.index;
+            self.paused[id] = true;
+            sound.pause();
+            self.wordPaused = setTimeout(() => {
+              if (currentIndex == self.index) {
+                sound.play();
+              }
+            }, getPauseTime());
+          }
           break;
         }
-
-        /*if (controls.wordPause.checked && i > self.startWord) {
-          sound.pause();
-          const currentIndex = self.index;
-          self.wordPaused = setTimeout(() => {
-            if (currentIndex == self.index) {
-              sound.play();
-            }
-          }, 1200);
-        }*/
 
         // word needs to be highlighted
         let elems = self.highlighted[id] = [];
@@ -118,7 +140,7 @@ document.addEventListener('pageCompleted', (event) => {
       if (!position) {
         this.startWord = 1;
       }
-      player.clearWordPaused();
+      player.clearPauseTimeout();
       let sound = this.sound;
       if (this.index != index) {
         sound.pause();
@@ -150,7 +172,7 @@ document.addEventListener('pageCompleted', (event) => {
       const cues = page.cues[this.index];
       let i = 0;
       for (; i < cues.length; i++) {
-        let val = cues[i] + (i ? i - 1 : i);
+        let val = getCueStart(cues, i);
         let diff = seek - val;
         if (diff < 0) {
           break;
@@ -166,8 +188,10 @@ document.addEventListener('pageCompleted', (event) => {
         });
         delete self.highlighted[key];
       });
+      self.paused = {};
+      self.clearPauseTimeout()
     }
-    clearWordPaused() {
+    clearPauseTimeout() {
       if (this.wordPaused) {
         clearTimeout(this.wordPaused);
         this.wordPaused = 0;
@@ -265,15 +289,15 @@ document.addEventListener('pageCompleted', (event) => {
 
   // Bind our player controls.
   controls.playBtn.addEventListener('click', () => {
-    player.clearWordPaused();
+    player.clearPauseTimeout();
     player.play();
   }, (passiveSupported ? { passive: true } : false));
   controls.pauseBtn.addEventListener('click', () => {
-    player.clearWordPaused();
+    player.clearPauseTimeout();
     player.pause();
   }, (passiveSupported ? { passive: true } : false));
   controls.wordPause.addEventListener('click', () => {
-    player.clearWordPaused();
+    player.clearPauseTimeout();
   }, (passiveSupported ? { passive: true } : false));
   controls.volumeBtn.addEventListener('click', () => {
     player.toggleVolume();
@@ -332,7 +356,7 @@ document.addEventListener('pageCompleted', (event) => {
     if (!id || !(id = id[0])) { return; }
     const [verseId, wordId] = getVerseWord(id);
     let verseCues, cue;
-    if (!verseId || !wordId || !(verseCues = page.cues[verseId]) || !(cue = verseCues[wordId])) { return; }
+    if (!verseId || !wordId || !(verseCues = page.cues[verseId]) || !(cue = getCueStart(verseCues, wordId) + 0.01)) { return; }
 
     const verseNo = parseInt(verseId);
     const startNo = parseInt(controls.startVerse.value);

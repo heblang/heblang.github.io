@@ -138,7 +138,7 @@ document.addEventListener('pageCompleted', (event) => {
       const cues = page.cues[this.index];
       let i = 0;
       for (; i < cues.length; i++) {
-        let val = cues[i];
+        let val = cues[i].s;
         let diff = seek - val;
         if (diff < 0) {
           break;
@@ -309,7 +309,7 @@ document.addEventListener('pageCompleted', (event) => {
     if (!id || !(id = id[0])) { return; }
     const [verseId, wordId] = getVerseWord(id);
     let verseCues, cue;
-    if (!verseId || !wordId || !(verseCues = page.cues[verseId]) || !(cue = verseCues[wordId])) { return; }
+    if (!verseId || !wordId || !(verseCues = page.cues[verseId]) || !(cue = verseCues[wordId].s + 0.01)) { return; }
 
     const verseNo = parseInt(verseId);
     const startNo = parseInt(controls.startVerse.value);
