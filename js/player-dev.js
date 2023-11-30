@@ -41,6 +41,10 @@ document.addEventListener('pageCompleted', (event) => {
       this.playlist = playlist;
       this.highlighted = {};
       this.paused = {};
+      for (let i = 1; i < playlist.length; i++) {
+        this.highlighted[i] = {};
+        this.paused[i] = {}
+      }
       this.index = 1;
       this.requestHighlightId = 0;
       this.startWord = 1; // to prevent pausing before saying the word
@@ -78,12 +82,11 @@ document.addEventListener('pageCompleted', (event) => {
           break;
         }
 
-        let id = `${self.index}-${i}`;
-        if (id in self.highlighted) { // word already highlighted, move on
-          if (usePauseTimer() && seek > (getCueEnd(verseCues, i) + 0.3) && !self.paused[id] && sound.playing()) {
-            const currentIndex = self.index;
-            self.paused[id] = true;
+        if (i in self.highlighted[self.index]) { // word already highlighted, move on
+          if (usePauseTimer() && seek > (getCueEnd(verseCues, i) + 0.3) && !self.paused[self.index][i] && sound.playing()) {
             sound.pause();
+            self.paused[self.index][i] = true;
+            const currentIndex = self.index;
             self.wordPaused = setTimeout(() => {
               if (currentIndex == self.index) {
                 sound.play();
@@ -94,7 +97,8 @@ document.addEventListener('pageCompleted', (event) => {
         }
 
         // word needs to be highlighted
-        let elems = self.highlighted[id] = [];
+        let id = `${self.index}-${i}`;
+        let elems = self.highlighted[self.index][i] = [];
         for (const key in page.elements) {
           let elem = page.elements[key][id];
           elem.classList.add('highlight');
@@ -182,13 +186,21 @@ document.addEventListener('pageCompleted', (event) => {
     }
     clearHighlighted() {
       let self = this;
-      Object.entries(self.highlighted).forEach(([key, words]) => {
-        words.forEach((word) => {
-          word.classList.remove('highlight');
-        });
-        delete self.highlighted[key];
-      });
-      self.paused = {};
+      for (let verseNo in self.highlighted) {
+        const verseHighlighted = self.highlighted[verseNo];
+        for (let wordNo in verseHighlighted) {
+          const words = verseHighlighted[wordNo];
+          words.forEach(word => word.classList.remove('highlight'));
+        }
+        self.highlighted[verseNo] = {};
+      }
+      for (let verseNo in self.paused) {
+        const versePaused = self.paused[verseNo];
+        for (let wordNo in versePaused) {
+          versePaused[wordNo] = false;
+        }
+        self.highlighted[verseNo] = {};
+      }
       self.clearPauseTimeout()
     }
     clearPauseTimeout() {
@@ -225,22 +237,28 @@ document.addEventListener('pageCompleted', (event) => {
     }
   }
 
-  // Setup our new audio player class and pass it the playlist.
-  const player = (() => {
+  const loadPlaylist = function () {
     const book = page.info.book.p;
     const bookNo = page.info.book.n.toString().padStart(2, '0');
     const chapterNo = page.info.chapter.n.toString().padStart(3, '0');
     const playlist = [{}]; // 1 based index
     const playlistLength = page.cues.length - 1;
-    let unloadedTracks = playlistLength;
     const ext = [page.isMobileEdge ? 'mp3' : 'm4a', page.isMobileEdge ? 'm4a' : 'mp3'];
+    const usePause = hasPause();
+    let unloadedTracks = playlistLength;
+    let audioPrefix = '';
+
+    if (usePause) {
+      controls.loadingScreen.style.display = 'block';
+      audioPrefix = 'P_';
+    }
 
     for (let i = 1; i <= playlistLength; i++) {
       const verseNo = i.toString().padStart(3, '0');
       const title = `${book} ${chapterNo}:${verseNo}`;
       const file = `${bookNo}_${book}_${chapterNo}_${verseNo}`;
       const howl = new Howl({
-        src: [`../../media/P_${file}.${ext[0]}`],
+        src: [`../../media/${audioPrefix}${file}.${ext[0]}`],
         html5: true,
         preload: true,
         onplayerror: function (_, e) {
@@ -284,8 +302,12 @@ document.addEventListener('pageCompleted', (event) => {
       });
       playlist.push({ title, howl });
     }
-    return new Player(playlist);
-  })();
+    return playlist;
+  }
+
+  const regularPlaylist = loadPlaylist();
+  const player = new Player(regularPlaylist);
+  let pausePlaylist = null; // load upon request only
 
   // Bind our player controls.
   controls.playBtn.addEventListener('click', () => {
@@ -295,6 +317,29 @@ document.addEventListener('pageCompleted', (event) => {
   controls.pauseBtn.addEventListener('click', () => {
     player.clearPauseTimeout();
     player.pause();
+  }, (passiveSupported ? { passive: true } : false));
+  controls.wordPause.addEventListener('change', () => {
+    const sound = player.sound;
+    const isPlaying = sound.playing();
+    const seek = sound.seek();
+    // TODO playing OR pauseTimer is active...
+
+    if (!hasPause()) {
+      if (player.playlist != regularPlaylist) {
+        player.playlist = regularPlaylist;
+        // TOOD see what needs to happen based on current audio state
+      }
+      return;
+    }
+
+    if (!pausePlaylist) {
+      pausePlaylist = loadPlaylist();
+    }
+
+    if (player.playlist != pausePlaylist) {
+      player.playlist = pausePlaylist;
+      // TOOD see what needs to happen based on current audio state
+    }
   }, (passiveSupported ? { passive: true } : false));
   controls.volumeBtn.addEventListener('click', () => {
     player.toggleVolume();
