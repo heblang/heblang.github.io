@@ -1,47 +1,14 @@
 'use strict';
 
 document.addEventListener('pageCompleted', (event) => {
-  const page = event.detail;
-  const passiveSupported = page.passiveSupported; // let getPassiveSupported detect if true
-
-  // Cache references to DOM elements.
-  const controls = {};
-  const elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn', 'startVerse', 'endVerse', 'loop', 'speed', 'loadingScreen', 'wordPause'];
-  for (let i = 0; i < elemIds.length; i++) {
-    const elemId = elemIds[i];
-    if (!(controls[elemId] = document.getElementById(elemId))) {
-      console.error(`Could not find page element with id ${elemId}`);
-      return;
-    }
-  }
-
-  const getCueStart = function (verseCues, wordId) {
-    return verseCues[wordId].s + (hasPause() ? (wordId > 0 ? (wordId - 1) : 0) : 0); // add wordId - 1 seconds if pause
-  }
-
-  const getCueEnd = function (verseCues, wordId) {
-    return verseCues[wordId].e + (hasPause() ? (wordId > 0 ? (wordId - 1) : 0) : 0); // add wordId - 1 seconds if pause
-  }
-
-  const hasPause = function () {
-    return parseInt(controls.wordPause.value) > 0;
-  }
-
-  const usePauseTimer = function () {
-    return parseInt(controls.wordPause.value) > 1;
-  }
-
-  const getPauseTime = function () {
-    const val = parseInt(controls.wordPause.value);
-    return val > 1 ? (val - 1) * 1000 : 0;
-  }
-
   class Player {
-    constructor(playlist) {
-      this.playlist = playlist;
+    constructor() {
+      this.regularPlaylist = this.loadPlaylist();
+      this.pausePlaylist = null; // load upon request only
+      this.playlist = this.regularPlaylist;
       this.highlighted = {};
       this.paused = {};
-      for (let i = 1; i < playlist.length; i++) {
+      for (let i = 1; i < this.playlist.length; i++) {
         this.highlighted[i] = {};
         this.paused[i] = {}
       }
@@ -51,21 +18,6 @@ document.addEventListener('pageCompleted', (event) => {
     }
     get sound() {
       return this.playlist[this.index].howl;
-    }
-    play() {
-      const sound = this.sound;
-      if (!sound.playing()) {
-        sound.play();
-        this.enable('pauseBtn');
-      }
-      if (!this.requestHighlightId) {
-        this.requestHighlight();
-      }
-    }
-    pause() {
-      const sound = this.sound;
-      sound.pause();
-      this.enable('playBtn');
     }
     step() {
       const self = this;
@@ -77,7 +29,7 @@ document.addEventListener('pageCompleted', (event) => {
       // Determine our current seek position.
       const seek = sound.seek() || 0;
       const verseCues = page.cues[self.index];
-      for (let i = self.findClosestIndex(seek); i < verseCues.length; i++) {
+      for (let i = this.findClosestIndex(seek); i < verseCues.length; i++) {
         if (i <= 0) {
           break;
         }
@@ -87,7 +39,7 @@ document.addEventListener('pageCompleted', (event) => {
             sound.pause();
             self.paused[self.index][i] = true;
             const currentIndex = self.index;
-            self.wordPaused = setTimeout(() => {
+            self.wordTimeout = setTimeout(() => {
               if (currentIndex == self.index) {
                 sound.play();
               }
@@ -106,6 +58,20 @@ document.addEventListener('pageCompleted', (event) => {
         }
         break;
       }
+    }
+    play() {
+      const sound = this.sound;
+      if (!sound.playing()) {
+        sound.play();
+        enable('pauseBtn');
+      }
+      if (!this.requestHighlightId) {
+        this.requestHighlight();
+      }
+    }
+    pause() {
+      this.sound.pause();
+      enable('playBtn');
     }
     skip(direction) {
       // Get the next track based on the direction of the track.
@@ -144,45 +110,176 @@ document.addEventListener('pageCompleted', (event) => {
       if (!position) {
         this.startWord = 1;
       }
-      player.clearPauseTimeout();
+
+      this.clearHighlighted();
       let sound = this.sound;
       if (this.index != index) {
         sound.pause();
         sound.seek(0);
 
         this.index = index;
-        sound = this.sound
+        sound = this.sound // new sound
       }
 
       if (position) {
         sound.seek(position);
       }
 
-      this.clearHighlighted();
       this.play();
     }
-    enable(button) {
-      controls.loading.style.display = button === 'loading' ? 'block' : 'none';
-      controls.playBtn.style.display = button === 'playBtn' ? 'block' : 'none';
-      controls.pauseBtn.style.display = button === 'pauseBtn' ? 'block' : 'none';
+    volume(val) {
+      // Update the global volume (affecting all Howls).
+      Howler.volume(val);
+
+      // Update the display on the slider.
+      let barWidth = (val * 90) / 100;
+      controls.barFull.style.width = (barWidth * 100) + '%';
+      controls.sliderBtn.style.left = (window.innerWidth * barWidth + window.innerWidth * 0.05 - 25) + 'px';
+    }
+    rate(rate) {
+      // enumerate Howls and set the rate for all.
+      for (let i = 1; i < this.regularPlaylist.length; i++) {
+        this.regularPlaylist.playlist[i].howl.rate(rate);
+      }
+      if (!this.pausePlaylist) {
+        return;
+      }
+      for (let i = 1; i < this.pausePlaylist.length; i++) {
+        this.pausePlaylist.playlist[i].howl.rate(rate);
+      }
+    }
+    loadPlaylist(rate) {
+      const self = this;
+      const book = page.info.book.p;
+      const bookNo = page.info.book.n.toString().padStart(2, '0');
+      const chapterNo = page.info.chapter.n.toString().padStart(3, '0');
+      const playlist = [{}]; // 1 based index
+      const playlistLength = page.cues.length - 1;
+      const ext = [page.isMobileEdge ? 'mp3' : 'm4a', page.isMobileEdge ? 'm4a' : 'mp3'];
+      const usePause = hasPause();
+      let unloadedTracks = playlistLength;
+      let audioPrefix = '';
+
+      if (usePause) {
+        controls.loadingScreen.style.display = 'block';
+        audioPrefix = 'P_';
+      }
+
+      for (let i = 1; i <= playlistLength; i++) {
+        const verseNo = i.toString().padStart(3, '0');
+        const title = `${book} ${chapterNo}:${verseNo}`;
+        const file = `${bookNo}_${book}_${chapterNo}_${verseNo}`;
+        const howl = new Howl({
+          src: [`../../media/${audioPrefix}${file}.${ext[0]}`],
+          html5: true,
+          preload: true,
+          onplayerror: function (_, e) {
+            alert(`Error playing audio ${e}`);
+            controls.loadingScreen.style.display = 'none';
+          },
+          onloaderror: function (_, e) {
+            switch (e) {
+              case 1:
+                alert('You aborted the audio playback.');
+                break;
+              case 2:
+                alert(
+                  `'${file}'\n either does not exist or there was a network failure`
+                );
+                break;
+              case 3:
+                alert(
+                  'The audio playback was aborted due to a corruption problem or because your browser does not support it.'
+                );
+                break;
+              case 4:
+                alert(`'${file}' cannot be played.\n\nFile might not exist or is not supported.`);
+                break;
+              default:
+                alert('An unknown error occurred.');
+                break;
+            }
+            controls.loadingScreen.style.display = 'none';
+          },
+          onend: function () {
+            enable('playBtn');
+            self.clearHighlighted();
+            self.skip('next');
+          },
+        });
+        if (rate && rate != 1) {
+          howl.rate(rate);
+        }
+        howl.once('load', () => {
+          if (--unloadedTracks < 1) {
+            controls.loadingScreen.style.display = 'none';
+          }
+        });
+        playlist.push({ title, howl });
+      }
+      return playlist;
+    }
+    setPlaylist() {
+      if (hasPause()) {
+        if (!this.pausePlaylist) {
+          this.pausePlaylist = this.loadPlaylist(this.sound.rate());
+        }
+        if (this.playlist === this.pausePlaylist) {
+          return;
+        }
+
+        const currentSound = this.sound; // current sound
+        const isPlaying = currentSound.playing();
+        if (isPlaying) {
+          currentSound.pause();
+        }
+        currentSound.seek(0);
+
+        const verse = this.highlighted[this.index];
+        const wordNos = Object.keys(verse);
+        const wordNo = wordNos.length > 0 ? Math.max(...(wordNos.map(Number))) : 1;
+        const verseCues = page.cues[this.index];
+        const position = getCueStart(verseCues, wordNo, true);
+
+        this.playlist = this.pausePlaylist;
+        const newSound = this.sound; // new sound
+        newSound.seek(position);
+        if (isPlaying) {
+          newSound.play();
+        }
+        return;
+      }
+
+      if (this.playlist === this.regularPlaylist) {
+        return;
+      }
+
+      const currentSound = this.sound; // current sound
+      const isPlaying = currentSound.playing() || this.wordTimeout > 0;
+      this.clearPauseTimeout();
+      if (isPlaying) {
+        currentSound.pause();
+      }
+      currentSound.seek(0);
+
+      const verse = this.highlighted[this.index];
+      const wordNos = Object.keys(verse);
+      const wordNo = wordNos.length > 0 ? Math.max(...(wordNos.map(Number))) : 1;
+      const verseCues = page.cues[this.index];
+      const position = getCueStart(verseCues, wordNo, true);
+
+      this.playlist = this.regularPlaylist;
+      const newSound = this.sound; // new sound
+      newSound.seek(position);
+      if (isPlaying) {
+        newSound.play();
+      }
     }
     requestHighlight() {
       // to simplify logic, we will continually poll for highlight once first interaction with audio
       if (!this.requestHighlightId) {
-        this.requestHighlightId = window.setInterval(this.step.bind(this), 10);
+        this.requestHighlightId = window.setInterval(this.step.bind(this), 20);
       }
-    }
-    findClosestIndex(seek) {
-      const cues = page.cues[this.index];
-      let i = 0;
-      for (; i < cues.length; i++) {
-        let val = getCueStart(cues, i);
-        let diff = seek - val;
-        if (diff < 0) {
-          break;
-        }
-      }
-      return i - 1;
     }
     clearHighlighted() {
       let self = this;
@@ -204,170 +301,82 @@ document.addEventListener('pageCompleted', (event) => {
       self.clearPauseTimeout()
     }
     clearPauseTimeout() {
-      if (this.wordPaused) {
-        clearTimeout(this.wordPaused);
-        this.wordPaused = 0;
+      if (this.wordTimeout) {
+        clearTimeout(this.wordTimeout);
+        this.wordTimeout = 0;
       }
     }
-    volume(val) {
-      // Update the global volume (affecting all Howls).
-      Howler.volume(val);
-
-      // Update the display on the slider.
-      let barWidth = (val * 90) / 100;
-      controls.barFull.style.width = (barWidth * 100) + '%';
-      controls.sliderBtn.style.left = (window.innerWidth * barWidth + window.innerWidth * 0.05 - 25) + 'px';
-    }
-    toggleVolume() {
-      let self = this;
-      let display = (controls.volume.style.display === 'block') ? 'none' : 'block';
-
-      setTimeout(() => {
-        controls.volume.style.display = display;
-      }, (display === 'block') ? 0 : 500);
-      controls.volume.className = (display === 'block') ? 'fadein' : 'fadeout';
-    }
-    rate(rate) {
-      // enumerate Howls and set the rate for all.
-      for (let i = 1; i < this.playlist.length; i++) {
-        if (this.playlist[i].howl) {
-          this.playlist[i].howl.rate(rate);
+    findClosestIndex(seek) {
+      const cues = page.cues[this.index];
+      let i = 0;
+      for (; i < cues.length; i++) {
+        let val = getCueStart(cues, i);
+        let diff = seek - val;
+        if (diff < 0) {
+          break;
         }
       }
+      return i - 1;
     }
   }
 
-  const loadPlaylist = function () {
-    const book = page.info.book.p;
-    const bookNo = page.info.book.n.toString().padStart(2, '0');
-    const chapterNo = page.info.chapter.n.toString().padStart(3, '0');
-    const playlist = [{}]; // 1 based index
-    const playlistLength = page.cues.length - 1;
-    const ext = [page.isMobileEdge ? 'mp3' : 'm4a', page.isMobileEdge ? 'm4a' : 'mp3'];
-    const usePause = hasPause();
-    let unloadedTracks = playlistLength;
-    let audioPrefix = '';
+  const page = event.detail;
+  const passiveSupported = page.passiveSupported; // let getPassiveSupported detect if true
 
-    if (usePause) {
-      controls.loadingScreen.style.display = 'block';
-      audioPrefix = 'P_';
-    }
-
-    for (let i = 1; i <= playlistLength; i++) {
-      const verseNo = i.toString().padStart(3, '0');
-      const title = `${book} ${chapterNo}:${verseNo}`;
-      const file = `${bookNo}_${book}_${chapterNo}_${verseNo}`;
-      const howl = new Howl({
-        src: [`../../media/${audioPrefix}${file}.${ext[0]}`],
-        html5: true,
-        preload: true,
-        onplayerror: function (_, e) {
-          alert(`Error playing audio ${e}`);
-          controls.loadingScreen.style.display = 'none';
-        },
-        onloaderror: function (_, e) {
-          switch (e) {
-            case 1:
-              alert('You aborted the audio playback.');
-              break;
-            case 2:
-              alert(
-                `'${file}'\n either does not exist or there was a network failure`
-              );
-              break;
-            case 3:
-              alert(
-                'The audio playback was aborted due to a corruption problem or because your browser does not support it.'
-              );
-              break;
-            case 4:
-              alert(`'${file}' cannot be played.\n\nFile might not exist or is not supported.`);
-              break;
-            default:
-              alert('An unknown error occurred.');
-              break;
-          }
-          controls.loadingScreen.style.display = 'none';
-        },
-        onend: function () {
-          player.clearHighlighted();
-          player.enable('playBtn');
-          player.skip('next');
-        },
-      });
-      howl.once('load', () => {
-        if (--unloadedTracks < 1) {
-          controls.loadingScreen.style.display = 'none';
-        }
-      });
-      playlist.push({ title, howl });
-    }
-    return playlist;
-  }
-
-  const regularPlaylist = loadPlaylist();
-  const player = new Player(regularPlaylist);
-  let pausePlaylist = null; // load upon request only
-
-  // Bind our player controls.
-  controls.playBtn.addEventListener('click', () => {
-    player.clearPauseTimeout();
-    player.play();
-  }, (passiveSupported ? { passive: true } : false));
-  controls.pauseBtn.addEventListener('click', () => {
-    player.clearPauseTimeout();
-    player.pause();
-  }, (passiveSupported ? { passive: true } : false));
-  controls.wordPause.addEventListener('change', () => {
-    const sound = player.sound;
-    const isPlaying = sound.playing();
-    const seek = sound.seek();
-    // TODO playing OR pauseTimer is active...
-
-    if (!hasPause()) {
-      if (player.playlist != regularPlaylist) {
-        player.playlist = regularPlaylist;
-        // TOOD see what needs to happen based on current audio state
-      }
+  // Cache references to DOM elements.
+  const controls = {};
+  const elemIds = ['playBtn', 'pauseBtn', 'volumeBtn', 'loading', 'volume', 'barEmpty', 'barFull', 'sliderBtn', 'startVerse', 'endVerse', 'loop', 'speed', 'loadingScreen', 'wordPause'];
+  for (let i = 0; i < elemIds.length; i++) {
+    const elemId = elemIds[i];
+    if (!(controls[elemId] = document.getElementById(elemId))) {
+      console.error(`Could not find page element with id ${elemId}`);
       return;
     }
+  }
 
-    if (!pausePlaylist) {
-      pausePlaylist = loadPlaylist();
-    }
+  const toggleVolume = () => {
+    let display = (controls.volume.style.display === 'block') ? 'none' : 'block';
 
-    if (player.playlist != pausePlaylist) {
-      player.playlist = pausePlaylist;
-      // TOOD see what needs to happen based on current audio state
-    }
-  }, (passiveSupported ? { passive: true } : false));
-  controls.volumeBtn.addEventListener('click', () => {
-    player.toggleVolume();
-  }, (passiveSupported ? { passive: true } : false));
-  controls.volume.addEventListener('click', () => {
-    player.toggleVolume();
-  }, (passiveSupported ? { passive: true } : false));
+    setTimeout(() => {
+      controls.volume.style.display = display;
+    }, (display === 'block') ? 0 : 500);
+    controls.volume.className = (display === 'block') ? 'fadein' : 'fadeout';
+  }
 
-  // Setup the event listeners to enable dragging of volume slider.
-  controls.barEmpty.addEventListener('click', (event) => {
-    let per = event.layerX / parseFloat(controls.barEmpty.scrollWidth);
-    player.volume(per);
-  }, (passiveSupported ? { passive: true } : false));
-  controls.sliderBtn.addEventListener('mousedown', () => {
-    window.sliderDown = true;
-  }, (passiveSupported ? { passive: true } : false));
-  controls.sliderBtn.addEventListener('touchstart', () => {
-    window.sliderDown = true;
-  }, (passiveSupported ? { passive: true } : false));
-  controls.volume.addEventListener('mouseup', () => {
-    window.sliderDown = false;
-  }, (passiveSupported ? { passive: true } : false));
-  controls.volume.addEventListener('touchend', () => {
-    window.sliderDown = false;
-  }, (passiveSupported ? { passive: true } : false));
+  const enable = (button) => {
+    controls.loading.style.display = button === 'loading' ? 'block' : 'none';
+    controls.playBtn.style.display = button === 'playBtn' ? 'block' : 'none';
+    controls.pauseBtn.style.display = button === 'pauseBtn' ? 'block' : 'none';
+  }
 
-  let move = (event) => {
-    if (window.sliderDown) {
+  const getCueStart = (verseCues, wordId, adjust) => {
+    const seek = verseCues[wordId].s + (hasPause() ? (wordId > 0 ? (wordId - 1) : 0) : 0); // add wordId - 1 seconds if pause
+    return seek + (adjust ? 0.01 : 0);
+  }
+
+  const getCueEnd = (verseCues, wordId) =>
+    verseCues[wordId].e + (hasPause() ? (wordId > 0 ? (wordId - 1) : 0) : 0); // add wordId - 1 seconds if pause
+
+  const hasPause = () =>
+    parseInt(controls.wordPause.value) > 0;
+
+  const usePauseTimer = () =>
+    parseInt(controls.wordPause.value) > 1;
+
+  const getPauseTime = () => {
+    const val = parseInt(controls.wordPause.value);
+    return val > 1 ? (val - 1) * 1000 : 0;
+  }
+
+  const getVerseWord = (id) => {
+    let split;
+    return id && (split = id.split('-')).length > 1 ? split : [null, null];
+  }
+
+  let sliderDown = false;
+
+  const move = (event) => {
+    if (sliderDown) {
       let x = event.clientX || event.touches[0].clientX;
       let startX = window.innerWidth * 0.05;
       let layerX = x - startX;
@@ -376,7 +385,53 @@ document.addEventListener('pageCompleted', (event) => {
     }
   };
 
+  // Bind our player controls.
+  controls.playBtn.addEventListener('click', () => {
+    player.clearPauseTimeout();
+    player.play();
+  }, (passiveSupported ? { passive: true } : false));
+
+  controls.pauseBtn.addEventListener('click', () => {
+    player.clearPauseTimeout();
+    player.pause();
+  }, (passiveSupported ? { passive: true } : false));
+
+  controls.wordPause.addEventListener('change', () => {
+    player.setPlaylist();
+  }, (passiveSupported ? { passive: true } : false));
+
+  controls.volumeBtn.addEventListener('click', () => {
+    toggleVolume();
+  }, (passiveSupported ? { passive: true } : false));
+
+  controls.volume.addEventListener('click', () => {
+    toggleVolume();
+  }, (passiveSupported ? { passive: true } : false));
+
+  // Setup the event listeners to enable dragging of volume slider.
+  controls.barEmpty.addEventListener('click', (event) => {
+    let per = event.layerX / parseFloat(controls.barEmpty.scrollWidth);
+    player.volume(per);
+  }, (passiveSupported ? { passive: true } : false));
+
+  controls.sliderBtn.addEventListener('mousedown', () => {
+    liderDown = true;
+  }, (passiveSupported ? { passive: true } : false));
+
+  controls.sliderBtn.addEventListener('touchstart', () => {
+    sliderDown = true;
+  }, (passiveSupported ? { passive: true } : false));
+
+  controls.volume.addEventListener('mouseup', () => {
+    sliderDown = false;
+  }, (passiveSupported ? { passive: true } : false));
+
+  controls.volume.addEventListener('touchend', () => {
+    sliderDown = false;
+  }, (passiveSupported ? { passive: true } : false));
+
   controls.volume.addEventListener('mousemove', move, (passiveSupported ? { passive: true } : false));
+
   controls.volume.addEventListener('touchmove', move, (passiveSupported ? { passive: true } : false));
 
   controls.speed.addEventListener('change', (event) => {
@@ -398,7 +453,7 @@ document.addEventListener('pageCompleted', (event) => {
     if (!id || !(id = id[0])) { return; }
     const [verseId, wordId] = getVerseWord(id);
     let verseCues, cue;
-    if (!verseId || !wordId || !(verseCues = page.cues[verseId]) || !(cue = getCueStart(verseCues, wordId) + 0.01)) { return; }
+    if (!verseId || !wordId || !(verseCues = page.cues[verseId]) || !(cue = getCueStart(verseCues, wordId, true))) { return; }
 
     const verseNo = parseInt(verseId);
     const startNo = parseInt(controls.startVerse.value);
@@ -469,8 +524,5 @@ document.addEventListener('pageCompleted', (event) => {
     }
   }, (passiveSupported ? { passive: true } : false));
 
-  function getVerseWord(id) {
-    let split;
-    return id && (split = id.split('-')).length > 1 ? split : [null, null];
-  }
+  const player = new Player();
 });
