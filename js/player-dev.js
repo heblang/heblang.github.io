@@ -15,12 +15,17 @@ document.addEventListener('pageCompleted', (event) => {
       this.index = 1;
       this.requestHighlightId = 0;
       this.startWord = 1; // to prevent pausing before saying the word
+      this.suspendStep = false; // set to true if suspending of this.step logic is wanted
     }
     get sound() {
       return this.playlist[this.index].howl;
     }
     step() {
       const self = this;
+      if (self.suspendStep) {
+        return;
+      }
+
       const sound = self.sound;
       if (!sound.playing()) {
         return;
@@ -38,9 +43,8 @@ document.addEventListener('pageCompleted', (event) => {
           if (usePauseTimer() && seek > (getCueEnd(verseCues, i) + 0.3) && !self.paused[self.index][i] && sound.playing()) {
             sound.pause();
             self.paused[self.index][i] = true;
-            const currentIndex = self.index;
             self.wordTimeout = setTimeout(() => {
-              if (currentIndex == self.index) {
+              if (sound == self.sound) {
                 sound.play();
               }
             }, getPauseTime());
@@ -400,7 +404,14 @@ document.addEventListener('pageCompleted', (event) => {
   }, (passiveSupported ? { passive: true } : false));
 
   controls.wordPause.addEventListener('change', () => {
-    player.setPlaylist();
+    try {
+      player.suspendStep = true;
+      player.setPlaylist();
+    } catch (ex) {
+      alert(ex)
+    } finally {
+      player.suspendStep = false;
+    }
   }, (passiveSupported ? { passive: true } : false));
 
   controls.volumeBtn.addEventListener('click', () => {
