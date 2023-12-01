@@ -50,6 +50,7 @@ document.addEventListener('pageCompleted', (event) => {
 
         // word needs to be highlighted
         let id = `${self.index}-${i}`;
+        console.log(id);
         let elems = self.highlighted[self.index][i] = [];
         for (const key in page.elements) {
           let elem = page.elements[key][id];
@@ -232,8 +233,8 @@ document.addEventListener('pageCompleted', (event) => {
         const isPlaying = currentSound.playing();
         if (isPlaying) {
           currentSound.pause();
+          currentSound.once('pause', () => currentSound.seek(0));
         }
-        currentSound.seek(0);
 
         const verse = this.highlighted[this.index];
         const wordNos = Object.keys(verse);
@@ -258,13 +259,15 @@ document.addEventListener('pageCompleted', (event) => {
       const isPlaying = currentSound.playing() || this.wordTimeout > 0;
       this.clearPauseTimeout();
       if (isPlaying) {
+        console.log('pausing');
         currentSound.pause();
+        currentSound.once('pause', () => currentSound.seek(0));
       }
-      currentSound.seek(0);
 
       const verse = this.highlighted[this.index];
       const wordNos = Object.keys(verse);
       const wordNo = wordNos.length > 0 ? Math.max(...(wordNos.map(Number))) : 1;
+      console.log(wordNo);
       const verseCues = page.cues[this.index];
       const position = getCueStart(verseCues, wordNo, true);
 
@@ -415,7 +418,7 @@ document.addEventListener('pageCompleted', (event) => {
   }, (passiveSupported ? { passive: true } : false));
 
   controls.sliderBtn.addEventListener('mousedown', () => {
-    liderDown = true;
+    sliderDown = true;
   }, (passiveSupported ? { passive: true } : false));
 
   controls.sliderBtn.addEventListener('touchstart', () => {
