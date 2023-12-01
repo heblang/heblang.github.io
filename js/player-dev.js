@@ -14,11 +14,21 @@ document.addEventListener('pageCompleted', (event) => {
       }
       this.index = 1;
       this.requestHighlightId = 0;
-      this.startWord = 1; // to prevent pausing before saying the word
+      this.startWord = 1;       // to prevent pausing before saying the word
       this.suspendStep = false; // set to true if suspending of this.step logic is wanted
+      this.blankAudio = 0;      // start with no blank audio
     }
     get sound() {
       return this.playlist[this.index].howl;
+    }
+    get hasPause() {
+      return this.blankAudio > 0;
+    }
+    get usePauseTimer() {
+      return this.blankAudio > 1;
+    }
+    get pauseTime() {
+      return this.blankAudio > 1 ? (this.blankAudio - 1) * 1000 : 0;
     }
     step() {
       const self = this;
@@ -40,21 +50,20 @@ document.addEventListener('pageCompleted', (event) => {
         }
 
         if (i in self.highlighted[self.index]) { // word already highlighted, move on
-          if (usePauseTimer() && seek > (getCueEnd(verseCues, i) + 0.3) && !self.paused[self.index][i] && sound.playing()) {
+          if (this.usePauseTimer && seek > (this.getCueEnd(verseCues, i) + 0.3) && !self.paused[self.index][i] && sound.playing()) {
             sound.pause();
             self.paused[self.index][i] = true;
             self.wordTimeout = setTimeout(() => {
               if (sound == self.sound) {
                 sound.play();
               }
-            }, getPauseTime());
+            }, this.pauseTime);
           }
           break;
         }
 
         // word needs to be highlighted
         let id = `${self.index}-${i}`;
-        console.log(id);
         let elems = self.highlighted[self.index][i] = [];
         for (const key in page.elements) {
           let elem = page.elements[key][id];
@@ -144,13 +153,13 @@ document.addEventListener('pageCompleted', (event) => {
     rate(rate) {
       // enumerate Howls and set the rate for all.
       for (let i = 1; i < this.regularPlaylist.length; i++) {
-        this.regularPlaylist.playlist[i].howl.rate(rate);
+        this.regularPlaylist[i].howl.rate(rate);
       }
       if (!this.pausePlaylist) {
         return;
       }
       for (let i = 1; i < this.pausePlaylist.length; i++) {
-        this.pausePlaylist.playlist[i].howl.rate(rate);
+        this.pausePlaylist[i].howl.rate(rate);
       }
     }
     loadPlaylist(rate) {
@@ -161,7 +170,7 @@ document.addEventListener('pageCompleted', (event) => {
       const playlist = [{}]; // 1 based index
       const playlistLength = page.cues.length - 1;
       const ext = [page.isMobileEdge ? 'mp3' : 'm4a', page.isMobileEdge ? 'm4a' : 'mp3'];
-      const usePause = hasPause();
+      const usePause = this.hasPause;
       let unloadedTracks = playlistLength;
       let audioPrefix = '';
 
@@ -224,17 +233,47 @@ document.addEventListener('pageCompleted', (event) => {
       }
       return playlist;
     }
-    setPlaylist() {
-      if (hasPause()) {
-        if (!this.pausePlaylist) {
-          this.pausePlaylist = this.loadPlaylist(this.sound.rate());
+    setPlaylist(blankAudio) {
+      try {
+        player.suspendStep = true;
+        this.blankAudio = blankAudio;
+        if (this.hasPause) {
+          if (!this.pausePlaylist) {
+            this.pausePlaylist = this.loadPlaylist(this.sound.rate());
+          }
+          if (this.playlist === this.pausePlaylist) {
+            return;
+          }
+
+          const currentSound = this.sound; // current sound
+          const isPlaying = currentSound.playing();
+          if (isPlaying) {
+            currentSound.pause();
+            currentSound.once('pause', () => currentSound.seek(0));
+          }
+
+          const verse = this.highlighted[this.index];
+          const wordNos = Object.keys(verse);
+          const wordNo = wordNos.length > 0 ? Math.max(...(wordNos.map(Number))) : 1;
+          const verseCues = page.cues[this.index];
+          const position = this.getCueStart(verseCues, wordNo, true);
+
+          this.playlist = this.pausePlaylist;
+          const newSound = this.sound; // new sound
+          newSound.seek(position);
+          if (isPlaying) {
+            newSound.play();
+          }
+          return;
         }
-        if (this.playlist === this.pausePlaylist) {
+
+        if (this.playlist === this.regularPlaylist) {
           return;
         }
 
         const currentSound = this.sound; // current sound
-        const isPlaying = currentSound.playing();
+        const isPlaying = currentSound.playing() || this.wordTimeout > 0;
+        this.clearPauseTimeout();
         if (isPlaying) {
           currentSound.pause();
           currentSound.once('pause', () => currentSound.seek(0));
@@ -244,42 +283,18 @@ document.addEventListener('pageCompleted', (event) => {
         const wordNos = Object.keys(verse);
         const wordNo = wordNos.length > 0 ? Math.max(...(wordNos.map(Number))) : 1;
         const verseCues = page.cues[this.index];
-        const position = getCueStart(verseCues, wordNo, true);
+        const position = this.getCueStart(verseCues, wordNo, true);
 
-        this.playlist = this.pausePlaylist;
+        this.playlist = this.regularPlaylist;
         const newSound = this.sound; // new sound
         newSound.seek(position);
         if (isPlaying) {
           newSound.play();
         }
-        return;
-      }
-
-      if (this.playlist === this.regularPlaylist) {
-        return;
-      }
-
-      const currentSound = this.sound; // current sound
-      const isPlaying = currentSound.playing() || this.wordTimeout > 0;
-      this.clearPauseTimeout();
-      if (isPlaying) {
-        console.log('pausing');
-        currentSound.pause();
-        currentSound.once('pause', () => currentSound.seek(0));
-      }
-
-      const verse = this.highlighted[this.index];
-      const wordNos = Object.keys(verse);
-      const wordNo = wordNos.length > 0 ? Math.max(...(wordNos.map(Number))) : 1;
-      console.log(wordNo);
-      const verseCues = page.cues[this.index];
-      const position = getCueStart(verseCues, wordNo, true);
-
-      this.playlist = this.regularPlaylist;
-      const newSound = this.sound; // new sound
-      newSound.seek(position);
-      if (isPlaying) {
-        newSound.play();
+      } catch (ex) {
+        alert(ex)
+      } finally {
+        player.suspendStep = false;
       }
     }
     requestHighlight() {
@@ -317,13 +332,20 @@ document.addEventListener('pageCompleted', (event) => {
       const cues = page.cues[this.index];
       let i = 0;
       for (; i < cues.length; i++) {
-        let val = getCueStart(cues, i);
+        let val = this.getCueStart(cues, i);
         let diff = seek - val;
         if (diff < 0) {
           break;
         }
       }
       return i - 1;
+    }
+    getCueStart(verseCues, wordId, adjust) {
+      const seek = verseCues[wordId].s + (this.hasPause ? (wordId > 0 ? (wordId - 1) : 0) : 0); // add wordId - 1 seconds if pause
+      return seek + (adjust ? 0.01 : 0);
+    }
+    getCueEnd(verseCues, wordId) {
+      return verseCues[wordId].e + (this.hasPause ? (wordId > 0 ? (wordId - 1) : 0) : 0); // add wordId - 1 seconds if pause
     }
   }
 
@@ -336,7 +358,7 @@ document.addEventListener('pageCompleted', (event) => {
   for (let i = 0; i < elemIds.length; i++) {
     const elemId = elemIds[i];
     if (!(controls[elemId] = document.getElementById(elemId))) {
-      console.error(`Could not find page element with id ${elemId}`);
+      alert(`Could not find page element with id ${elemId}`);
       return;
     }
   }
@@ -354,25 +376,6 @@ document.addEventListener('pageCompleted', (event) => {
     controls.loading.style.display = button === 'loading' ? 'block' : 'none';
     controls.playBtn.style.display = button === 'playBtn' ? 'block' : 'none';
     controls.pauseBtn.style.display = button === 'pauseBtn' ? 'block' : 'none';
-  }
-
-  const getCueStart = (verseCues, wordId, adjust) => {
-    const seek = verseCues[wordId].s + (hasPause() ? (wordId > 0 ? (wordId - 1) : 0) : 0); // add wordId - 1 seconds if pause
-    return seek + (adjust ? 0.01 : 0);
-  }
-
-  const getCueEnd = (verseCues, wordId) =>
-    verseCues[wordId].e + (hasPause() ? (wordId > 0 ? (wordId - 1) : 0) : 0); // add wordId - 1 seconds if pause
-
-  const hasPause = () =>
-    parseInt(controls.wordPause.value) > 0;
-
-  const usePauseTimer = () =>
-    parseInt(controls.wordPause.value) > 1;
-
-  const getPauseTime = () => {
-    const val = parseInt(controls.wordPause.value);
-    return val > 1 ? (val - 1) * 1000 : 0;
   }
 
   const getVerseWord = (id) => {
@@ -404,14 +407,7 @@ document.addEventListener('pageCompleted', (event) => {
   }, (passiveSupported ? { passive: true } : false));
 
   controls.wordPause.addEventListener('change', () => {
-    try {
-      player.suspendStep = true;
-      player.setPlaylist();
-    } catch (ex) {
-      alert(ex)
-    } finally {
-      player.suspendStep = false;
-    }
+    player.setPlaylist(parseInt(controls.wordPause.value.trim() || 0));
   }, (passiveSupported ? { passive: true } : false));
 
   controls.volumeBtn.addEventListener('click', () => {
@@ -467,7 +463,7 @@ document.addEventListener('pageCompleted', (event) => {
     if (!id || !(id = id[0])) { return; }
     const [verseId, wordId] = getVerseWord(id);
     let verseCues, cue;
-    if (!verseId || !wordId || !(verseCues = page.cues[verseId]) || !(cue = getCueStart(verseCues, wordId, true))) { return; }
+    if (!verseId || !wordId || !(verseCues = page.cues[verseId]) || !(cue = player.getCueStart(verseCues, wordId, true))) { return; }
 
     const verseNo = parseInt(verseId);
     const startNo = parseInt(controls.startVerse.value);

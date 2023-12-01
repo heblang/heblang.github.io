@@ -31,7 +31,7 @@ window.tanakh || (window.tanakh = {});
   for (let i = 0; i < elemIds.length; i++) {
     const elemId = elemIds[i];
     if (!(controls[elemId] = document.getElementById(elemId))) {
-      console.error(`Could not find page element with id ${elemId}`);
+      alert(`Could not find page element with id ${elemId}`);
       return;
     }
   }
