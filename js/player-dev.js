@@ -233,6 +233,28 @@ document.addEventListener('pageCompleted', (event) => {
       }
       return playlist;
     }
+    switchPlaylist(newPlaylist) {
+      const currentSound = this.sound; // current sound
+      const isPlaying = currentSound.playing() || this.wordTimeout > 0;
+      if (isPlaying) {
+        this.clearPauseTimeout();
+        currentSound.pause();
+      }
+      currentSound.seek(0);
+
+      const verse = this.highlighted[this.index];
+      const wordNos = Object.keys(verse);
+      const wordNo = wordNos.length > 0 ? Math.max(...(wordNos.map(Number))) : 1;
+      const verseCues = page.cues[this.index];
+      const position = this.getCueStart(verseCues, wordNo, true);
+
+      this.playlist = newPlaylist;
+      const newSound = this.sound; // new sound
+      newSound.seek(position);
+      if (isPlaying) {
+        newSound.play();
+      }
+    }
     setPlaylist(blankAudio) {
       try {
         player.suspendStep = true;
@@ -241,55 +263,12 @@ document.addEventListener('pageCompleted', (event) => {
           if (!this.pausePlaylist) {
             this.pausePlaylist = this.loadPlaylist(this.sound.rate());
           }
-          if (this.playlist === this.pausePlaylist) {
-            return;
+          if (this.playlist != this.pausePlaylist) {
+            this.switchPlaylist(this.pausePlaylist);
           }
-
-          const currentSound = this.sound; // current sound
-          const isPlaying = currentSound.playing();
-          if (isPlaying) {
-            currentSound.pause();
-            currentSound.once('pause', () => currentSound.seek(0));
-          }
-
-          const verse = this.highlighted[this.index];
-          const wordNos = Object.keys(verse);
-          const wordNo = wordNos.length > 0 ? Math.max(...(wordNos.map(Number))) : 1;
-          const verseCues = page.cues[this.index];
-          const position = this.getCueStart(verseCues, wordNo, true);
-
-          this.playlist = this.pausePlaylist;
-          const newSound = this.sound; // new sound
-          newSound.seek(position);
-          if (isPlaying) {
-            newSound.play();
-          }
-          return;
         }
-
-        if (this.playlist === this.regularPlaylist) {
-          return;
-        }
-
-        const currentSound = this.sound; // current sound
-        const isPlaying = currentSound.playing() || this.wordTimeout > 0;
-        this.clearPauseTimeout();
-        if (isPlaying) {
-          currentSound.pause();
-          currentSound.once('pause', () => currentSound.seek(0));
-        }
-
-        const verse = this.highlighted[this.index];
-        const wordNos = Object.keys(verse);
-        const wordNo = wordNos.length > 0 ? Math.max(...(wordNos.map(Number))) : 1;
-        const verseCues = page.cues[this.index];
-        const position = this.getCueStart(verseCues, wordNo, true);
-
-        this.playlist = this.regularPlaylist;
-        const newSound = this.sound; // new sound
-        newSound.seek(position);
-        if (isPlaying) {
-          newSound.play();
+        else if (this.playlist != this.regularPlaylist) {
+          this.switchPlaylist(this.regularPlaylist);
         }
       } catch (ex) {
         alert(ex)
