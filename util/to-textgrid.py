@@ -108,6 +108,27 @@ item []:
 
     return header
 
+def split_hebrew_text(text):
+    words = []
+    current_word = ''
+
+    for char in text:
+        if char == ' ':
+            if current_word:
+                words.append(current_word)
+                current_word = ''
+        elif char in ['־', '׀']:
+            current_word += char
+            words.append(current_word)
+            current_word = ''
+        else:
+            current_word += char
+
+    if current_word:
+        words.append(current_word)
+
+    return words
+
 if __name__ == '__main__':
     input_filename = sys.argv[1]
     chapter_filename = input_filename[:-5]
@@ -126,7 +147,7 @@ if __name__ == '__main__':
     # Get the "Verses" tier
     verse_tier = tg.getFirst('Verses')
     verse_interval = verse_tier[verse_number - 1]
-    sefaria_words = re.split(r'[ ־]', verse_interval.mark)
+    sefaria_words = split_hebrew_text(verse_interval.mark)
     
     # Load chapter inter words
     inter_words = chapter_data['Chapter']['Verses'][str(verse_number)]['Words']
