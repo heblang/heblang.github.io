@@ -11,12 +11,17 @@ IF EXIST %AUDIOFILE%m4a (
     DEL %AUDIOFILE%m4a
 )
 
+IF EXIST %AUDIOFILE%mp3 (
+    DEL %AUDIOFILE%mp3
+)
+
 ffmpeg -i "%AUDIOFILE%wav" "%AUDIOFILE%m4a"
+ffmpeg -i "%AUDIOFILE%wav" "%AUDIOFILE%mp3"
 
 whisperx --model large-v2 --align_model "imvladikon/wav2vec2-xls-r-1b-hebrew" --language he %AUDIOFILE%wav
 
 python to-textgrid.py "%AUDIOFILE%"
 
-del "%AUDIOFILE%vtt" "%AUDIOFILE%txt" "%AUDIOFILE%tsv" "%AUDIOFILE%srt"
+del "%AUDIOFILE%vtt" "%AUDIOFILE%txt" "%AUDIOFILE%tsv" "%AUDIOFILE%srt" "%AUDIOFILE%json"
 
 endlocal
