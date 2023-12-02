@@ -436,7 +436,7 @@ document.addEventListener('pageCompleted', (event) => {
   document.querySelector('main').addEventListener('click', (event) => {
     event.stopImmediatePropagation();
     const target = event.target;
-    if (!target || !target.id) { return; }
+    if (!target || !target.id || target.classList.contains('parsh')) { return; }
 
     let id = target.id.match(/(\d+-\d+)/);
     if (!id || !(id = id[0])) { return; }
