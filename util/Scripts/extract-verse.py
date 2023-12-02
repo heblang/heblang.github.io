@@ -5,10 +5,12 @@ from string import Template
 from pydub import AudioSegment
 import os
 
+out_folder = 'out'
+
 
 def insert_blanks_in_audio(timestamps, audio_file_name):
     # Load the audio file
-    audio = AudioSegment.from_file(audio_file_name + '.wav')
+    audio = AudioSegment.from_file('../wav' + audio_file_name + '.wav')
 
     # Create a 1-second silent audio segment
     one_second_silence = AudioSegment.silent(duration=1000)
@@ -36,10 +38,9 @@ def insert_blanks_in_audio(timestamps, audio_file_name):
     output_audio += one_second_silence
 
     # Extract file name from path and prepend 'P_'
-    new_file_name = "P_" + os.path.basename(audio_file_name)
+    new_file_name = out_folder + "/P_" + os.path.basename(audio_file_name)
 
     # Save the output audio
-    output_audio.export(new_file_name + '.wav', format='wav')
     output_audio.export(new_file_name + '.m4a', format='ipod')
     output_audio.export(new_file_name + '.mp3', format='mp3')
 
@@ -286,7 +287,7 @@ def create_javascript_file(words, filename):
 
     file_content = file_template.substitute(
         hebrew_verse_number=_numbers[verse_number], verse_number=verse_number, content=content)
-    with open(filename, 'w', encoding='utf-8') as f:
+    with open(out_folder + filename, 'w', encoding='utf-8') as f:
         f.write(file_content)
 
 
@@ -312,8 +313,15 @@ $content    </div>
 '''
     html_content = html_template.substitute(
         hebrew_verse=_numbers[verse], verse=verse, content=content)
-    with open(filename, 'w', encoding='utf-8') as f:
+    with open(out_folder + filename, 'w', encoding='utf-8') as f:
         f.write(html_content)
+
+
+def create_directory_if_not_exists(directory_name):
+    # Check if the directory already exists
+    if not os.path.exists(directory_name):
+        # Create the directory
+        os.makedirs(directory_name)
 
 
 # Main execution
@@ -326,6 +334,7 @@ data = process_textgrid(filename)
 words = data[0]
 timestamps = data[1]
 
+create_directory_if_not_exists(out_folder)
 create_javascript_file(words, filename.replace('.TextGrid', '.js'))
 create_html_file(words, filename.replace('.TextGrid', '.html'))
 insert_blanks_in_audio(timestamps, filename.replace('.TextGrid', ''))

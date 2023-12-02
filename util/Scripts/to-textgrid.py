@@ -111,7 +111,6 @@ item []:
 def split_hebrew_text(text):
     words = []
     current_word = ''
-
     for char in text:
         if char == ' ':
             if current_word:
@@ -123,10 +122,8 @@ def split_hebrew_text(text):
             current_word = ''
         else:
             current_word += char
-
     if current_word:
         words.append(current_word)
-
     return words
 
 if __name__ == '__main__':
