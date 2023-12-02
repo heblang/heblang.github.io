@@ -476,13 +476,15 @@ document.addEventListener('pageCompleted', (event) => {
     if (!sound) {
       return;
     }
-    if (!sound.playing()) {
-      return;
-    }
 
     const current = player.index;
     if (current < start || current > end) {
-      player.skipTo(start);
+      if (sound.playing()) {
+        player.skipTo(start);
+      }
+      else {
+        player.index = start;
+      }
     }
   }, (passiveSupported ? { passive: true } : false));
 
