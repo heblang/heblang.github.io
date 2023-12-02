@@ -23,7 +23,7 @@ def align_intervals_with_words(textgrid_path):
 # Usage: python align-textgrid.py path_to_your.TextGrid
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python align-textgrid.py path_to_your.TextGrid")
+        print("Usage: python align-words-textgrid.py path_to_your.TextGrid")
         sys.exit(1)
 
     textgrid_path = sys.argv[1]

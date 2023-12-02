@@ -28,7 +28,7 @@ ffmpeg -i "%~dp0..\wav\%AUDIOFILE%wav" "%~dp0out\%AUDIOFILE%mp3"
 
 whisperx --model large-v2 --align_model "imvladikon/wav2vec2-xls-r-1b-hebrew" --output_dir out --language he "%~dp0..\wav\%AUDIOFILE%wav"
 
-python to-textgrid.py "%AUDIOFILE%"
+python py\to-textgrid.py "%AUDIOFILE%"
 
 del "%~dp0out\%AUDIOFILE%vtt" "%~dp0out\%AUDIOFILE%txt" "%~dp0out\%AUDIOFILE%tsv" "%~dp0out\%AUDIOFILE%srt" "%~dp0out\%AUDIOFILE%json"
 
