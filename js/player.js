@@ -70,6 +70,19 @@ document.addEventListener('pageCompleted', (event) => {
           elem.classList.add('highlight');
           elems.push(elem);
         }
+        if (i === 1) {
+          let elem = page.elements.translit[id];
+          if (elem.classList.contains('hide')) {
+            elem = page.elements.inter[id];
+          }
+          if (!isInViewport(elem)) {
+            elem.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+              inline: "nearest"
+            });
+          }
+        }
         break;
       }
     }
@@ -362,8 +375,17 @@ document.addEventListener('pageCompleted', (event) => {
     return id && (split = id.split('-')).length > 1 ? split : [null, null];
   }
 
-  let sliderDown = false;
+  const isInViewport = (element) => {
+    const rect = element.getBoundingClientRect();
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+  }
 
+  let sliderDown = false;
   const move = (event) => {
     if (sliderDown) {
       let x = event.clientX || event.touches[0].clientX;
