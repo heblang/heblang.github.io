@@ -132,11 +132,11 @@ def split_hebrew_text(text):
 if __name__ == '__main__':
     input_filename = sys.argv[1]
     chapter_filename = input_filename[:-5]
-    chapter_text_grid = './Chapters/' + chapter_filename + '.TextGrid'
-    chapter_json = './Chapters/' + chapter_filename + '.json'
+    chapter_text_grid = '../Chapters/' + chapter_filename + '.TextGrid'
+    chapter_json = '../Chapters/' + chapter_filename + '.json'
     verse_number = int(extract_verse_number(input_filename))
         
-    with open(input_filename + 'json', 'r', encoding="utf-8") as timestamp_json_file:
+    with open('out/' + input_filename + 'json', 'r', encoding="utf-8") as timestamp_json_file:
         data = json.load(timestamp_json_file)
 
     with open(chapter_json, 'r', encoding="utf-8") as chapter_json_file:
@@ -152,10 +152,10 @@ if __name__ == '__main__':
     # Load chapter inter words
     inter_words = chapter_data['Chapter']['Verses'][str(verse_number)]['Words']
     
-    audio_length = get_audio_length(input_filename + 'wav')
+    audio_length = get_audio_length('../wav/' + input_filename + 'wav')
     textgrid_content = json_to_textgrid(data, audio_length, sefaria_words, inter_words)
     
-    output_filename = input_filename + 'TextGrid'
+    output_filename = 'out/' + input_filename + 'TextGrid'
     with open(output_filename, 'w', encoding="utf-8") as output_file:
         output_file.write(textgrid_content)
     print(f"TextGrid file saved as {output_filename}")
