@@ -70,7 +70,8 @@ document.addEventListener('pageCompleted', (event) => {
           elem.classList.add('highlight');
           elems.push(elem);
         }
-        if (i === 1) {
+
+        window.requestAnimationFrame(() => {
           let elem = page.elements.translit[id];
           if (elem.classList.contains('hide')) {
             elem = page.elements.inter[id];
@@ -82,7 +83,7 @@ document.addEventListener('pageCompleted', (event) => {
               inline: "nearest"
             });
           }
-        }
+        });
         break;
       }
     }
