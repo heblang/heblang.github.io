@@ -2301,6 +2301,142 @@ tanakh.books = [
           t: { s: 12.46579, e: 13.15755 }
         }
       ],
+      [ // Verse 26
+        {},
+        {
+          a: "וַיֹּ֣אמֶר",
+          i: "And said",
+          p: "vai·Yo·mer",
+          l: "way·yō·mer",
+          t: { s: 0.5, e: 1.02218 }
+        },
+        {
+          a: "אֱלֹהִ֔ים",
+          i: "God",
+          p: "E·lo·Him,",
+          l: "’ĕ·lō·hîm,",
+          t: { s: 1.02218, e: 2.03175 }
+        },
+        {
+          a: "נַֽעֲשֶׂ֥ה",
+          i: "let Us make",
+          p: "na·'a·Seh",
+          l: "na·‘ă·śeh",
+          t: { s: 2.03175, e: 2.923 }
+        },
+        {
+          a: "אָדָ֛ם",
+          i: "man",
+          p: "'a·Dam",
+          l: "’ā·ḏām",
+          t: { s: 2.923, e: 3.45375 }
+        },
+        {
+          a: "בְּצַלְמֵ֖נוּ",
+          i: "in Our image",
+          p: "be·tzal·Me·nu",
+          l: "bə·ṣal·mê·nū",
+          t: { s: 3.45375, e: 4.48819 }
+        },
+        {
+          a: "כִּדְמוּתֵ֑נוּ",
+          i: "according to Our likeness",
+          p: "kid·mu·Te·nu;",
+          l: "kiḏ·mū·ṯê·nū;",
+          t: { s: 4.48819, e: 5.87175 }
+        },
+        {
+          a: "וְיִרְדּוּ֩",
+          i: "and let them rule",
+          p: "ve·yir·Du",
+          l: "wə·yir·dū",
+          t: { s: 5.87175, e: 6.93575 }
+        },
+        {
+          a: "בִדְגַ֨ת",
+          i: "over the fish",
+          p: "vid·Gat",
+          l: "ḇiḏ·ḡaṯ",
+          t: { s: 6.93575, e: 7.59281 }
+        },
+        {
+          a: "הַיָּ֜ם",
+          i: "of the sea",
+          p: "hai·Yam",
+          l: "hay·yām",
+          t: { s: 7.59281, e: 8.36 }
+        },
+        {
+          a: "וּבְע֣וֹף",
+          i: "and over the birds",
+          p: "u·ve·'of",
+          l: "ū·ḇə·‘ō·wp̄",
+          t: { s: 8.36, e: 8.93979 }
+        },
+        {
+          a: "הַשָּׁמַ֗יִם",
+          i: "of the heavens",
+          p: "hash·sha·Ma·yim,",
+          l: "haš·šā·ma·yim,",
+          t: { s: 8.93979, e: 10.24775 }
+        },
+        {
+          a: "וּבַבְּהֵמָה֙",
+          i: "and over the livestock",
+          p: "u·vab·be·he·Mah",
+          l: "ū·ḇab·bə·hê·māh",
+          t: { s: 10.24775, e: 11.76475 }
+        },
+        {
+          a: "וּבְכׇל־",
+          i: "and over all",
+          p: "u·ve·Chol",
+          l: "ū·ḇə·ḵāl",
+          t: { s: 11.76475, e: 12.46575 }
+        },
+        {
+          a: "הָאָ֔רֶץ",
+          i: "the earth",
+          p: "ha·'A·retz,",
+          l: "hā·’ā·reṣ,",
+          t: { s: 12.46575, e: 13.637 }
+        },
+        {
+          a: "וּבְכׇל־",
+          i: "and over every",
+          p: "u·ve·Chol",
+          l: "ū·ḇə·ḵāl",
+          t: { s: 13.637, e: 14.37699 }
+        },
+        {
+          a: "הָרֶ֖מֶשׂ",
+          i: "creeping thing",
+          p: "ha·Re·mes",
+          l: "hā·re·meś",
+          t: { s: 14.37699, e: 15.34975 }
+        },
+        {
+          a: "הָֽרֹמֵ֥שׂ",
+          i: "that creeps",
+          p: "ha·ro·Mes",
+          l: "hā·rō·mêś",
+          t: { s: 15.34975, e: 16.24075 }
+        },
+        {
+          a: "עַל־",
+          i: "on",
+          p: "'al-",
+          l: "‘al-",
+          t: { s: 16.24075, e: 16.56173 }
+        },
+        {
+          a: "הָאָֽרֶץ׃",
+          i: "the earth",
+          p: "ha·'A·retz.",
+          l: "hā·’ā·reṣ.",
+          t: { s: 16.56173, e: 17.56748 }
+        }
+      ],
     ]
   ],
   [ // Shemot
