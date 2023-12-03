@@ -1528,6 +1528,93 @@ tanakh.books = [
           t: { s: 6.29502, e: 7.65494 }
         }
       ],
+      [ // Verse 18
+        {},
+        {
+          a: "וְלִמְשֹׁל֙",
+          i: "And to rule",
+          p: "ve·lim·Shol",
+          l: "wə·lim·šōl",
+          t: { s: 0.5, e: 1.3 }
+        },
+        {
+          a: "בַּיּ֣וֹם",
+          i: "over the day",
+          p: "bai·Yom",
+          l: "bay·yō·wm",
+          t: { s: 1.3, e: 2.10675 }
+        },
+        {
+          a: "וּבַלַּ֔יְלָה",
+          i: "and over the night",
+          p: "u·val·Lay·lah,",
+          l: "ū·ḇal·lay·lāh,",
+          t: { s: 2.10675, e: 3.40975 }
+        },
+        {
+          a: "וּֽלְהַבְדִּ֔יל",
+          i: "and to divide",
+          p: "u·la·hav·Dil,",
+          l: "ū·lă·haḇ·dîl,",
+          t: { s: 3.40975, e: 4.647 }
+        },
+        {
+          a: "בֵּ֥ין",
+          i: "between",
+          p: "bein",
+          l: "bên",
+          t: { s: 4.647, e: 4.863 }
+        },
+        {
+          a: "הָא֖וֹר",
+          i: "the light",
+          p: "ha·'Or",
+          l: "hā·’ō·wr",
+          t: { s: 4.863, e: 5.374 }
+        },
+        {
+          a: "וּבֵ֣ין",
+          i: "and between",
+          p: "u·Vein",
+          l: "ū·ḇên",
+          t: { s: 5.374, e: 5.67 }
+        },
+        {
+          a: "הַחֹ֑שֶׁךְ",
+          i: "the darkness",
+          p: "ha·Cho·shech;",
+          l: "ha·ḥō·šeḵ;",
+          t: { s: 5.67, e: 6.68175 }
+        },
+        {
+          a: "וַיַּ֥רְא",
+          i: "and saw",
+          p: "vai·Yar",
+          l: "way·yar",
+          t: { s: 6.68175, e: 7.49197 }
+        },
+        {
+          a: "אֱלֹהִ֖ים",
+          i: "God",
+          p: "E·lo·Him",
+          l: "’ĕ·lō·hîm",
+          t: { s: 7.49197, e: 8.25 }
+        },
+        {
+          a: "כִּי־",
+          i: "that",
+          p: "ki-",
+          l: "kî-",
+          t: { s: 8.25, e: 8.50437 }
+        },
+        {
+          a: "טֽוֹב׃",
+          i: "[it was] good",
+          p: "Tov.",
+          l: "ṭō·wḇ.",
+          t: { s: 8.50437, e: 9.17553 }
+        }
+      ],
     ]
   ],
   [ // Shemot
