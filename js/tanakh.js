@@ -2071,6 +2071,107 @@ tanakh.books = [
           t: { s: 3.13713, e: 4.16132 }
         }
       ],
+      [ // Verse 24
+        {},
+        {
+          a: "וַיֹּ֣אמֶר",
+          i: "And said",
+          p: "vai·Yo·mer",
+          l: "way·yō·mer",
+          t: { s: 0.5, e: 1.32811 }
+        },
+        {
+          a: "אֱלֹהִ֗ים",
+          i: "God",
+          p: "E·lo·Him,",
+          l: "’ĕ·lō·hîm,",
+          t: { s: 1.32811, e: 2.43866 }
+        },
+        {
+          a: "תּוֹצֵ֨א",
+          i: "let bring forth",
+          p: "to·Tze",
+          l: "tō·w·ṣê",
+          t: { s: 2.43866, e: 3.19495 }
+        },
+        {
+          a: "הָאָ֜רֶץ",
+          i: "the earth",
+          p: "ha·'A·retz",
+          l: "hā·’ā·reṣ",
+          t: { s: 3.19495, e: 4.15171 }
+        },
+        {
+          a: "נֶ֤פֶשׁ",
+          i: "the creature",
+          p: "Ne·fesh",
+          l: "ne·p̄eš",
+          t: { s: 4.15171, e: 4.74308 }
+        },
+        {
+          a: "חַיָּה֙",
+          i: "living",
+          p: "chai·Yah",
+          l: "ḥay·yāh",
+          t: { s: 4.74308, e: 5.36376 }
+        },
+        {
+          a: "לְמִינָ֔הּ",
+          i: "according to its kind",
+          p: "le·mi·Nah,",
+          l: "lə·mî·nāh,",
+          t: { s: 5.36376, e: 6.55707 }
+        },
+        {
+          a: "בְּהֵמָ֥ה",
+          i: "livestock",
+          p: "be·he·Mah",
+          l: "bə·hê·māh",
+          t: { s: 6.55707, e: 7.38708 }
+        },
+        {
+          a: "וָרֶ֛מֶשׂ",
+          i: "and creeping thing",
+          p: "va·Re·mes",
+          l: "wā·re·meś",
+          t: { s: 7.38708, e: 8.48078 }
+        },
+        {
+          a: "וְחַֽיְתוֹ־",
+          i: "and beast",
+          p: "ve·chay·tov-",
+          l: "wə·ḥay·ṯōw-",
+          t: { s: 8.48078, e: 9.46987 }
+        },
+        {
+          a: "אֶ֖רֶץ",
+          i: "of the earth",
+          p: "'E·retz",
+          l: "’e·reṣ",
+          t: { s: 9.46987, e: 10.10927 }
+        },
+        {
+          a: "לְמִינָ֑הּ",
+          i: "[each] according to its kind",
+          p: "le·mi·Nah;",
+          l: "lə·mî·nāh;",
+          t: { s: 10.10927, e: 11.04057 }
+        },
+        {
+          a: "וַֽיְהִי־",
+          i: "and it was",
+          p: "vay·hi-",
+          l: "way·hî-",
+          t: { s: 11.04057, e: 11.62086 }
+        },
+        {
+          a: "כֵֽן׃",
+          i: "so",
+          p: "Chen.",
+          l: "ḵên.",
+          t: { s: 11.62086, e: 12.4376 }
+        }
+      ],
     ]
   ],
   [ // Shemot
