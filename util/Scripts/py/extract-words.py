@@ -296,8 +296,8 @@ def create_html_file(words, filename):
     html_template = Template('''    <div class="row">
       <div class="col">
         <div class="no">
-          <a href="#" title="Go Up" lang="he" class="heb r">$hebrew_verse&nbsp;</a><br>
-          <a href="#" title="Go Up" class="enn">$verse&nbsp;</a>
+          <a href="#" title="Go Up" lang="he" class="heb r">$hebrew_verse</a><br>
+          <a href="#" title="Go Up" class="enn">$verse</a>
         </div>
         <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
       </div>
@@ -311,8 +311,16 @@ $content    </div>
         <div id="{verse}-{word}t" class="tran hide"></div>
       </div>
 '''
+    html_hebrew_verse = '&nbsp;' + _numbers[verse]
+    if (len(html_hebrew_verse) == 7):
+      html_hebrew_verse += '&nbsp;'
+    
+    html_verse = '&nbsp;' + str(verse)
+    if (len(html_verse) == 7):
+      html_verse += '&nbsp;'
+    
     html_content = html_template.substitute(
-        hebrew_verse=_numbers[verse], verse=verse, content=content)
+        hebrew_verse=html_hebrew_verse, verse=html_verse, content=content)
     with open(out_folder + filename, 'w', encoding='utf-8') as f:
         f.write(html_content)
 
