@@ -1,9 +1,10 @@
 import re
+import os
 import sys
+import json
 from textgrid import TextGrid
 from string import Template
 from pydub import AudioSegment
-import os
 
 out_folder = 'out'
 
@@ -53,6 +54,11 @@ def extract_verse_number(filename):
 def extract_chapter_number(filename):
     match = re.search(r'_(\d{3})_\d{3}\.', filename)
     return match.group(1) if match else None
+
+
+def read_json_from_file(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        return json.load(file)
 
 
 _numbers = {
@@ -274,6 +280,13 @@ def process_textgrid(file_path):
     return [words, timestamps]
 
 
+def get_parshat_translit(parshat):
+    if parshat == '{פ}':
+        return 'p̄'
+    else:
+        return ''
+
+
 def create_javascript_file(words, filename):
     verse_number = int(extract_verse_number(filename))
     file_template = Template(
@@ -291,7 +304,7 @@ def create_javascript_file(words, filename):
         f.write(file_content)
 
 
-def create_html_file(words, filename):
+def create_html_file(words, filename, parshiot):
     verse = int(extract_verse_number(filename))
     html_template = Template('''    <div class="row">
       <div class="col">
@@ -303,6 +316,12 @@ def create_html_file(words, filename):
       </div>
 $content    </div>
 ''')
+    parshat_template = Template('''      <div class="col">
+        <div id="${verse}-${word}w" lang="he" class="parsh heb t">${parshat}</div>
+        <div id="${verse}-${word}i" class="eng parsh">&nbsp;</div>
+        <div id="${verse}-${word}t" class="tran parsh hide">${parshat_translit}</div>
+      </div>
+''')
     content = ''
     for word, _ in enumerate(words, start=1):
         content = content + f'''      <div class="col">
@@ -311,14 +330,20 @@ $content    </div>
         <div id="{verse}-{word}t" class="tran hide"></div>
       </div>
 '''
-    html_hebrew_verse = '&nbsp;' + _numbers[verse]
-    if (len(html_hebrew_verse) == 7):
-      html_hebrew_verse += '&nbsp;'
-    
-    html_verse = '&nbsp;' + str(verse)
-    if (len(html_verse) == 7):
-      html_verse += '&nbsp;'
-    
+    parshat = parshiot.get(str(verse))
+    if (parshat):
+        content = content + parshat_template.substitute(verse=verse, word=len(
+            words) + 1, parshat=parshat, parshat_translit=get_parshat_translit(parshat))
+    html_hebrew_verse = _numbers[verse]
+    if (len(html_hebrew_verse) == 1):
+        html_hebrew_verse += '&nbsp;'
+    html_hebrew_verse = '&nbsp;' + html_hebrew_verse + '&nbsp;'
+
+    html_verse = str(verse)
+    if (len(html_verse) == 1):
+        html_verse += '&nbsp;'
+    html_verse = '&nbsp;' + html_verse + '&nbsp;'
+
     html_content = html_template.substitute(
         hebrew_verse=html_hebrew_verse, verse=html_verse, content=content)
     with open(out_folder + filename, 'w', encoding='utf-8') as f:
@@ -344,5 +369,6 @@ timestamps = data[1]
 
 create_directory_if_not_exists(out_folder)
 create_javascript_file(words, filename.replace('.TextGrid', '.js'))
-create_html_file(words, filename.replace('.TextGrid', '.html'))
+create_html_file(words, filename.replace('.TextGrid', '.html'),
+                 read_json_from_file(filename[:-13] + '.json'))
 insert_blanks_in_audio(timestamps, filename.replace('.TextGrid', ''))
