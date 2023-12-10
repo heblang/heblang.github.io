@@ -337,15 +337,10 @@ $content    </div>
     html_hebrew_verse = _numbers[verse]
     if (len(html_hebrew_verse) == 1):
         html_hebrew_verse += '&nbsp;'
-    html_hebrew_verse = '&nbsp;' + html_hebrew_verse + '&nbsp;'
-
-    html_verse = str(verse)
-    if (len(html_verse) == 1):
-        html_verse += '&nbsp;'
-    html_verse = '&nbsp;' + html_verse + '&nbsp;'
+    html_hebrew_verse = html_hebrew_verse + '&nbsp;'
 
     html_content = html_template.substitute(
-        hebrew_verse=html_hebrew_verse, verse=html_verse, content=content)
+        hebrew_verse=html_hebrew_verse, verse=verse, content=content)
     with open(out_folder + filename, 'w', encoding='utf-8') as f:
         f.write(html_content)
 
