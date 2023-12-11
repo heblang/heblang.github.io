@@ -292,10 +292,10 @@ def create_javascript_file(words, filename):
     file_template = Template(
         '      [ // Verse $verse_number\n        {},\n$content      ],\n')
     content_template = Template(
-        '        {\n          a: "$a",\n          i: "$i",\n          p: "$p",\n          l: "$l",\n          t: { s: $s, e: $e }\n        }')
+        '        {\n          a: "$a",\n          p: "$p",\n          l: "$l",\n          t: { s: $s, e: $e }\n        }')
     content = ''
     for index, word in enumerate(words):
-        content = content + content_template.substitute(a=word["a"], i=word["i"], p=word["p"], l=word["l"],
+        content = content + content_template.substitute(a=word["a"], p=word["p"], l=word["l"],
                                                         s=word["t"]["s"], e=word["t"]["e"]) + ('\n' if index == len(words) - 1 else ',\n')
 
     file_content = file_template.substitute(
@@ -323,11 +323,11 @@ $content    </div>
       </div>
 ''')
     content = ''
-    for word, _ in enumerate(words, start=1):
+    for wordNo, word in enumerate(words, start=1):
         content = content + f'''      <div class="col">
-        <div id="{verse}-{word}w" lang="he" class="heb t"></div>
-        <div id="{verse}-{word}i" class="eng"></div>
-        <div id="{verse}-{word}t" class="tran hide"></div>
+        <div id="{verse}-{wordNo}w" lang="he" class="heb t"></div>
+        <div id="{verse}-{wordNo}i" class="eng">{word["i"]}</div>
+        <div id="{verse}-{wordNo}t" class="tran hide"></div>
       </div>
 '''
     parshat = parshiot.get(str(verse))

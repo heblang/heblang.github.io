@@ -58,7 +58,6 @@ window.tanakh || (window.tanakh = {});
       for (let j = 1; j < words.length; j++) {
         let wobj = words[j];
         let word = wobj.a;
-        let interlinear = wobj.i;
         let id = i + '-' + j;
         cues.push(wobj.t);
 
@@ -68,7 +67,6 @@ window.tanakh || (window.tanakh = {});
         page.elements.translit[id] = document.getElementById(id + 't');
 
         page.elements.word[id].innerText = getConsonants(word);
-        page.elements.inter[id].innerText = interlinear;
       }
     }
     let event = new CustomEvent('pageCompleted', { detail: page });
