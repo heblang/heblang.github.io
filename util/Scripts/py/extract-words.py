@@ -306,38 +306,37 @@ def create_javascript_file(words, filename):
 
 def create_html_file(words, filename, parshiot):
     verse = int(extract_verse_number(filename))
-    html_template = Template('''    <div class="row">
-      <div class="col">
+    html_template = Template('''    <div class="verse">
+      <div class="verse-number">
         <div class="no">
           <a href="#" title="Go Up" lang="he" class="heb r">$hebrew_verse</a><br>
           <a href="#" title="Go Up" class="enn">$verse</a>
         </div>
         <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
       </div>
-$content    </div>
+      <div class="verse-text">
+$content      </div>
+    </div>
 ''')
-    parshat_template = Template('''      <div class="col">
-        <div id="${verse}-${word}w" lang="he" class="parsh heb t">${parshat}</div>
-        <div id="${verse}-${word}i" class="eng parsh">&nbsp;</div>
-        <div id="${verse}-${word}t" class="tran parsh hide">${parshat_translit}</div>
-      </div>
+    parshat_template = Template('''        <div class="col">
+          <div id="${verse}-${word}w" lang="he" class="parsh heb t">${parshat}</div>
+          <div id="${verse}-${word}i" class="eng parsh">&nbsp;</div>
+          <div id="${verse}-${word}t" class="tran parsh hide">${parshat_translit}</div>
+        </div>
 ''')
     content = ''
     for wordNo, word in enumerate(words, start=1):
-        content = content + f'''      <div class="col">
-        <div id="{verse}-{wordNo}w" lang="he" class="heb t"></div>
-        <div id="{verse}-{wordNo}i" class="eng">{word["i"]}</div>
-        <div id="{verse}-{wordNo}t" class="tran hide"></div>
-      </div>
+        content = content + f'''        <div class="col">
+          <div id="{verse}-{wordNo}w" lang="he" class="heb t"></div>
+          <div id="{verse}-{wordNo}i" class="eng">{word["i"]}</div>
+          <div id="{verse}-{wordNo}t" class="tran hide"></div>
+        </div>
 '''
     parshat = parshiot.get(str(verse))
     if (parshat):
         content = content + parshat_template.substitute(verse=verse, word=len(
             words) + 1, parshat=parshat, parshat_translit=get_parshat_translit(parshat))
     html_hebrew_verse = _numbers[verse]
-    if (len(html_hebrew_verse) == 1):
-        html_hebrew_verse += '&nbsp;'
-    html_hebrew_verse = html_hebrew_verse + '&nbsp;'
 
     html_content = html_template.substitute(
         hebrew_verse=html_hebrew_verse, verse=verse, content=content)
