@@ -97,7 +97,7 @@ window.tanakh || (window.tanakh = {});
   // Consonants + maqaf
   const consonants = "\u05d0\u05d1\u05d2\u05d3\u05d4\u05d5\u05d6\u05d7\u05d8\u05d9\u05da\u05db\u05dc\u05dd\u05de\u05df\u05e0\u05e1\u05e2\u05e3\u05e4\u05e5\u05e6\u05e7\u05e8\u05e9\u05ea\u05BE"
   // Vowels and shin/sin dots and sof pasuq
-  const vowels = "\u05b0\u05b1\u05b2\u05b3\u05b4\u05b5\u05b6\u05b7\u05b8\u05b9\u05ba\u05bb\u05bc\u05c1\u05c2\u05C3"
+  const vowels = "\u05b0\u05b1\u05b2\u05b3\u05b4\u05b5\u05b6\u05b7\u05b8\u05b9\u05ba\u05bb\u05bc\u05c1\u05c2\u05C3\u05C7"
   // Compiled Regular Expressions
   const regexConsonants = new RegExp(`[${consonants}]`, 'gu');
   const regexVowels = new RegExp(`[${consonants}${vowels}]`, 'gu');
