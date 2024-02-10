@@ -45,7 +45,7 @@ window.tanakh || (window.tanakh = {});
         n: bookNo
       },
       chapter: {
-        a: verses[0][0],
+        a: tanakh.numbers[chapterNo],
         n: chapterNo
       }
     };
