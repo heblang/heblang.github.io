@@ -40,8 +40,8 @@ window.tanakh || (window.tanakh = {});
     verses = tanakh.books[bookNo][chapterNo];
     page.info = {
       book: {
-        a: tanakh.books[0][0],
-        p: tanakh.books[0][1],
+        a: tanakh.names.w[bookNo],
+        p: tanakh.names.p[bookNo],
         n: bookNo
       },
       chapter: {
