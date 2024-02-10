@@ -148,7 +148,7 @@ window.tanakh || (window.tanakh = {});
     return controls.transliterate.value == 'phonetic'
       ? (sc ? 'p' : 'q')
       : controls.transliterate.value == 'latin'
-        ? (sc ? 'l' : 'm')
+        ? (sc ? 'l' : 'k')
         : (() => { throw new Error("Invalid invocation of getTranslitKey"); })();
   }
 
