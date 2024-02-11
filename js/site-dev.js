@@ -122,13 +122,13 @@ window.tanakh || (window.tanakh = {});
     const pereq = 'פֶּרֶק';
     switch (controls.niqqud.value) {
       case 'vowels':
-        cached = `${getVoweled(page.info.book.a)} ${getVoweled(pereq)} ${page.info.chapter.a}`;
+        cached = `${getVoweled(page.info.book.a)} ${getVoweled(pereq)}`;
         break;
       case 'consonants':
-        cached = `${getConsonants(page.info.book.a)} ${getConsonants(pereq)} ${page.info.chapter.a}`;
+        cached = `${getConsonants(page.info.book.a)} ${getConsonants(pereq)}`;
         break;
       default:
-        cached = `${page.info.book.a} ${pereq} ${page.info.chapter.a}`;
+        cached = `${page.info.book.a} ${pereq}`;
         break;
     }
     bcCache[key] = cached
