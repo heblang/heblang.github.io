@@ -35,7 +35,8 @@ window.tanakh || (window.tanakh = {});
       return;
     }
   }
-  controls.loadingScreen.style.display = 'block';
+
+  controls.loadingScreen.className = 'loading-screen';
 
   tanakh.init = (bookNo, chapterNo) => {
     verses = tanakh.books[bookNo][chapterNo];
