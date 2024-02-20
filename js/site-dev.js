@@ -27,7 +27,7 @@ window.tanakh || (window.tanakh = {});
   })();
 
   const controls = {};
-  const elemIds = ['fontFamily', 'niqqud', 'transliterate', 'syllables', 'stickyHeader', 'bookAndChapter', 'loadingScreen'];
+  const elemIds = ['fontFamily', 'niqqud', 'transliterate', 'syllables', 'stickyHeader', 'bookAndChapter'];
   for (let i = 0; i < elemIds.length; i++) {
     const elemId = elemIds[i];
     if (!(controls[elemId] = document.getElementById(elemId))) {
@@ -35,8 +35,6 @@ window.tanakh || (window.tanakh = {});
       return;
     }
   }
-
-  controls.loadingScreen.className = 'loading-screen';
 
   tanakh.init = (bookNo, chapterNo) => {
     verses = tanakh.books[bookNo][chapterNo];
@@ -67,8 +65,8 @@ window.tanakh || (window.tanakh = {});
         page.elements.word[id] = document.getElementById(id + 'w');
         page.elements.inter[id] = document.getElementById(id + 'i');
         page.elements.translit[id] = document.getElementById(id + 't');
-
-        page.elements.word[id].innerText = getConsonants(word);
+        
+        wobj._ = page.elements.word[id].innerHTML;
       }
     }
 
