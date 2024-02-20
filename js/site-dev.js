@@ -27,7 +27,7 @@ window.tanakh || (window.tanakh = {});
   })();
 
   const controls = {};
-  const elemIds = ['fontFamily', 'niqqud', 'transliterate', 'syllables', 'stickyHeader', 'bookAndChapter'];
+  const elemIds = ['fontFamily', 'niqqud', 'transliterate', 'syllables', 'stickyHeader', 'bookAndChapter', 'loadingScreen'];
   for (let i = 0; i < elemIds.length; i++) {
     const elemId = elemIds[i];
     if (!(controls[elemId] = document.getElementById(elemId))) {
@@ -35,6 +35,7 @@ window.tanakh || (window.tanakh = {});
       return;
     }
   }
+  controls.loadingScreen.style.display = 'block';
 
   tanakh.init = (bookNo, chapterNo) => {
     verses = tanakh.books[bookNo][chapterNo];
