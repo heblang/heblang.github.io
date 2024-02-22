@@ -27,7 +27,7 @@ window.tanakh || (window.tanakh = {});
   })();
 
   const controls = {};
-  const elemIds = ['fontFamily', 'niqqud', 'transliterate', 'syllables', 'stickyHeader', 'bookAndChapter'];
+  const elemIds = ['fontFamily', 'niqqud', 'transliterate', 'syllables', 'stickyHeader', 'currentBook'];
   for (let i = 0; i < elemIds.length; i++) {
     const elemId = elemIds[i];
     if (!(controls[elemId] = document.getElementById(elemId))) {
@@ -37,11 +37,11 @@ window.tanakh || (window.tanakh = {});
   }
 
   tanakh.init = (bookNo, chapterNo) => {
-    verses = tanakh.books[bookNo][chapterNo];
     page.info = {
       book: {
         a: tanakh.names.w[bookNo],
         p: tanakh.names.p[bookNo],
+        m: tanakh.names.m[bookNo],
         n: bookNo
       },
       chapter: {
@@ -50,23 +50,24 @@ window.tanakh || (window.tanakh = {});
       }
     };
 
-    controls.bookAndChapter.innerText = getBookAndChapter(getWordKey());
-    for (let i = 1; i < verses.length; i++) {
+    // For size considerations, tanakh.books references are all zero based
+    bookCache._a = controls.currentBook.innerText
+    verses = tanakh.books[dec(bookNo)][dec(chapterNo)];
+    for (let i = 1; i < verses.length + 1; i++) {
       var cues = [0];
       page.cues.push(cues);
-      let words = verses[i];
-      for (let j = 1; j < words.length; j++) {
-        let wobj = words[j];
-        let word = wobj.a;
+      let words = verses[dec(i)];
+      for (let j = 1; j < words.length + 1; j++) {
+        let wobj = words[dec(j)];
         let id = i + '-' + j;
-        cues.push(wobj.t);
+        wobj.t && cues.push(wobj.t);
 
         // cache DOM refs
         page.elements.word[id] = document.getElementById(id + 'w');
         page.elements.inter[id] = document.getElementById(id + 'i');
         page.elements.translit[id] = document.getElementById(id + 't');
-        
-        wobj._ = page.elements.word[id].innerHTML;
+
+        wobj._a = page.elements.word[id].cloneNode(true);
       }
     }
 
@@ -86,6 +87,18 @@ window.tanakh || (window.tanakh = {});
     document.dispatchEvent(event);
   }
 
+  const dec = x => x - 1;
+
+  function traverseAndReplace(node, replacementFunction) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      // Node is a text node, replace its content
+      node.nodeValue = replacementFunction(node.nodeValue);
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      // Node is an element node, traverse its children
+      node.childNodes.forEach(child => traverseAndReplace(child, replacementFunction));
+    }
+  }
+
   page.cues = [[]]; // 1 based indexes
   page.elements = {
     word: {},
@@ -93,7 +106,7 @@ window.tanakh || (window.tanakh = {});
     translit: {}
   };
   let verses;
-  const bcCache = {};
+  const bookCache = {};
   // Consonants + maqaf
   const consonants = "\u05d0\u05d1\u05d2\u05d3\u05d4\u05d5\u05d6\u05d7\u05d8\u05d9\u05da\u05db\u05dc\u05dd\u05de\u05df\u05e0\u05e1\u05e2\u05e3\u05e4\u05e5\u05e6\u05e7\u05e8\u05e9\u05ea\u05BE"
   // Vowels and shin/sin dots and sof pasuq
@@ -103,7 +116,7 @@ window.tanakh || (window.tanakh = {});
   const regexVowels = new RegExp(`[${consonants}${vowels}]`, 'gu');
 
   // Filtering Functions
-  function getConsonants(text) {
+  function getConsonant(text) {
     if (typeof text !== 'string') return '';
     return (text.match(regexConsonants) || []).join('');
   }
@@ -113,8 +126,8 @@ window.tanakh || (window.tanakh = {});
     return (text.match(regexVowels) || []).join('');
   }
 
-  function getBookAndChapter(key) {
-    let cached = bcCache[key]
+  function getcurrentBook(key) {
+    let cached = bookCache[key]
     if (cached) {
       return cached;
     }
@@ -125,49 +138,76 @@ window.tanakh || (window.tanakh = {});
         cached = `${getVoweled(page.info.book.a)} ${getVoweled(pereq)}`;
         break;
       case 'consonants':
-        cached = `${getConsonants(page.info.book.a)} ${getConsonants(pereq)}`;
+        cached = `${getConsonant(page.info.book.a)} ${getConsonant(pereq)}`;
+        break;
+      case 'male':
+        cached = `${page.info.book.m} ${getConsonant(pereq)}`;
         break;
       default:
-        cached = `${page.info.book.a} ${pereq}`;
+        cached = '';
         break;
     }
-    bcCache[key] = cached
+    bookCache[key] = cached
     return cached;
   }
 
   function getWordKey() {
     return controls.niqqud.value == 'vowels'
-      ? 'v'
+      ? '_v'
       : controls.niqqud.value == 'consonants'
-        ? 'c'
-        : 'a';
+        ? '_c'
+        : controls.niqqud.value == 'male'
+          ? '_m'
+          : '_a';
   }
 
   function getTranslitKey() {
     const sc = controls.syllables.checked;
     return controls.transliterate.value == 'phonetic'
-      ? (sc ? 'p' : 'q')
+      ? (sc ? '_p' : '__p')
       : controls.transliterate.value == 'latin'
-        ? (sc ? 'l' : 'k')
+        ? (sc ? '_l' : '__l')
         : (() => { throw new Error("Invalid invocation of getTranslitKey"); })();
+  }
+
+  function getMale(wobj) {
+    const m = wobj.m;
+    const amale = tanakh.male[m];
+    let male = [];
+    for (const c of amale) {
+      male.push(tanakh.calheb[c]);
+    }
+    return male.join('');
   }
 
   function toggleText(event) {
     event.stopImmediatePropagation();
 
     const key = getWordKey();
-    const filter = key == 'v' ? getVoweled : getConsonants;
+    controls.currentBook.innerText = getcurrentBook(key);
 
-    controls.bookAndChapter.innerText = getBookAndChapter(key);
-    for (let i = 1; i < verses.length; i++) {
-      let words = verses[i];
-      for (let j = 1; j < words.length; j++) {
-        let wobj = words[j];
-        let word = wobj[key];
-        if (!word) {
-          wobj[key] = word = filter(wobj.a);
+    const filter = key == '_v'
+      ? getVoweled
+      : key == '_c'
+        ? getConsonant
+        : x => x;
+
+    for (let i = 1; i < verses.length + 1; i++) {
+      let words = verses[dec(i)];
+      for (let j = 1; j < words.length + 1; j++) {
+        let wobj = words[dec(j)];
+        let node = wobj[key];
+        if (!node) {
+          if (key == '_m') {
+            node = getMale(wobj)
+          }
+          else {
+            node = wobj._a.cloneNode(true);
+            traverseAndReplace(node, filter);
+          }
+          wobj[key] = node;
         }
-        page.elements.word[i + '-' + j].innerText = word;
+        page.elements.word[i + '-' + j].innerHTML = key == '_m' ? node : node.innerHTML;
       }
     }
   }
