@@ -68,6 +68,7 @@ window.tanakh || (window.tanakh = {});
         page.elements.translit[id] = document.getElementById(id + 't');
 
         wobj._a = page.elements.word[id].cloneNode(true);
+        wobj._p = page.elements.translit[id].innerText;
       }
     }
 
@@ -180,6 +181,16 @@ window.tanakh || (window.tanakh = {});
     return male.join('');
   }
 
+  function getTranslit(wobj) {
+    const l = wobj.l;
+    const atranslit = tanakh.translit[l];
+    let translit = [];
+    for (const c of atranslit) {
+      translit.push(tanakh.caltranslit[c]);
+    }
+    return translit.join('');
+  }
+
   function toggleText(event) {
     event.stopImmediatePropagation();
 
@@ -214,13 +225,13 @@ window.tanakh || (window.tanakh = {});
 
   function toggleTranslit() {
     const key = getTranslitKey();
-    for (let i = 1; i < verses.length; i++) {
-      let words = verses[i];
-      for (let j = 1; j < words.length; j++) {
-        let wobj = words[j];
+    for (let i = 1; i < verses.length + 1; i++) {
+      let words = verses[dec(i)];
+      for (let j = 1; j < words.length + 1; j++) {
+        let wobj = words[(dec(j))];
         let word = wobj[key];
         if (!word) {
-          word = key == 'q' ? wobj.p : wobj.l;
+          word = key == '_l' || key == '__l' ? getTranslit(wobj) : wobj._p;
           if (!controls.syllables.checked) {
             word = word.replace(/·/g, '');
           }
