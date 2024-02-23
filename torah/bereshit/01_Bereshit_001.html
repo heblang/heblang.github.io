@@ -9,9 +9,14 @@
 </head>
 
 <body>
-  <div id="loadingScreen" class="loading-screen">
+  <div id="loadingScreen" class="hide">
     <div class="spinner"></div>
   </div>
+  <div id="jsDisabled">JavaScript is not enabled in your browser.</div>
+  <script>
+    document.getElementById('jsDisabled').style.display = 'none';
+    document.getElementById('loadingScreen').classList.replace('hide', 'loading-screen');
+  </script>
   <header class="sticky hrow">
     <div class="hcol">
       <div class="book" title="בְּרֵאשִׁ֖ית א">
