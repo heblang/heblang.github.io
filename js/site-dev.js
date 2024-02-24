@@ -194,6 +194,24 @@ window.tanakh || (window.tanakh = {});
   function toggleText(event) {
     event.stopImmediatePropagation();
 
+    if (controls.niqqud.value == 'accents') {
+      document.querySelectorAll('.paseq').forEach(
+        p => p.classList.remove('hide'));
+    }
+    else {
+      document.querySelectorAll('.paseq').forEach(
+        p => p.classList.add('hide'));
+    }
+
+    if (controls.niqqud.value == 'consonants' || controls.niqqud.value == 'male') {
+      document.querySelectorAll('.sof-pasuq').forEach(
+        p => p.classList.add('hide'));
+    }
+    else {
+      document.querySelectorAll('.sof-pasuq').forEach(
+        p => p.classList.remove('hide'));
+    }
+
     const key = getWordKey();
     controls.currentBook.innerText = getcurrentBook(key);
 
