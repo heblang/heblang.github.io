@@ -356,6 +356,38 @@ document.addEventListener('pageCompleted', (event) => {
     }
   }
 
+  const isSessionAvail = (() => {
+    const testKey = 'testSession';
+    try {
+      sessionStorage.setItem(testKey, '1');
+      sessionStorage.removeItem(testKey);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  })();
+
+  const sessionKey = {
+    chapterStart: 'chapterStart',
+    chapterEnd: 'chapterEnd',
+    speed: 'speed',
+    pause: 'pause'
+  };
+
+  if (isSessionAvail) {
+    const pauseStoredVal = parseInt(window.sessionStorage.getItem(sessionKey.pause) || 0);
+    const currentPause = parseInt(controls.wordPause.value.trim() || 0);
+    if (pauseStoredVal != currentPause) {
+      controls.wordPause.value = pauseStoredVal;
+    }
+
+    const speedStoredVal = parseFloat(window.sessionStorage.getItem(sessionKey.speed) || 1);
+    const currentSpeed = parseFloat(controls.speed.value);
+    if (speedStoredVal != currentSpeed) {
+      controls.speed.value = speedStoredVal;
+    }
+  }
+
   const toggleVolume = () => {
     let display = (controls.volume.style.display === 'block') ? 'none' : 'block';
 
@@ -409,7 +441,11 @@ document.addEventListener('pageCompleted', (event) => {
   }, (passiveSupported ? { passive: true } : false));
 
   controls.wordPause.addEventListener('change', () => {
-    player.setPlaylist(parseInt(controls.wordPause.value.trim() || 0));
+    var val = parseInt(controls.wordPause.value.trim() || 0);
+    player.setPlaylist(val);
+    if (isSessionAvail) {
+      window.sessionStorage.setItem(sessionKey.pause, val);
+    }
   }, (passiveSupported ? { passive: true } : false));
 
   controls.volumeBtn.addEventListener('click', () => {
@@ -454,6 +490,9 @@ document.addEventListener('pageCompleted', (event) => {
     }
     let rate = parseFloat(target.value);
     player.rate(rate);
+    if (isSessionAvail) {
+      window.sessionStorage.setItem(sessionKey.speed, rate);
+    }
   }, (passiveSupported ? { passive: true } : false));
 
   document.querySelector('main').addEventListener('click', (event) => {

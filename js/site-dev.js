@@ -153,17 +153,6 @@ window.tanakh || (window.tanakh = {});
     }
   })();
 
-  const isSessionAvail = (() => {
-    const testKey = 'testSession';
-    try {
-      sessionStorage.setItem(testKey, '1');
-      sessionStorage.removeItem(testKey);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  })();
-
   page.cues = [[]]; // 1 based indexes
   page.elements = {
     word: {},
@@ -185,13 +174,6 @@ window.tanakh || (window.tanakh = {});
     niqqud: 'niqqud',
     translit: 'translit',
     syllables: 'syllables'
-  };
-
-  const sessionKey = {
-    chapterStart: 'chapterStart',
-    chapterEnd: 'chapterEnd',
-    speed: 'speed',
-    pause: 'pause'
   };
 
   // Filtering Functions
