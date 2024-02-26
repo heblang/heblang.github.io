@@ -84,11 +84,31 @@ window.tanakh || (window.tanakh = {});
       noElems[i].style.width = maxWidth + 'px';
     }
 
+    restoreOptions();
+
     let event = new CustomEvent('pageCompleted', { detail: page });
     document.dispatchEvent(event);
   }
 
   const dec = x => x - 1;
+
+  function restoreOptions() {
+    if (!isLocalAvail) {
+      return;
+    }
+
+    const storedFontFamily = localStorage.getItem(localKey.fontFamily);
+    if (storedFontFamily != null && controls.fontFamily.value != storedFontFamily) {
+      controls.fontFamily.value = storedFontFamily;
+      toggleFontFamily();
+    }
+
+    const storedNiqqud = localStorage.getItem(localKey.niqqud);
+    if (storedNiqqud != null && controls.niqqud.value != storedNiqqud) {
+      controls.niqqud.value = storedNiqqud;
+      toggleText();
+    }
+  }
 
   function traverseAndReplace(node, replacementFunction) {
     if (node.nodeType === Node.TEXT_NODE) {
@@ -99,6 +119,28 @@ window.tanakh || (window.tanakh = {});
       node.childNodes.forEach(child => traverseAndReplace(child, replacementFunction));
     }
   }
+
+  const isLocalAvail = (() => {
+    const testKey = 'testStorage';
+    try {
+      localStorage.setItem(testKey, '1');
+      localStorage.removeItem(testKey);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  })();
+
+  const isSessionAvail = (() => {
+    const testKey = 'testSession';
+    try {
+      sessionStorage.setItem(testKey, '1');
+      sessionStorage.removeItem(testKey);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  })();
 
   page.cues = [[]]; // 1 based indexes
   page.elements = {
@@ -115,6 +157,20 @@ window.tanakh || (window.tanakh = {});
   // Compiled Regular Expressions
   const regexConsonants = new RegExp(`[${consonants}]`, 'gu');
   const regexVowels = new RegExp(`[${consonants}${vowels}]`, 'gu');
+
+  const localKey = {
+    fontFamily: 'fontFamily',
+    niqqud: 'niqqud',
+    translit: 'translit',
+    syllables: 'syllables'
+  };
+
+  const sessionKey = {
+    chapterStart: 'chapterStart',
+    chapterEnd: 'chapterEnd',
+    speed: 'speed',
+    pause: 'pause'
+  };
 
   // Filtering Functions
   function getConsonant(text) {
@@ -191,9 +247,7 @@ window.tanakh || (window.tanakh = {});
     return translit.join('');
   }
 
-  function toggleText(event) {
-    event.stopImmediatePropagation();
-
+  function toggleText() {
     if (controls.niqqud.value == 'accents') {
       document.querySelectorAll('.paseq').forEach(
         p => p.classList.remove('hide'));
@@ -259,10 +313,12 @@ window.tanakh || (window.tanakh = {});
         elem.innerText = word;
       }
     }
+    if (isLocalAvail) {
+      window.localStorage.setItem(localKey.fontFamily, newFont);
+    }
   }
 
-  controls.fontFamily.addEventListener('change', (event) => {
-    event.stopImmediatePropagation();
+  function toggleFontFamily() {
     let newFont = controls.fontFamily.value;
     let options = controls.fontFamily.options;
     for (let i = 0; i < options.length; i++) {
@@ -274,9 +330,23 @@ window.tanakh || (window.tanakh = {});
         element => element.classList.replace(oldFont, newFont)
       );
     }
+  }
+
+  controls.fontFamily.addEventListener('change', (event) => {
+    event.stopImmediatePropagation();
+    toggleFontFamily();
+    if (isLocalAvail) {
+      window.localStorage.setItem(localKey.fontFamily, controls.fontFamily.value);
+    }
   }, (passiveSupported ? { passive: true } : false));
 
-  controls.niqqud.addEventListener('change', toggleText, (passiveSupported ? { passive: true } : false));
+  controls.niqqud.addEventListener('change', event => {
+    event.stopImmediatePropagation();
+    toggleText();
+    if (isLocalAvail) {
+      window.localStorage.setItem(localKey.niqqud, controls.niqqud.value);
+    }
+  }, (passiveSupported ? { passive: true } : false));
 
   controls.transliterate.addEventListener('change', (event) => {
     event.stopImmediatePropagation();
