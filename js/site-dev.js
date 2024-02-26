@@ -108,6 +108,28 @@ window.tanakh || (window.tanakh = {});
       controls.niqqud.value = storedNiqqud;
       toggleText();
     }
+
+    let needTranslitToggle = false;
+    const storedTranslit = localStorage.getItem(localKey.translit);
+    if (storedTranslit != null && controls.transliterate.value != storedTranslit) {
+      controls.transliterate.value = storedTranslit;
+      needTranslitToggle = true;
+    }
+
+    let storedSyllables = localStorage.getItem(localKey.syllables);
+    storedSyllables = storedSyllables == 'false' ? false : true;
+    if (storedSyllables != null && controls.syllables.checked != storedSyllables) {
+      controls.syllables.checked = storedSyllables;
+      controls.syllables.disabled = !controls.syllables.checked;
+      needTranslitToggle = true;
+    }
+
+    if (needTranslitToggle && controls.transliterate.value != 'none') {
+      controls.syllables.disabled = false;
+      toggleTranslit();
+      document.querySelectorAll('.tran').forEach(
+        tran => tran.classList.remove('hide'));
+    }
   }
 
   function traverseAndReplace(node, replacementFunction) {
@@ -313,9 +335,6 @@ window.tanakh || (window.tanakh = {});
         elem.innerText = word;
       }
     }
-    if (isLocalAvail) {
-      window.localStorage.setItem(localKey.fontFamily, newFont);
-    }
   }
 
   function toggleFontFamily() {
@@ -357,15 +376,30 @@ window.tanakh || (window.tanakh = {});
         tran => tran.classList.remove('hide'));
     }
     else {
+      controls.syllables.checked = false;
       controls.syllables.disabled = true;
       document.querySelectorAll('.tran').forEach(
         tran => tran.classList.add('hide'));
+    }
+
+    if (isLocalAvail) {
+      window.localStorage.setItem(localKey.translit, controls.transliterate.value);
+      window.localStorage.setItem(localKey.syllables, controls.syllables.checked);
     }
   }, (passiveSupported ? { passive: true } : false));
 
   controls.syllables.addEventListener('click', (event) => {
     event.stopImmediatePropagation();
-    toggleTranslit();
+    if (controls.transliterate.value == 'none') {
+      controls.syllables.checked = false;
+      controls.syllables.disabled = true;
+    }
+    else {
+      toggleTranslit();
+    }
+    if (isLocalAvail) {
+      window.localStorage.setItem(localKey.syllables, controls.syllables.checked);
+    }
   }, (passiveSupported ? { passive: true } : false));
 
   controls.stickyHeader.addEventListener('click', (event) => {
