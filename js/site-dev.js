@@ -117,8 +117,8 @@ window.tanakh || (window.tanakh = {});
     }
 
     let storedSyllables = localStorage.getItem(localKey.syllables);
-    storedSyllables = storedSyllables == 'false' ? false : true;
-    if (storedSyllables != null && controls.syllables.checked != storedSyllables) {
+    storedSyllables = !storedSyllables || storedSyllables == 'false' ? false : true;
+    if (controls.syllables.checked != storedSyllables) {
       controls.syllables.checked = storedSyllables;
       controls.syllables.disabled = !controls.syllables.checked;
       needTranslitToggle = true;
