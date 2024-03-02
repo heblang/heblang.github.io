@@ -1,0 +1,3470 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Devarim - 2</title>
+  <link rel="stylesheet" type="text/css" media="screen" href="../../font/font.css">
+  <link rel="stylesheet" type="text/css" media="screen" href="../../css/site.css">
+</head>
+
+<body>
+  <div id="loadingScreen" class="hide">
+    <div class="spinner"></div>
+  </div>
+  <div id="jsDisabled">JavaScript is not enabled in your browser.</div>
+  <script>
+    document.getElementById('jsDisabled').style.display = 'none';
+    document.getElementById('loadingScreen').classList.replace('hide', 'loading-screen');
+  </script>
+  <header class="sticky hrow">
+    <div class="hcol">
+      <div class="book" title="דְּבָרִ֗ים ב">
+        Deuteronomy 2
+      </div>
+      <div class="gridContainer">
+        <div>
+          <span class="label">
+            <input type="checkbox" id="loop" checked title="Repeat selected verses">
+            <label for="loop" title="Repeat selected verses">Loop&nbsp;Verse</label>
+          </span>
+        </div>
+        <div>
+          <select id="startVerse">
+            <option value="1" selected>1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+            <option value="32">32</option>
+            <option value="33">33</option>
+            <option value="34">34</option>
+            <option value="35">35</option>
+            <option value="36">36</option>
+            <option value="37">37</option>
+          </select>
+        </div>
+        <div>
+          <span class="label">
+            &nbsp;-&nbsp;<select id="endVerse">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
+              <option value="24">24</option>
+              <option value="25">25</option>
+              <option value="26">26</option>
+              <option value="27">27</option>
+              <option value="28">28</option>
+              <option value="29">29</option>
+              <option value="30">30</option>
+              <option value="31">31</option>
+              <option value="32">32</option>
+              <option value="33">33</option>
+              <option value="34">34</option>
+              <option value="35">35</option>
+              <option value="36">36</option>
+              <option value="37" selected>37</option>
+            </select>
+          </span>
+        </div>
+        <div style="visibility:hidden;">
+          <span class="label">
+            <input type="checkbox" id="chapterLoop" title="Repeat selected chapters">
+            <label for="chapterLoop" title="Repeat selected chapters">Loop&nbsp;Chapter&nbsp;</label>
+          </span>
+        </div>
+        <div style="visibility:hidden;">
+          <select id="startChapter">
+            <option value="1" selected>1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+            <option value="32">32</option>
+            <option value="33">33</option>
+            <option value="34">34</option>
+          </select>
+        </div>
+        <div style="visibility:hidden;">
+          <span class="label">
+            &nbsp;-&nbsp;<select id="endChapter">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
+              <option value="24">24</option>
+              <option value="25">25</option>
+              <option value="26">26</option>
+              <option value="27">27</option>
+              <option value="28">28</option>
+              <option value="29">29</option>
+              <option value="30">30</option>
+              <option value="31">31</option>
+              <option value="32">32</option>
+              <option value="33">33</option>
+              <option value="34" selected>34</option>
+            </select>
+          </span>
+        </div>
+      </div>
+      <div class="srow">
+        <div title="Header will float, if checked">
+          <input type="checkbox" id="stickyHeader" checked>
+          <label for="stickyHeader">Float Header</label>
+        </div>
+        <div title="Select Hebrew Script">
+          <select id="fontFamily">
+            <option value="heb" selected>Ktav Ashuri</option>
+            <option value="rashi">Ktav Rashi</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="hcol">
+      <div class="center smaller">
+        <a href="../index.html" title="תנ״ך">TaNaK</a>
+        <a href="05_Devarim_001.html" title="Go To Chapter 1">&lt;&nbsp;Prev</a>
+        <span class="label" title="Navigate to selected chapter">
+          &nbsp;&nbsp;<select id="gotoChapter">
+            <option value="1" title="Go To Chapter 1">1</option>
+            <option value="2" title="Chapter 2" selected>2</option>
+            <option value="3" title="Go To Chapter 3">3</option>
+            <option value="4" title="Go To Chapter 4">4</option>
+            <option value="5" title="Go To Chapter 5">5</option>
+            <option value="6" title="Go To Chapter 6">6</option>
+            <option value="7" title="Go To Chapter 7">7</option>
+            <option value="8" title="Go To Chapter 8">8</option>
+            <option value="9" title="Go To Chapter 9">9</option>
+            <option value="10" title="Go To Chapter 10">10</option>
+            <option value="11" title="Go To Chapter 11">11</option>
+            <option value="12" title="Go To Chapter 12">12</option>
+            <option value="13" title="Go To Chapter 13">13</option>
+            <option value="14" title="Go To Chapter 14">14</option>
+            <option value="15" title="Go To Chapter 15">15</option>
+            <option value="16" title="Go To Chapter 16">16</option>
+            <option value="17" title="Go To Chapter 17">17</option>
+            <option value="18" title="Go To Chapter 18">18</option>
+            <option value="19" title="Go To Chapter 19">19</option>
+            <option value="20" title="Go To Chapter 20">20</option>
+            <option value="21" title="Go To Chapter 21">21</option>
+            <option value="22" title="Go To Chapter 22">22</option>
+            <option value="23" title="Go To Chapter 23">23</option>
+            <option value="24" title="Go To Chapter 24">24</option>
+            <option value="25" title="Go To Chapter 25">25</option>
+            <option value="26" title="Go To Chapter 26">26</option>
+            <option value="27" title="Go To Chapter 27">27</option>
+            <option value="28" title="Go To Chapter 28">28</option>
+            <option value="29" title="Go To Chapter 29">29</option>
+            <option value="30" title="Go To Chapter 30">30</option>
+            <option value="31" title="Go To Chapter 31">31</option>
+            <option value="32" title="Go To Chapter 32">32</option>
+            <option value="33" title="Go To Chapter 33">33</option>
+            <option value="34" title="Go To Chapter 34">34</option>
+          </select>&nbsp;&nbsp;
+        </span>
+        <a href="05_Devarim_003.html" title="Go To Chapter 3">Next&nbsp;&gt;</a>
+        <a href="../index.html" title="TaNaK">תנ״ך</a>
+      </div>
+      <div class="srow smaller">
+        <div title="Select Playback Speed">
+          <span class="label">
+            <label for="speed">Speed</label>
+            <select id="speed">
+              <option value="0.5" title="Slow speed">0.50&times;</option>
+              <option value="0.75" title="Slower speed">0.75&times;</option>
+              <option value="1" selected title="Normal speed">Normal</option>
+              <option value="1.25" title="Faster speed">1.25&times;</option>
+              <option value="1.5" title="Fast speed">1.50&times;</option>
+              <option value="1.75" title="Very Fast speed">1.75&times;</option>
+              <option value="2" title="Fastest speed">2.00&times;</option>
+            </select>
+            &nbsp;
+          </span>
+        </div>
+        <div>
+          <div id="loading"></div>
+          <div class="btn" id="playBtn" title="Play Audio"></div>
+          <div class="btn" id="pauseBtn" title="Pause Audio"></div>
+        </div>
+        <div>
+          <div class="btn" id="volumeBtn" style="margin-left: 5px;" title="Audio Volume"></div>
+        </div>
+        <div>
+          <span class="label" title="Pause After Each Word">
+            <span title="Pause After Each Word">&nbsp;Pause</span>
+            <input type="number" min="0" max="100" value="0" id="wordPause">
+            <label for="wordPause" title="Pause After Each Word">Seconds</label>
+          </span>
+        </div>
+      </div>
+      <div class="center">
+      </div>
+    </div>
+    <div class="hcol">
+      <div lang="he" class="heb t" title="Deuteronomy Chapter 2">
+        <span id="currentBook">דְּבָרִ֗ים פֶּרֶק</span>&nbsp;ב
+      </div>
+      <div class="right" title="Show/hide vowels and punctuation">
+        <span class="label">
+          <label for="niqqud" title="נִקּוּד">Niqqud</label>
+          <select id="niqqud">
+            <option value="accents" title="Full accented text" selected>Accents</option>
+            <option value="vowels" title="Text with vowel signs only">Vowels</option>
+            <option value="consonants" title="Consonant text only">None</option>
+            <option value="male" title="Full Spelling">Ktiv Male</option>
+          </select>
+        </span>
+      </div>
+      <div class="right" title="Transliterate to latin characters">
+        <span class="label">
+          <label for="transliterate" title="תַּעֲתִּיק">Translit</label>
+          <select id="transliterate">
+            <option value="none" selected>None</option>
+            <option value="phonetic">Phonetic</option>
+            <option value="latin">Precise</option>
+          </select>
+        </span>
+      </div>
+      <div class="right">
+        <span class="label" title="Show syllables">
+          <input type="checkbox" id="syllables" disabled>
+          <label for="syllables" title="הֲבָרוֹת">Show Syllables</label>
+        </span>
+      </div>
+    </div>
+  </header>
+  <main class="clickable">
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">א</a><br>
+          <a href="#" title="Go Up" class="enn">1</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-1w">וַנֵּ֜פֶן</span></div>
+          <div id="1-1i" class="eng">And we turned</div>
+          <div id="1-1t" class="tran hide">van·Ne·fen</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-2w">וַנִּסַּ֤ע</span></div>
+          <div id="1-2i" class="eng">and set out</div>
+          <div id="1-2t" class="tran hide">van·nis·Sa'</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-3w">הַמִּדְבָּ֙רָה֙</span></div>
+          <div id="1-3i" class="eng">into the wilderness</div>
+          <div id="1-3t" class="tran hide">ham·mid·Ba·rah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-4w">דֶּ֣רֶךְ</span></div>
+          <div id="1-4i" class="eng">the Way</div>
+          <div id="1-4t" class="tran hide">De·rech</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-5w">יַם</span><span class="maqaf">־</span></div>
+          <div id="1-5i" class="eng">of the Sea</div>
+          <div id="1-5t" class="tran hide">yam-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-6w">ס֔וּף</span></div>
+          <div id="1-6i" class="eng">Red</div>
+          <div id="1-6t" class="tran hide">Suf,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-7w">כַּאֲשֶׁ֛ר</span></div>
+          <div id="1-7i" class="eng">as</div>
+          <div id="1-7t" class="tran hide">ka·'a·Sher</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-8w">דִּבֶּ֥ר</span></div>
+          <div id="1-8i" class="eng">spoke</div>
+          <div id="1-8t" class="tran hide">dib·Ber</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-9w">יְהֹוָ֖ה</span></div>
+          <div id="1-9i" class="eng">YHWH</div>
+          <div id="1-9t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-10w">אֵלָ֑י</span></div>
+          <div id="1-10i" class="eng">to me</div>
+          <div id="1-10t" class="tran hide">'e·Lai;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-11w">וַנָּ֥סׇב</span></div>
+          <div id="1-11i" class="eng">and we skirted</div>
+          <div id="1-11t" class="tran hide">van·Na·sov</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-12w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="1-12i" class="eng">-</div>
+          <div id="1-12t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-13w">הַר</span><span class="maqaf">־</span></div>
+          <div id="1-13i" class="eng">Mount</div>
+          <div id="1-13t" class="tran hide">har-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-14w">שֵׂעִ֖יר</span></div>
+          <div id="1-14i" class="eng">Seir</div>
+          <div id="1-14t" class="tran hide">se·'Ir</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-15w">יָמִ֥ים</span></div>
+          <div id="1-15i" class="eng">for days</div>
+          <div id="1-15t" class="tran hide">ya·Mim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="1-16w">רַבִּֽים</span><span class="sof-pasuq">׃</span></div>
+          <div id="1-16i" class="eng">many</div>
+          <div id="1-16t" class="tran hide">rab·Bim.</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="parsh heb t">{ס}</div>
+          <div class="eng parsh">&nbsp;</div>
+          <div class="tran parsh hide">s</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">ב</a><br>
+          <a href="#" title="Go Up" class="enn">2</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="2-1w">וַיֹּ֥אמֶר</span></div>
+          <div id="2-1i" class="eng">And spoke</div>
+          <div id="2-1t" class="tran hide">vai·Yo·mer</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="2-2w">יְהֹוָ֖ה</span></div>
+          <div id="2-2i" class="eng">YHWH</div>
+          <div id="2-2t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="2-3w">אֵלַ֥י</span></div>
+          <div id="2-3i" class="eng">to me</div>
+          <div id="2-3t" class="tran hide">'e·Lai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="2-4w">לֵאמֹֽר</span><span class="sof-pasuq">׃</span></div>
+          <div id="2-4i" class="eng">saying</div>
+          <div id="2-4t" class="tran hide">le·Mor.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">ג</a><br>
+          <a href="#" title="Go Up" class="enn">3</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="3-1w">רַב</span><span class="maqaf">־</span></div>
+          <div id="3-1i" class="eng">Long enough</div>
+          <div id="3-1t" class="tran hide">rav-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="3-2w">לָכֶ֕ם</span></div>
+          <div id="3-2i" class="eng">You</div>
+          <div id="3-2t" class="tran hide">la·Chem</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="3-3w">סֹ֖ב</span></div>
+          <div id="3-3i" class="eng">have</div>
+          <div id="3-3t" class="tran hide">so</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="3-4w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="3-4i" class="eng">skirted</div>
+          <div id="3-4t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="3-5w">הָהָ֣ר</span></div>
+          <div id="3-5i" class="eng">the mountain</div>
+          <div id="3-5t" class="tran hide">ha·Har</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="3-6w">הַזֶּ֑ה</span></div>
+          <div id="3-6i" class="eng">this</div>
+          <div id="3-6t" class="tran hide">haz·Zeh;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="3-7w">פְּנ֥וּ</span></div>
+          <div id="3-7i" class="eng">turn</div>
+          <div id="3-7t" class="tran hide">pe·Nu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="3-8w">לָכֶ֖ם</span></div>
+          <div id="3-8i" class="eng">for yourselves</div>
+          <div id="3-8t" class="tran hide">la·Chem</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="3-9w">צָפֹֽנָה</span><span class="sof-pasuq">׃</span></div>
+          <div id="3-9i" class="eng">northward</div>
+          <div id="3-9t" class="tran hide">tza·Fo·nah.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">ד</a><br>
+          <a href="#" title="Go Up" class="enn">4</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-1w">וְאֶת</span><span class="maqaf">־</span></div>
+          <div id="4-1i" class="eng">And</div>
+          <div id="4-1t" class="tran hide">ve·'Et</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-2w">הָעָם֮</span></div>
+          <div id="4-2i" class="eng">the people</div>
+          <div id="4-2t" class="tran hide">ha·'Am</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-3w">צַ֣ו</span></div>
+          <div id="4-3i" class="eng">command</div>
+          <div id="4-3t" class="tran hide">tzav</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-4w">לֵאמֹר֒</span></div>
+          <div id="4-4i" class="eng">saying</div>
+          <div id="4-4t" class="tran hide">le·Mor</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-5w">אַתֶּ֣ם</span></div>
+          <div id="4-5i" class="eng">You</div>
+          <div id="4-5t" class="tran hide">'at·Tem</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-6w">עֹֽבְרִ֗ים</span></div>
+          <div id="4-6i" class="eng">are passing over</div>
+          <div id="4-6t" class="tran hide">'oe·Rim,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-7w">בִּגְבוּל֙</span></div>
+          <div id="4-7i" class="eng">into the border</div>
+          <div id="4-7t" class="tran hide">big·Vul</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-8w">אֲחֵיכֶ֣ם</span></div>
+          <div id="4-8i" class="eng">of your brothers</div>
+          <div id="4-8t" class="tran hide">'a·chei·Chem</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-9w">בְּנֵי</span><span class="maqaf">־</span></div>
+          <div id="4-9i" class="eng">sons</div>
+          <div id="4-9t" class="tran hide">be·nei-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-10w">עֵשָׂ֔ו</span></div>
+          <div id="4-10i" class="eng">of Esau</div>
+          <div id="4-10t" class="tran hide">'e·Sav,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-11w">הַיֹּשְׁבִ֖ים</span></div>
+          <div id="4-11i" class="eng">who live</div>
+          <div id="4-11t" class="tran hide">hai·yo·she·Vim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-12w">בְּשֵׂעִ֑יר</span></div>
+          <div id="4-12i" class="eng">in Seir</div>
+          <div id="4-12t" class="tran hide">be·se·'Ir;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-13w">וְיִֽירְא֣וּ</span></div>
+          <div id="4-13i" class="eng">and they will be afraid</div>
+          <div id="4-13t" class="tran hide">ve·yi·re·'U</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-14w">מִכֶּ֔ם</span></div>
+          <div id="4-14i" class="eng">of you</div>
+          <div id="4-14t" class="tran hide">mik·Kem,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-15w">וְנִשְׁמַרְתֶּ֖ם</span></div>
+          <div id="4-15i" class="eng">therefore watch</div>
+          <div id="4-15t" class="tran hide">ve·nish·mar·Tem</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="4-16w">מְאֹֽד</span><span class="sof-pasuq">׃</span></div>
+          <div id="4-16i" class="eng">carefully</div>
+          <div id="4-16t" class="tran hide">me·'Od.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">ה</a><br>
+          <a href="#" title="Go Up" class="enn">5</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-1w">אַל</span><span class="maqaf">־</span></div>
+          <div id="5-1i" class="eng">Not</div>
+          <div id="5-1t" class="tran hide">'al-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-2w">תִּתְגָּר֣וּ</span></div>
+          <div id="5-2i" class="eng">do meddle</div>
+          <div id="5-2t" class="tran hide">tit·ga·Ru</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-3w">בָ֔ם</span></div>
+          <div id="5-3i" class="eng">with them</div>
+          <div id="5-3t" class="tran hide">Vam,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-4w">כִּ֠י</span></div>
+          <div id="5-4i" class="eng">for</div>
+          <div id="5-4t" class="tran hide">ki</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-5w">לֹֽא</span><span class="maqaf">־</span></div>
+          <div id="5-5i" class="eng">not</div>
+          <div id="5-5t" class="tran hide">lo-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-6w">אֶתֵּ֤ן</span></div>
+          <div id="5-6i" class="eng">I will give</div>
+          <div id="5-6t" class="tran hide">'et·Ten</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-7w">לָכֶם֙</span></div>
+          <div id="5-7i" class="eng">you</div>
+          <div id="5-7t" class="tran hide">la·Chem</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-8w">מֵֽאַרְצָ֔ם</span></div>
+          <div id="5-8i" class="eng">of their land</div>
+          <div id="5-8t" class="tran hide">me·'ar·Tzam,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-9w">עַ֖ד</span></div>
+          <div id="5-9i" class="eng">even</div>
+          <div id="5-9t" class="tran hide">'ad</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-10w">מִדְרַ֣ךְ</span></div>
+          <div id="5-10i" class="eng">the treading</div>
+          <div id="5-10t" class="tran hide">mid·Rach</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-11w">כַּף</span><span class="maqaf">־</span></div>
+          <div id="5-11i" class="eng">of the sole</div>
+          <div id="5-11t" class="tran hide">kaf-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-12w">רָ֑גֶל</span></div>
+          <div id="5-12i" class="eng">of a foot</div>
+          <div id="5-12t" class="tran hide">Ra·gel;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-13w">כִּֽי</span><span class="maqaf">־</span></div>
+          <div id="5-13i" class="eng">for</div>
+          <div id="5-13t" class="tran hide">ki-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-14w">יְרֻשָּׁ֣ה</span></div>
+          <div id="5-14i" class="eng">[as] a possession</div>
+          <div id="5-14t" class="tran hide">ye·rush·Shah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-15w">לְעֵשָׂ֔ו</span></div>
+          <div id="5-15i" class="eng">to Esau</div>
+          <div id="5-15t" class="tran hide">le·'e·Sav,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-16w">נָתַ֖תִּי</span></div>
+          <div id="5-16i" class="eng">I have given</div>
+          <div id="5-16t" class="tran hide">na·Tat·ti</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-17w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="5-17i" class="eng">-</div>
+          <div id="5-17t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-18w">הַ֥ר</span></div>
+          <div id="5-18i" class="eng">Mount</div>
+          <div id="5-18t" class="tran hide">har</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="5-19w">שֵׂעִֽיר</span><span class="sof-pasuq">׃</span></div>
+          <div id="5-19i" class="eng">Seir</div>
+          <div id="5-19t" class="tran hide">se·'Ir.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">ו</a><br>
+          <a href="#" title="Go Up" class="enn">6</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="6-1w">אֹ֣כֶל</span></div>
+          <div id="6-1i" class="eng">Food</div>
+          <div id="6-1t" class="tran hide">'O·chel</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="6-2w">תִּשְׁבְּר֧וּ</span></div>
+          <div id="6-2i" class="eng">you shall buy</div>
+          <div id="6-2t" class="tran hide">tish·be·Ru</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="6-3w">מֵֽאִתָּ֛ם</span></div>
+          <div id="6-3i" class="eng">from them</div>
+          <div id="6-3t" class="tran hide">me·'it·Tam</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="6-4w">בַּכֶּ֖סֶף</span></div>
+          <div id="6-4i" class="eng">with silver</div>
+          <div id="6-4t" class="tran hide">bak·Ke·sef</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="6-5w">וַאֲכַלְתֶּ֑ם</span></div>
+          <div id="6-5i" class="eng">that you may eat</div>
+          <div id="6-5t" class="tran hide">va·'a·chal·Tem;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="6-6w">וְגַם</span><span class="maqaf">־</span></div>
+          <div id="6-6i" class="eng">and</div>
+          <div id="6-6t" class="tran hide">ve·gam-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="6-7w">מַ֜יִם</span></div>
+          <div id="6-7i" class="eng">water</div>
+          <div id="6-7t" class="tran hide">Ma·yim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="6-8w">תִּכְר֧וּ</span></div>
+          <div id="6-8i" class="eng">you shall buy</div>
+          <div id="6-8t" class="tran hide">tich·Ru</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="6-9w">מֵאִתָּ֛ם</span></div>
+          <div id="6-9i" class="eng">from them</div>
+          <div id="6-9t" class="tran hide">me·'it·Tam</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="6-10w">בַּכֶּ֖סֶף</span></div>
+          <div id="6-10i" class="eng">with silver</div>
+          <div id="6-10t" class="tran hide">bak·Ke·sef</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="6-11w">וּשְׁתִיתֶֽם</span><span class="sof-pasuq">׃</span></div>
+          <div id="6-11i" class="eng">that you may drink</div>
+          <div id="6-11t" class="tran hide">u·she·ti·Tem.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">ז</a><br>
+          <a href="#" title="Go Up" class="enn">7</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-1w">כִּי֩</span></div>
+          <div id="7-1i" class="eng">For</div>
+          <div id="7-1t" class="tran hide">ki</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-2w">יְהֹוָ֨ה</span></div>
+          <div id="7-2i" class="eng">YHWH</div>
+          <div id="7-2t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-3w">אֱלֹהֶ֜יךָ</span></div>
+          <div id="7-3i" class="eng">your God</div>
+          <div id="7-3t" class="tran hide">'e·lo·Hei·cha</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-4w">בֵּֽרַכְךָ֗</span></div>
+          <div id="7-4i" class="eng">has blessed you</div>
+          <div id="7-4t" class="tran hide">be·rach·Cha,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-5w">בְּכֹל֙</span></div>
+          <div id="7-5i" class="eng">in all</div>
+          <div id="7-5t" class="tran hide">be·Chol</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-6w">מַעֲשֵׂ֣ה</span></div>
+          <div id="7-6i" class="eng">the work</div>
+          <div id="7-6t" class="tran hide">ma·'a·Seh</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-7w">יָדֶ֔ךָ</span></div>
+          <div id="7-7i" class="eng">of your hand</div>
+          <div id="7-7t" class="tran hide">ya·De·cha,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-8w">יָדַ֣ע</span></div>
+          <div id="7-8i" class="eng">He knows</div>
+          <div id="7-8t" class="tran hide">ya·Da'</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-9w">לֶכְתְּךָ֔</span></div>
+          <div id="7-9i" class="eng">your walking</div>
+          <div id="7-9t" class="tran hide">lech·te·Cha,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-10w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="7-10i" class="eng">-</div>
+          <div id="7-10t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-11w">הַמִּדְבָּ֥ר</span></div>
+          <div id="7-11i" class="eng">the wilderness</div>
+          <div id="7-11t" class="tran hide">ham·mid·Bar</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-12w">הַגָּדֹ֖ל</span></div>
+          <div id="7-12i" class="eng">vast</div>
+          <div id="7-12t" class="tran hide">hag·ga·Dol</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-13w">הַזֶּ֑ה</span></div>
+          <div id="7-13i" class="eng">this</div>
+          <div id="7-13t" class="tran hide">haz·Zeh;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-14w">זֶ֣ה</span><b class="paseq"> ׀</b></div>
+          <div id="7-14i" class="eng">this [is]</div>
+          <div id="7-14t" class="tran hide">zeh</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-15w">אַרְבָּעִ֣ים</span></div>
+          <div id="7-15i" class="eng">forty</div>
+          <div id="7-15t" class="tran hide">'ar·ba·'Im</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-16w">שָׁנָ֗ה</span></div>
+          <div id="7-16i" class="eng">years</div>
+          <div id="7-16t" class="tran hide">sha·Nah,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-17w">יְהֹוָ֤ה</span></div>
+          <div id="7-17i" class="eng">YHWH</div>
+          <div id="7-17t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-18w">אֱלֹהֶ֙יךָ֙</span></div>
+          <div id="7-18i" class="eng">your God [has been]</div>
+          <div id="7-18t" class="tran hide">'e·lo·Hei·cha</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-19w">עִמָּ֔ךְ</span></div>
+          <div id="7-19i" class="eng">with you</div>
+          <div id="7-19t" class="tran hide">'im·Mach,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-20w">לֹ֥א</span></div>
+          <div id="7-20i" class="eng">not</div>
+          <div id="7-20t" class="tran hide">lo</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-21w">חָסַ֖רְתָּ</span></div>
+          <div id="7-21i" class="eng">you have lacked</div>
+          <div id="7-21t" class="tran hide">cha·Sar·ta</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="7-22w">דָּבָֽר</span><span class="sof-pasuq">׃</span></div>
+          <div id="7-22i" class="eng">a thing</div>
+          <div id="7-22t" class="tran hide">da·Var.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">ח</a><br>
+          <a href="#" title="Go Up" class="enn">8</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-1w">וַֽנַּעֲבֹ֞ר</span></div>
+          <div id="8-1i" class="eng">And we passed</div>
+          <div id="8-1t" class="tran hide">van·na·'a·Vor</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-2w">מֵאֵ֧ת</span></div>
+          <div id="8-2i" class="eng">beyond</div>
+          <div id="8-2t" class="tran hide">me·'Et</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-3w">אַחֵ֣ינוּ</span></div>
+          <div id="8-3i" class="eng">our brothers</div>
+          <div id="8-3t" class="tran hide">'a·Chei·nu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-4w">בְנֵי</span><span class="maqaf">־</span></div>
+          <div id="8-4i" class="eng">sons</div>
+          <div id="8-4t" class="tran hide">ve·nei-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-5w">עֵשָׂ֗ו</span></div>
+          <div id="8-5i" class="eng">of Esau</div>
+          <div id="8-5t" class="tran hide">'e·Sav,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-6w">הַיֹּֽשְׁבִים֙</span></div>
+          <div id="8-6i" class="eng">who dwell</div>
+          <div id="8-6t" class="tran hide">hai·yo·she·Vim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-7w">בְּשֵׂעִ֔יר</span></div>
+          <div id="8-7i" class="eng">in Seir</div>
+          <div id="8-7t" class="tran hide">be·se·'Ir,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-8w">מִדֶּ֙רֶךְ֙</span></div>
+          <div id="8-8i" class="eng">by | the way</div>
+          <div id="8-8t" class="tran hide">mid·De·rech</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-9w">הָֽעֲרָבָ֔ה</span></div>
+          <div id="8-9i" class="eng">of the plain</div>
+          <div id="8-9t" class="tran hide">ha·'a·ra·Vah,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-10w">מֵאֵילַ֖ת</span></div>
+          <div id="8-10i" class="eng">by | Elath</div>
+          <div id="8-10t" class="tran hide">me·'ei·Lat</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-11w">וּמֵעֶצְיֹ֣ן</span></div>
+          <div id="8-11i" class="eng"></div>
+          <div id="8-11t" class="tran hide">u·me·'etz·Yon</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-12w">גָּ֑בֶר</span></div>
+          <div id="8-12i" class="eng">and Ezion-geber</div>
+          <div id="8-12t" class="tran hide">Ga·ver;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="parsh heb t">{ס}</div>
+          <div class="eng parsh">&nbsp;</div>
+          <div class="tran parsh hide">s</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-13w">וַנֵּ֙פֶן֙</span></div>
+          <div id="8-13i" class="eng">and we turned</div>
+          <div id="8-13t" class="tran hide">van·Ne·fen</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-14w">וַֽנַּעֲבֹ֔ר</span></div>
+          <div id="8-14i" class="eng">and passed</div>
+          <div id="8-14t" class="tran hide">van·na·'a·Vor,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-15w">דֶּ֖רֶךְ</span></div>
+          <div id="8-15i" class="eng">by way</div>
+          <div id="8-15t" class="tran hide">De·rech</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-16w">מִדְבַּ֥ר</span></div>
+          <div id="8-16i" class="eng">of the Wilderness</div>
+          <div id="8-16t" class="tran hide">mid·Bar</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="8-17w">מוֹאָֽב</span><span class="sof-pasuq">׃</span></div>
+          <div id="8-17i" class="eng">of Moab</div>
+          <div id="8-17t" class="tran hide">mo·'Av.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">ט</a><br>
+          <a href="#" title="Go Up" class="enn">9</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-1w">וַיֹּ֨אמֶר</span></div>
+          <div id="9-1i" class="eng">And said</div>
+          <div id="9-1t" class="tran hide">vai·Yo·mer</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-2w">יְהֹוָ֜ה</span></div>
+          <div id="9-2i" class="eng">YHWH</div>
+          <div id="9-2t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-3w">אֵלַ֗י</span></div>
+          <div id="9-3i" class="eng">to me</div>
+          <div id="9-3t" class="tran hide">'e·Lai,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-4w">אַל</span><span class="maqaf">־</span></div>
+          <div id="9-4i" class="eng">not</div>
+          <div id="9-4t" class="tran hide">'el-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-5w">תָּ֙צַר֙</span></div>
+          <div id="9-5i" class="eng">do harass</div>
+          <div id="9-5t" class="tran hide">ta·tzar</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-6w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="9-6i" class="eng">-</div>
+          <div id="9-6t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-7w">מוֹאָ֔ב</span></div>
+          <div id="9-7i" class="eng">Moab</div>
+          <div id="9-7t" class="tran hide">mo·'Av,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-8w">וְאַל</span><span class="maqaf">־</span></div>
+          <div id="9-8i" class="eng">nor</div>
+          <div id="9-8t" class="tran hide">ve·'al-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-9w">תִּתְגָּ֥ר</span></div>
+          <div id="9-9i" class="eng">contend</div>
+          <div id="9-9t" class="tran hide">tit·Gar</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-10w">בָּ֖ם</span></div>
+          <div id="9-10i" class="eng">with them</div>
+          <div id="9-10t" class="tran hide">bam</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-11w">מִלְחָמָ֑ה</span></div>
+          <div id="9-11i" class="eng">in battle</div>
+          <div id="9-11t" class="tran hide">mil·cha·Mah;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-12w">כִּ֠י</span></div>
+          <div id="9-12i" class="eng">for</div>
+          <div id="9-12t" class="tran hide">ki</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-13w">לֹֽא</span><span class="maqaf">־</span></div>
+          <div id="9-13i" class="eng">not</div>
+          <div id="9-13t" class="tran hide">lo-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-14w">אֶתֵּ֨ן</span></div>
+          <div id="9-14i" class="eng">I will give</div>
+          <div id="9-14t" class="tran hide">'et·Ten</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-15w">לְךָ֤</span></div>
+          <div id="9-15i" class="eng">you</div>
+          <div id="9-15t" class="tran hide">le·Cha</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-16w">מֵֽאַרְצוֹ֙</span></div>
+          <div id="9-16i" class="eng">of their land</div>
+          <div id="9-16t" class="tran hide">me·'ar·Tzo</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-17w">יְרֻשָּׁ֔ה</span></div>
+          <div id="9-17i" class="eng">[as] a possession</div>
+          <div id="9-17t" class="tran hide">ye·rush·Shah,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-18w">כִּ֣י</span></div>
+          <div id="9-18i" class="eng">because</div>
+          <div id="9-18t" class="tran hide">ki</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-19w">לִבְנֵי</span><span class="maqaf">־</span></div>
+          <div id="9-19i" class="eng">to the sons</div>
+          <div id="9-19t" class="tran hide">liv·nei-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-20w">ל֔וֹט</span></div>
+          <div id="9-20i" class="eng">of Lot</div>
+          <div id="9-20t" class="tran hide">Lot,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-21w">נָתַ֥תִּי</span></div>
+          <div id="9-21i" class="eng">I have given</div>
+          <div id="9-21t" class="tran hide">na·Tat·ti</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-22w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="9-22i" class="eng">-</div>
+          <div id="9-22t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-23w">עָ֖ר</span></div>
+          <div id="9-23i" class="eng">Ar</div>
+          <div id="9-23t" class="tran hide">'ar</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="9-24w">יְרֻשָּֽׁה</span><span class="sof-pasuq">׃</span></div>
+          <div id="9-24i" class="eng">[as] a possession</div>
+          <div id="9-24t" class="tran hide">ye·rush·shah</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">י</a><br>
+          <a href="#" title="Go Up" class="enn">10</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="10-1w">הָאֵמִ֥ים</span></div>
+          <div id="10-1i" class="eng">The Emites</div>
+          <div id="10-1t" class="tran hide">ha·'e·Mim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="10-2w">לְפָנִ֖ים</span></div>
+          <div id="10-2i" class="eng">in times past</div>
+          <div id="10-2t" class="tran hide">le·fa·Nim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="10-3w">יָ֣שְׁבוּ</span></div>
+          <div id="10-3i" class="eng">had dwelt</div>
+          <div id="10-3t" class="tran hide">Ya·she·vu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="10-4w">בָ֑הּ</span></div>
+          <div id="10-4i" class="eng">there</div>
+          <div id="10-4t" class="tran hide">Vah;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="10-5w">עַ֣ם</span></div>
+          <div id="10-5i" class="eng">a people</div>
+          <div id="10-5t" class="tran hide">'am</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="10-6w">גָּד֥וֹל</span></div>
+          <div id="10-6i" class="eng">as great</div>
+          <div id="10-6t" class="tran hide">ga·Dol</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="10-7w">וְרַ֛ב</span></div>
+          <div id="10-7i" class="eng">and numerous</div>
+          <div id="10-7t" class="tran hide">ve·Rav</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="10-8w">וָרָ֖ם</span></div>
+          <div id="10-8i" class="eng">and tall</div>
+          <div id="10-8t" class="tran hide">va·Ram</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="10-9w">כָּעֲנָקִֽים</span><span class="sof-pasuq">׃</span></div>
+          <div id="10-9i" class="eng">as the Anakim</div>
+          <div id="10-9t" class="tran hide">ka·'a·na·Kim.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">יא</a><br>
+          <a href="#" title="Go Up" class="enn">11</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="11-1w">רְפָאִ֛ים</span></div>
+          <div id="11-1i" class="eng">The Rephaim</div>
+          <div id="11-1t" class="tran hide">re·fa·'Im</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="11-2w">יֵחָשְׁב֥וּ</span></div>
+          <div id="11-2i" class="eng">were regarded as</div>
+          <div id="11-2t" class="tran hide">ye·cha·she·Vu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="11-3w">אַף</span><span class="maqaf">־</span></div>
+          <div id="11-3i" class="eng">also</div>
+          <div id="11-3t" class="tran hide">'af-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="11-4w">הֵ֖ם</span></div>
+          <div id="11-4i" class="eng">they</div>
+          <div id="11-4t" class="tran hide">hem</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="11-5w">כָּעֲנָקִ֑ים</span></div>
+          <div id="11-5i" class="eng">like the Anakim</div>
+          <div id="11-5t" class="tran hide">ka·'a·na·Kim;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="11-6w">וְהַמֹּ֣אָבִ֔ים</span></div>
+          <div id="11-6i" class="eng">but the Moabites</div>
+          <div id="11-6t" class="tran hide">ve·ham·Mo·'a·Vim,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="11-7w">יִקְרְא֥וּ</span></div>
+          <div id="11-7i" class="eng">call</div>
+          <div id="11-7t" class="tran hide">yik·re·'U</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="11-8w">לָהֶ֖ם</span></div>
+          <div id="11-8i" class="eng">them</div>
+          <div id="11-8t" class="tran hide">la·Hem</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="11-9w">אֵמִֽים</span><span class="sof-pasuq">׃</span></div>
+          <div id="11-9i" class="eng">Emites</div>
+          <div id="11-9t" class="tran hide">'e·Mim.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">יב</a><br>
+          <a href="#" title="Go Up" class="enn">12</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-1w">וּבְשֵׂעִ֞יר</span></div>
+          <div id="12-1i" class="eng">And in Seir</div>
+          <div id="12-1t" class="tran hide">u·ve·se·'Ir</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-2w">יָשְׁב֣וּ</span></div>
+          <div id="12-2i" class="eng">dwelt</div>
+          <div id="12-2t" class="tran hide">ya·she·Vu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-3w">הַחֹרִים֮</span></div>
+          <div id="12-3i" class="eng">the Horites</div>
+          <div id="12-3t" class="tran hide">ha·cho·Rim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-4w">לְפָנִים֒</span></div>
+          <div id="12-4i" class="eng">formerly</div>
+          <div id="12-4t" class="tran hide">le·fa·Nim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-5w">וּבְנֵ֧י</span></div>
+          <div id="12-5i" class="eng">but the sons</div>
+          <div id="12-5t" class="tran hide">u·ve·Nei</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-6w">עֵשָׂ֣ו</span></div>
+          <div id="12-6i" class="eng">of Esau</div>
+          <div id="12-6t" class="tran hide">'e·Sav</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-7w">יִֽירָשׁ֗וּם</span></div>
+          <div id="12-7i" class="eng">dispossessed them</div>
+          <div id="12-7t" class="tran hide">yi·ra·Shum,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-8w">וַיַּשְׁמִידוּם֙</span></div>
+          <div id="12-8i" class="eng">and destroyed them</div>
+          <div id="12-8t" class="tran hide">vai·yash·mi·Dum</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-9w">מִפְּנֵיהֶ֔ם</span></div>
+          <div id="12-9i" class="eng">from before them</div>
+          <div id="12-9t" class="tran hide">mip·pe·nei·Hem,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-10w">וַיֵּשְׁב֖וּ</span></div>
+          <div id="12-10i" class="eng">and dwelt</div>
+          <div id="12-10t" class="tran hide">vai·ye·she·Vu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-11w">תַּחְתָּ֑ם</span></div>
+          <div id="12-11i" class="eng">in their place</div>
+          <div id="12-11t" class="tran hide">tach·Tam;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-12w">כַּאֲשֶׁ֧ר</span></div>
+          <div id="12-12i" class="eng">just as</div>
+          <div id="12-12t" class="tran hide">ka·'a·Sher</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-13w">עָשָׂ֣ה</span></div>
+          <div id="12-13i" class="eng">did</div>
+          <div id="12-13t" class="tran hide">'a·Sah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-14w">יִשְׂרָאֵ֗ל</span></div>
+          <div id="12-14i" class="eng">Israel</div>
+          <div id="12-14t" class="tran hide">Yis·ra·'El,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-15w">לְאֶ֙רֶץ֙</span></div>
+          <div id="12-15i" class="eng">to the land</div>
+          <div id="12-15t" class="tran hide">le·'E·retz</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-16w">יְרֻשָּׁת֔וֹ</span></div>
+          <div id="12-16i" class="eng">of their possession</div>
+          <div id="12-16t" class="tran hide">ye·rush·sha·To,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-17w">אֲשֶׁר</span><span class="maqaf">־</span></div>
+          <div id="12-17i" class="eng">which</div>
+          <div id="12-17t" class="tran hide">'a·Sher-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-18w">נָתַ֥ן</span></div>
+          <div id="12-18i" class="eng">gave</div>
+          <div id="12-18t" class="tran hide">na·Tan</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-19w">יְהֹוָ֖ה</span></div>
+          <div id="12-19i" class="eng">YHWH</div>
+          <div id="12-19t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="12-20w">לָהֶֽם</span><span class="sof-pasuq">׃</span></div>
+          <div id="12-20i" class="eng">to them</div>
+          <div id="12-20t" class="tran hide">la·Hem.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">יג</a><br>
+          <a href="#" title="Go Up" class="enn">13</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="13-1w">עַתָּ֗ה</span></div>
+          <div id="13-1i" class="eng">Now</div>
+          <div id="13-1t" class="tran hide">'at·Tah,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="13-2w">קֻ֛מוּ</span></div>
+          <div id="13-2i" class="eng">rise</div>
+          <div id="13-2t" class="tran hide">Ku·mu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="13-3w">וְעִבְר֥וּ</span></div>
+          <div id="13-3i" class="eng">and pass over</div>
+          <div id="13-3t" class="tran hide">ve·'iv·Ru</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="13-4w">לָכֶ֖ם</span></div>
+          <div id="13-4i" class="eng">to</div>
+          <div id="13-4t" class="tran hide">la·Chem</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="13-5w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="13-5i" class="eng">-</div>
+          <div id="13-5t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="13-6w">נַ֣חַל</span></div>
+          <div id="13-6i" class="eng">the Valley</div>
+          <div id="13-6t" class="tran hide">Na·chal</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="13-7w">זָ֑רֶד</span></div>
+          <div id="13-7i" class="eng">of Zered</div>
+          <div id="13-7t" class="tran hide">Za·red;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="13-8w">וַֽנַּעֲבֹ֖ר</span></div>
+          <div id="13-8i" class="eng">and we passed over</div>
+          <div id="13-8t" class="tran hide">van·na·'a·Vor</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="13-9w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="13-9i" class="eng">-</div>
+          <div id="13-9t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="13-10w">נַ֥חַל</span></div>
+          <div id="13-10i" class="eng">the Brook</div>
+          <div id="13-10t" class="tran hide">Na·chal</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="13-11w">זָֽרֶד</span><span class="sof-pasuq">׃</span></div>
+          <div id="13-11i" class="eng">of Zered</div>
+          <div id="13-11t" class="tran hide">Za·red.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">יד</a><br>
+          <a href="#" title="Go Up" class="enn">14</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-1w">וְהַיָּמִ֞ים</span></div>
+          <div id="14-1i" class="eng">And the time</div>
+          <div id="14-1t" class="tran hide">ve·hai·ya·Mim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-2w">אֲשֶׁר</span><span class="maqaf">־</span></div>
+          <div id="14-2i" class="eng">that</div>
+          <div id="14-2t" class="tran hide">'a·Sher-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-3w">הָלַ֣כְנוּ</span><b class="paseq"> ׀</b></div>
+          <div id="14-3i" class="eng">we walked</div>
+          <div id="14-3t" class="tran hide">ha·Lach·nu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-4w">מִקָּדֵ֣שׁ</span></div>
+          <div id="14-4i" class="eng">from</div>
+          <div id="14-4t" class="tran hide">mik·ka·Desh</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-5w">בַּרְנֵ֗עַ</span></div>
+          <div id="14-5i" class="eng">Kadesh-barnea</div>
+          <div id="14-5t" class="tran hide">bar·Ne·a',</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-6w">עַ֤ד</span></div>
+          <div id="14-6i" class="eng">until</div>
+          <div id="14-6t" class="tran hide">'ad</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-7w">אֲשֶׁר</span><span class="maqaf">־</span></div>
+          <div id="14-7i" class="eng">that</div>
+          <div id="14-7t" class="tran hide">'a·Sher-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-8w">עָבַ֙רְנוּ֙</span></div>
+          <div id="14-8i" class="eng">we passed over</div>
+          <div id="14-8t" class="tran hide">'a·Var·nu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-9w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="14-9i" class="eng">the Valley</div>
+          <div id="14-9t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-10w">נַ֣חַל</span></div>
+          <div id="14-10i" class="eng">of Zered</div>
+          <div id="14-10t" class="tran hide">Na·chal</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-11w">זֶ֔רֶד</span></div>
+          <div id="14-11i" class="eng">[was] thirty</div>
+          <div id="14-11t" class="tran hide">Ze·red,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-12w">שְׁלֹשִׁ֥ים</span></div>
+          <div id="14-12i" class="eng">eight</div>
+          <div id="14-12t" class="tran hide">she·lo·Shim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-13w">וּשְׁמֹנֶ֖ה</span></div>
+          <div id="14-13i" class="eng">and eight</div>
+          <div id="14-13t" class="tran hide">u·she·mo·Neh</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-14w">שָׁנָ֑ה</span></div>
+          <div id="14-14i" class="eng">years</div>
+          <div id="14-14t" class="tran hide">sha·Nah;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-15w">עַד</span><span class="maqaf">־</span></div>
+          <div id="14-15i" class="eng">until</div>
+          <div id="14-15t" class="tran hide">'ad-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-16w">תֹּ֨ם</span></div>
+          <div id="14-16i" class="eng">was consumed</div>
+          <div id="14-16t" class="tran hide">tom</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-17w">כׇּל</span><span class="maqaf">־</span></div>
+          <div id="14-17i" class="eng">all</div>
+          <div id="14-17t" class="tran hide">kol-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-18w">הַדּ֜וֹר</span></div>
+          <div id="14-18i" class="eng">the generation</div>
+          <div id="14-18t" class="tran hide">had·Dor</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-19w">אַנְשֵׁ֤י</span></div>
+          <div id="14-19i" class="eng">of the men</div>
+          <div id="14-19t" class="tran hide">'an·Shei</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-20w">הַמִּלְחָמָה֙</span></div>
+          <div id="14-20i" class="eng">of war</div>
+          <div id="14-20t" class="tran hide">ham·mil·cha·Mah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-21w">מִקֶּ֣רֶב</span></div>
+          <div id="14-21i" class="eng">from the midst</div>
+          <div id="14-21t" class="tran hide">mik·Ke·rev</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-22w">הַֽמַּחֲנֶ֔ה</span></div>
+          <div id="14-22i" class="eng">of the camp</div>
+          <div id="14-22t" class="tran hide">ham·ma·cha·Neh,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-23w">כַּאֲשֶׁ֛ר</span></div>
+          <div id="14-23i" class="eng">as</div>
+          <div id="14-23t" class="tran hide">ka·'a·Sher</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-24w">נִשְׁבַּ֥ע</span></div>
+          <div id="14-24i" class="eng">had sworn</div>
+          <div id="14-24t" class="tran hide">nish·Ba'</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-25w">יְהֹוָ֖ה</span></div>
+          <div id="14-25i" class="eng">YHWH</div>
+          <div id="14-25t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="14-26w">לָהֶֽם</span><span class="sof-pasuq">׃</span></div>
+          <div id="14-26i" class="eng">to them</div>
+          <div id="14-26t" class="tran hide">la·Hem.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">טו</a><br>
+          <a href="#" title="Go Up" class="enn">15</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="15-1w">וְגַ֤ם</span></div>
+          <div id="15-1i" class="eng">For indeed</div>
+          <div id="15-1t" class="tran hide">ve·Gam</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="15-2w">יַד</span><span class="maqaf">־</span></div>
+          <div id="15-2i" class="eng">the hand</div>
+          <div id="15-2t" class="tran hide">yad-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="15-3w">יְהֹוָה֙</span></div>
+          <div id="15-3i" class="eng">of YHWH</div>
+          <div id="15-3t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="15-4w">הָ֣יְתָה</span></div>
+          <div id="15-4i" class="eng">was</div>
+          <div id="15-4t" class="tran hide">Ha·ye·tah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="15-5w">בָּ֔ם</span></div>
+          <div id="15-5i" class="eng">against them</div>
+          <div id="15-5t" class="tran hide">Bam,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="15-6w">לְהֻמָּ֖ם</span></div>
+          <div id="15-6i" class="eng">to destroy them</div>
+          <div id="15-6t" class="tran hide">le·hum·Mam</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="15-7w">מִקֶּ֣רֶב</span></div>
+          <div id="15-7i" class="eng">from the midst</div>
+          <div id="15-7t" class="tran hide">mik·Ke·rev</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="15-8w">הַֽמַּחֲנֶ֑ה</span></div>
+          <div id="15-8i" class="eng">of the camp</div>
+          <div id="15-8t" class="tran hide">ham·ma·cha·Neh;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="15-9w">עַ֖ד</span></div>
+          <div id="15-9i" class="eng">until</div>
+          <div id="15-9t" class="tran hide">'ad</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="15-10w">תֻּמָּֽם</span><span class="sof-pasuq">׃</span></div>
+          <div id="15-10i" class="eng">they were consumed</div>
+          <div id="15-10t" class="tran hide">tum·Mam.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">טז</a><br>
+          <a href="#" title="Go Up" class="enn">16</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="16-1w">וַיְהִ֨י</span></div>
+          <div id="16-1i" class="eng">And it came to pass</div>
+          <div id="16-1t" class="tran hide">vay·Hi</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="16-2w">כַאֲשֶׁר</span><span class="maqaf">־</span></div>
+          <div id="16-2i" class="eng">when</div>
+          <div id="16-2t" class="tran hide">cha·'a·Sher-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="16-3w">תַּ֜מּוּ</span></div>
+          <div id="16-3i" class="eng">had finally perished</div>
+          <div id="16-3t" class="tran hide">Tam·mu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="16-4w">כׇּל</span><span class="maqaf">־</span></div>
+          <div id="16-4i" class="eng">all</div>
+          <div id="16-4t" class="tran hide">kol-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="16-5w">אַנְשֵׁ֧י</span></div>
+          <div id="16-5i" class="eng">the men</div>
+          <div id="16-5t" class="tran hide">'an·Shei</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="16-6w">הַמִּלְחָמָ֛ה</span></div>
+          <div id="16-6i" class="eng">of war</div>
+          <div id="16-6t" class="tran hide">ham·mil·cha·Mah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="16-7w">לָמ֖וּת</span></div>
+          <div id="16-7i" class="eng">dead</div>
+          <div id="16-7t" class="tran hide">la·Mut</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="16-8w">מִקֶּ֥רֶב</span></div>
+          <div id="16-8i" class="eng">from among</div>
+          <div id="16-8t" class="tran hide">mik·Ke·rev</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="16-9w">הָעָֽם</span><span class="sof-pasuq">׃</span></div>
+          <div id="16-9i" class="eng">the people</div>
+          <div id="16-9t" class="tran hide">ha·'Am.</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="parsh heb t">{ס}</div>
+          <div class="eng parsh">&nbsp;</div>
+          <div class="tran parsh hide">s</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">יז</a><br>
+          <a href="#" title="Go Up" class="enn">17</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="17-1w">וַיְדַבֵּ֥ר</span></div>
+          <div id="17-1i" class="eng">[that] spoke</div>
+          <div id="17-1t" class="tran hide">vay·dab·Ber</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="17-2w">יְהֹוָ֖ה</span></div>
+          <div id="17-2i" class="eng">YHWH</div>
+          <div id="17-2t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="17-3w">אֵלַ֥י</span></div>
+          <div id="17-3i" class="eng">to me</div>
+          <div id="17-3t" class="tran hide">'e·Lai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="17-4w">לֵאמֹֽר</span><span class="sof-pasuq">׃</span></div>
+          <div id="17-4i" class="eng">saying</div>
+          <div id="17-4t" class="tran hide">le·Mor.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">יח</a><br>
+          <a href="#" title="Go Up" class="enn">18</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="18-1w">אַתָּ֨ה</span></div>
+          <div id="18-1i" class="eng">You</div>
+          <div id="18-1t" class="tran hide">'at·Tah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="18-2w">עֹבֵ֥ר</span></div>
+          <div id="18-2i" class="eng">are to pass over</div>
+          <div id="18-2t" class="tran hide">'o·Ver</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="18-3w">הַיּ֛וֹם</span></div>
+          <div id="18-3i" class="eng">this day</div>
+          <div id="18-3t" class="tran hide">hai·Yom</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="18-4w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="18-4i" class="eng">-</div>
+          <div id="18-4t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="18-5w">גְּב֥וּל</span></div>
+          <div id="18-5i" class="eng">the boundary</div>
+          <div id="18-5t" class="tran hide">ge·Vul</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="18-6w">מוֹאָ֖ב</span></div>
+          <div id="18-6i" class="eng">of Moab</div>
+          <div id="18-6t" class="tran hide">mo·'Av</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="18-7w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="18-7i" class="eng">-</div>
+          <div id="18-7t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="18-8w">עָֽר</span><span class="sof-pasuq">׃</span></div>
+          <div id="18-8i" class="eng">at Ar</div>
+          <div id="18-8t" class="tran hide">'Ar.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">יט</a><br>
+          <a href="#" title="Go Up" class="enn">19</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-1w">וְקָרַבְתָּ֗</span></div>
+          <div id="19-1i" class="eng">And [when] you come</div>
+          <div id="19-1t" class="tran hide">ve·ka·rav·Ta,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-2w">מ֚וּל</span></div>
+          <div id="19-2i" class="eng">near</div>
+          <div id="19-2t" class="tran hide">mul</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-3w">בְּנֵ֣י</span></div>
+          <div id="19-3i" class="eng">the sons</div>
+          <div id="19-3t" class="tran hide">be·Nei</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-4w">עַמּ֔וֹן</span></div>
+          <div id="19-4i" class="eng">of Ammon</div>
+          <div id="19-4t" class="tran hide">am·Mon,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-5w">אַל</span><span class="maqaf">־</span></div>
+          <div id="19-5i" class="eng">not</div>
+          <div id="19-5t" class="tran hide">'al-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-6w">תְּצֻרֵ֖ם</span></div>
+          <div id="19-6i" class="eng">do harass them</div>
+          <div id="19-6t" class="tran hide">te·tzu·Rem</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-7w">וְאַל</span><span class="maqaf">־</span></div>
+          <div id="19-7i" class="eng">nor</div>
+          <div id="19-7t" class="tran hide">ve·'al-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-8w">תִּתְגָּ֣ר</span></div>
+          <div id="19-8i" class="eng">meddle</div>
+          <div id="19-8t" class="tran hide">tit·Gar</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-9w">בָּ֑ם</span></div>
+          <div id="19-9i" class="eng">with them</div>
+          <div id="19-9t" class="tran hide">Bam;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-10w">כִּ֣י</span></div>
+          <div id="19-10i" class="eng">for</div>
+          <div id="19-10t" class="tran hide">ki</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-11w">לֹֽא</span><span class="maqaf">־</span></div>
+          <div id="19-11i" class="eng">not</div>
+          <div id="19-11t" class="tran hide">lo-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-12w">אֶ֠תֵּ֠ן</span></div>
+          <div id="19-12i" class="eng">I will give</div>
+          <div id="19-12t" class="tran hide">'Et·ten</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-13w">מֵאֶ֨רֶץ</span></div>
+          <div id="19-13i" class="eng">of the land</div>
+          <div id="19-13t" class="tran hide">me·'E·retz</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-14w">בְּנֵי</span><span class="maqaf">־</span></div>
+          <div id="19-14i" class="eng">of the sons</div>
+          <div id="19-14t" class="tran hide">be·nei-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-15w">עַמּ֤וֹן</span></div>
+          <div id="19-15i" class="eng">of Ammon</div>
+          <div id="19-15t" class="tran hide">am·Mon</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-16w">לְךָ֙</span></div>
+          <div id="19-16i" class="eng">to you</div>
+          <div id="19-16t" class="tran hide">le·Cha</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-17w">יְרֻשָּׁ֔ה</span></div>
+          <div id="19-17i" class="eng">[as] a possession</div>
+          <div id="19-17t" class="tran hide">ye·rush·Shah,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-18w">כִּ֥י</span></div>
+          <div id="19-18i" class="eng">because</div>
+          <div id="19-18t" class="tran hide">ki</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-19w">לִבְנֵי</span><span class="maqaf">־</span></div>
+          <div id="19-19i" class="eng">to the sons</div>
+          <div id="19-19t" class="tran hide">liv·nei-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-20w">ל֖וֹט</span></div>
+          <div id="19-20i" class="eng">of Lot</div>
+          <div id="19-20t" class="tran hide">Lot</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-21w">נְתַתִּ֥יהָ</span></div>
+          <div id="19-21i" class="eng">I have given it</div>
+          <div id="19-21t" class="tran hide">ne·tat·Ti·ha</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="19-22w">יְרֻשָּֽׁה</span><span class="sof-pasuq">׃</span></div>
+          <div id="19-22i" class="eng">[as] a possession</div>
+          <div id="19-22t" class="tran hide">ye·rush·Shah.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">כ</a><br>
+          <a href="#" title="Go Up" class="enn">20</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="20-1w">אֶֽרֶץ</span><span class="maqaf">־</span></div>
+          <div id="20-1i" class="eng">A land</div>
+          <div id="20-1t" class="tran hide">'e·retz-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="20-2w">רְפָאִ֥ים</span></div>
+          <div id="20-2i" class="eng">of the Rephaim</div>
+          <div id="20-2t" class="tran hide">re·fa·'Im</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="20-3w">תֵּחָשֵׁ֖ב</span></div>
+          <div id="20-3i" class="eng">was regarded as</div>
+          <div id="20-3t" class="tran hide">te·cha·Shev</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="20-4w">אַף</span><span class="maqaf">־</span></div>
+          <div id="20-4i" class="eng">also</div>
+          <div id="20-4t" class="tran hide">'af-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="20-5w">הִ֑וא</span></div>
+          <div id="20-5i" class="eng">that</div>
+          <div id="20-5t" class="tran hide">hi</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="20-6w">רְפָאִ֤ים</span></div>
+          <div id="20-6i" class="eng">the Rephaim</div>
+          <div id="20-6t" class="tran hide">re·fa·'Im</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="20-7w">יָֽשְׁבוּ</span><span class="maqaf">־</span></div>
+          <div id="20-7i" class="eng">dwelt</div>
+          <div id="20-7t" class="tran hide">ya·she·vu-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="20-8w">בָהּ֙</span></div>
+          <div id="20-8i" class="eng">there</div>
+          <div id="20-8t" class="tran hide">vah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="20-9w">לְפָנִ֔ים</span></div>
+          <div id="20-9i" class="eng">formerly</div>
+          <div id="20-9t" class="tran hide">le·fa·Nim,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="20-10w">וְהָֽעַמֹּנִ֔ים</span></div>
+          <div id="20-10i" class="eng">and the Ammonites</div>
+          <div id="20-10t" class="tran hide">ve·ha·'am·mo·Nim,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="20-11w">יִקְרְא֥וּ</span></div>
+          <div id="20-11i" class="eng">call</div>
+          <div id="20-11t" class="tran hide">yik·re·'U</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="20-12w">לָהֶ֖ם</span></div>
+          <div id="20-12i" class="eng">them</div>
+          <div id="20-12t" class="tran hide">la·Hem</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="20-13w">זַמְזֻמִּֽים</span><span class="sof-pasuq">׃</span></div>
+          <div id="20-13i" class="eng">Zamzummites</div>
+          <div id="20-13t" class="tran hide">zam·zum·Mim.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">כא</a><br>
+          <a href="#" title="Go Up" class="enn">21</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="21-1w">עַ֣ם</span></div>
+          <div id="21-1i" class="eng">A people</div>
+          <div id="21-1t" class="tran hide">'am</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="21-2w">גָּד֥וֹל</span></div>
+          <div id="21-2i" class="eng">as great</div>
+          <div id="21-2t" class="tran hide">ga·Dol</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="21-3w">וְרַ֛ב</span></div>
+          <div id="21-3i" class="eng">and numerous</div>
+          <div id="21-3t" class="tran hide">ve·Rav</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="21-4w">וָרָ֖ם</span></div>
+          <div id="21-4i" class="eng">and tall</div>
+          <div id="21-4t" class="tran hide">va·Ram</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="21-5w">כָּעֲנָקִ֑ים</span></div>
+          <div id="21-5i" class="eng">as the Anakim</div>
+          <div id="21-5t" class="tran hide">ka·'a·na·Kim;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="21-6w">וַיַּשְׁמִידֵ֤ם</span></div>
+          <div id="21-6i" class="eng">but destroyed them</div>
+          <div id="21-6t" class="tran hide">vai·yash·mi·Dem</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="21-7w">יְהֹוָה֙</span></div>
+          <div id="21-7i" class="eng">YHWH</div>
+          <div id="21-7t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="21-8w">מִפְּנֵיהֶ֔ם</span></div>
+          <div id="21-8i" class="eng">from before them</div>
+          <div id="21-8t" class="tran hide">mip·pe·nei·Hem,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="21-9w">וַיִּירָשֻׁ֖ם</span></div>
+          <div id="21-9i" class="eng">and they dispossessed them</div>
+          <div id="21-9t" class="tran hide">vai·yi·ra·Shum</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="21-10w">וַיֵּשְׁב֥וּ</span></div>
+          <div id="21-10i" class="eng">and dwelt</div>
+          <div id="21-10t" class="tran hide">vai·ye·she·Vu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="21-11w">תַחְתָּֽם</span><span class="sof-pasuq">׃</span></div>
+          <div id="21-11i" class="eng">in their place</div>
+          <div id="21-11t" class="tran hide">tach·Tam.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">כב</a><br>
+          <a href="#" title="Go Up" class="enn">22</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-1w">כַּאֲשֶׁ֤ר</span></div>
+          <div id="22-1i" class="eng">Just as</div>
+          <div id="22-1t" class="tran hide">ka·'a·Sher</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-2w">עָשָׂה֙</span></div>
+          <div id="22-2i" class="eng">He had done</div>
+          <div id="22-2t" class="tran hide">'a·Sah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-3w">לִבְנֵ֣י</span></div>
+          <div id="22-3i" class="eng">for the sons</div>
+          <div id="22-3t" class="tran hide">liv·Nei</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-4w">עֵשָׂ֔ו</span></div>
+          <div id="22-4i" class="eng">of Esau</div>
+          <div id="22-4t" class="tran hide">'e·Sav,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-5w">הַיֹּשְׁבִ֖ים</span></div>
+          <div id="22-5i" class="eng">who dwelt</div>
+          <div id="22-5t" class="tran hide">hai·yo·she·Vim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-6w">בְּשֵׂעִ֑יר</span></div>
+          <div id="22-6i" class="eng">in Seir</div>
+          <div id="22-6t" class="tran hide">be·se·'Ir;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-7w">אֲשֶׁ֨ר</span></div>
+          <div id="22-7i" class="eng">when</div>
+          <div id="22-7t" class="tran hide">'a·Sher</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-8w">הִשְׁמִ֤יד</span></div>
+          <div id="22-8i" class="eng">He destroyed</div>
+          <div id="22-8t" class="tran hide">hish·Mid</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-9w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="22-9i" class="eng">-</div>
+          <div id="22-9t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-10w">הַחֹרִי֙</span></div>
+          <div id="22-10i" class="eng">the Horite</div>
+          <div id="22-10t" class="tran hide">ha·cho·Ri</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-11w">מִפְּנֵיהֶ֔ם</span></div>
+          <div id="22-11i" class="eng">from before them</div>
+          <div id="22-11t" class="tran hide">mip·pe·nei·Hem,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-12w">וַיִּֽירָשֻׁם֙</span></div>
+          <div id="22-12i" class="eng">and they dispossessed them</div>
+          <div id="22-12t" class="tran hide">vai·yi·ra·Shum</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-13w">וַיֵּשְׁב֣וּ</span></div>
+          <div id="22-13i" class="eng">and dwelt</div>
+          <div id="22-13t" class="tran hide">vai·ye·she·Vu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-14w">תַחְתָּ֔ם</span></div>
+          <div id="22-14i" class="eng">in their place</div>
+          <div id="22-14t" class="tran hide">tach·Tam,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-15w">עַ֖ד</span></div>
+          <div id="22-15i" class="eng">even to</div>
+          <div id="22-15t" class="tran hide">'ad</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-16w">הַיּ֥וֹם</span></div>
+          <div id="22-16i" class="eng">the day</div>
+          <div id="22-16t" class="tran hide">hai·Yom</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="22-17w">הַזֶּֽה</span><span class="sof-pasuq">׃</span></div>
+          <div id="22-17i" class="eng">this</div>
+          <div id="22-17t" class="tran hide">haz·Zeh.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">כג</a><br>
+          <a href="#" title="Go Up" class="enn">23</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="23-1w">וְהָֽעַוִּ֛ים</span></div>
+          <div id="23-1i" class="eng">And the Avites</div>
+          <div id="23-1t" class="tran hide">ve·ha·'av·Vim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="23-2w">הַיֹּשְׁבִ֥ים</span></div>
+          <div id="23-2i" class="eng">who dwelt</div>
+          <div id="23-2t" class="tran hide">hai·yo·she·Vim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="23-3w">בַּחֲצֵרִ֖ים</span></div>
+          <div id="23-3i" class="eng">in villages</div>
+          <div id="23-3t" class="tran hide">ba·cha·tze·Rim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="23-4w">עַד</span><span class="maqaf">־</span></div>
+          <div id="23-4i" class="eng">as far as</div>
+          <div id="23-4t" class="tran hide">'ad-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="23-5w">עַזָּ֑ה</span></div>
+          <div id="23-5i" class="eng">Gaza</div>
+          <div id="23-5t" class="tran hide">'az·Zah;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="23-6w">כַּפְתֹּרִים֙</span></div>
+          <div id="23-6i" class="eng">the Caphtorites</div>
+          <div id="23-6t" class="tran hide">kaf·to·Rim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="23-7w">הַיֹּצְאִ֣ים</span></div>
+          <div id="23-7i" class="eng">who came</div>
+          <div id="23-7t" class="tran hide">hai·yo·tze·'Im</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="23-8w">מִכַּפְתֹּ֔ר</span></div>
+          <div id="23-8i" class="eng">from Caphtor</div>
+          <div id="23-8t" class="tran hide">mik·kaf·Tor,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="23-9w">הִשְׁמִידֻ֖ם</span></div>
+          <div id="23-9i" class="eng">destroyed them</div>
+          <div id="23-9t" class="tran hide">hish·mi·Dum</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="23-10w">וַיֵּשְׁב֥וּ</span></div>
+          <div id="23-10i" class="eng">and dwelt</div>
+          <div id="23-10t" class="tran hide">vai·ye·she·Vu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="23-11w">תַחְתָּֽם</span><span class="sof-pasuq">׃</span></div>
+          <div id="23-11i" class="eng">in their place</div>
+          <div id="23-11t" class="tran hide">tach·Tam.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">כד</a><br>
+          <a href="#" title="Go Up" class="enn">24</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-1w">ק֣וּמוּ</span></div>
+          <div id="24-1i" class="eng">Rise</div>
+          <div id="24-1t" class="tran hide">Ku·mu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-2w">סְּע֗וּ</span></div>
+          <div id="24-2i" class="eng">set out</div>
+          <div id="24-2t" class="tran hide">se·'U,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-3w">וְעִבְרוּ֮</span></div>
+          <div id="24-3i" class="eng">and pass over</div>
+          <div id="24-3t" class="tran hide">ve·'iv·Ru</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-4w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="24-4i" class="eng">-</div>
+          <div id="24-4t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-5w">נַ֣חַל</span></div>
+          <div id="24-5i" class="eng">the River</div>
+          <div id="24-5t" class="tran hide">Na·chal</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-6w">אַרְנֹן֒</span></div>
+          <div id="24-6i" class="eng">Arnon</div>
+          <div id="24-6t" class="tran hide">'ar·Non</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-7w">רְאֵ֣ה</span></div>
+          <div id="24-7i" class="eng">look</div>
+          <div id="24-7t" class="tran hide">re·'Eh</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-8w">נָתַ֣תִּי</span></div>
+          <div id="24-8i" class="eng">I have given</div>
+          <div id="24-8t" class="tran hide">na·Tat·ti</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-9w">בְ֠יָדְךָ֠</span></div>
+          <div id="24-9i" class="eng">into your hand</div>
+          <div id="24-9t" class="tran hide">Ve·ya·de·cha</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-10w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="24-10i" class="eng">-</div>
+          <div id="24-10t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-11w">סִיחֹ֨ן</span></div>
+          <div id="24-11i" class="eng">Sihon</div>
+          <div id="24-11t" class="tran hide">si·Chon</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-12w">מֶֽלֶךְ</span><span class="maqaf">־</span></div>
+          <div id="24-12i" class="eng">king</div>
+          <div id="24-12t" class="tran hide">Me·lech-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-13w">חֶשְׁבּ֧וֹן</span></div>
+          <div id="24-13i" class="eng">of Heshbon</div>
+          <div id="24-13t" class="tran hide">chesh·Bon</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-14w">הָֽאֱמֹרִ֛י</span></div>
+          <div id="24-14i" class="eng">the Amorite</div>
+          <div id="24-14t" class="tran hide">ha·'e·mo·Ri</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-15w">וְאֶת</span><span class="maqaf">־</span></div>
+          <div id="24-15i" class="eng">and</div>
+          <div id="24-15t" class="tran hide">ve·'Et</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-16w">אַרְצ֖וֹ</span></div>
+          <div id="24-16i" class="eng">his land</div>
+          <div id="24-16t" class="tran hide">ar·Tzo</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-17w">הָחֵ֣ל</span></div>
+          <div id="24-17i" class="eng">Begin</div>
+          <div id="24-17t" class="tran hide">ha·Chel</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-18w">רָ֑שׁ</span></div>
+          <div id="24-18i" class="eng">to possess [it]</div>
+          <div id="24-18t" class="tran hide">Rash;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-19w">וְהִתְגָּ֥ר</span></div>
+          <div id="24-19i" class="eng">and engage</div>
+          <div id="24-19t" class="tran hide">ve·hit·Gar</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-20w">בּ֖וֹ</span></div>
+          <div id="24-20i" class="eng">him</div>
+          <div id="24-20t" class="tran hide">bo</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="24-21w">מִלְחָמָֽה</span><span class="sof-pasuq">׃</span></div>
+          <div id="24-21i" class="eng">in battle</div>
+          <div id="24-21t" class="tran hide">mil·cha·Mah.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">כה</a><br>
+          <a href="#" title="Go Up" class="enn">25</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-1w">הַיּ֣וֹם</span></div>
+          <div id="25-1i" class="eng">The day</div>
+          <div id="25-1t" class="tran hide">hai·Yom</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-2w">הַזֶּ֗ה</span></div>
+          <div id="25-2i" class="eng">this</div>
+          <div id="25-2t" class="tran hide">haz·Zeh,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-3w">אָחֵל֙</span></div>
+          <div id="25-3i" class="eng">I will begin</div>
+          <div id="25-3t" class="tran hide">'a·Chel</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-4w">תֵּ֤ת</span></div>
+          <div id="25-4i" class="eng">to put</div>
+          <div id="25-4t" class="tran hide">tet</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-5w">פַּחְדְּךָ֙</span></div>
+          <div id="25-5i" class="eng">the dread</div>
+          <div id="25-5t" class="tran hide">pach·de·Cha</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-6w">וְיִרְאָ֣תְךָ֔</span></div>
+          <div id="25-6i" class="eng">and fear</div>
+          <div id="25-6t" class="tran hide">ve·yir·'A·te·cha,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-7w">עַל</span><span class="maqaf">־</span></div>
+          <div id="25-7i" class="eng">of you</div>
+          <div id="25-7t" class="tran hide">'al-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-8w">פְּנֵי֙</span></div>
+          <div id="25-8i" class="eng">upon</div>
+          <div id="25-8t" class="tran hide">pe·Nei</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-9w">הָֽעַמִּ֔ים</span></div>
+          <div id="25-9i" class="eng">the nations</div>
+          <div id="25-9t" class="tran hide">ha·'am·Mim,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-10w">תַּ֖חַת</span></div>
+          <div id="25-10i" class="eng">under</div>
+          <div id="25-10t" class="tran hide">Ta·chat</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-11w">כׇּל</span><span class="maqaf">־</span></div>
+          <div id="25-11i" class="eng">all</div>
+          <div id="25-11t" class="tran hide">kol-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-12w">הַשָּׁמָ֑יִם</span></div>
+          <div id="25-12i" class="eng">the heavens</div>
+          <div id="25-12t" class="tran hide">hash·sha·Ma·yim;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-13w">אֲשֶׁ֤ר</span></div>
+          <div id="25-13i" class="eng">who</div>
+          <div id="25-13t" class="tran hide">'a·Sher</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-14w">יִשְׁמְעוּן֙</span></div>
+          <div id="25-14i" class="eng">shall hear</div>
+          <div id="25-14t" class="tran hide">yish·me·'Un</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-15w">שִׁמְעֲךָ֔</span></div>
+          <div id="25-15i" class="eng">the report of you</div>
+          <div id="25-15t" class="tran hide">shim·'a·Cha,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-16w">וְרָגְז֥וּ</span></div>
+          <div id="25-16i" class="eng">and shall tremble</div>
+          <div id="25-16t" class="tran hide">ve·ra·ge·Zu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-17w">וְחָל֖וּ</span></div>
+          <div id="25-17i" class="eng">and be in anguish</div>
+          <div id="25-17t" class="tran hide">ve·cha·Lu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="25-18w">מִפָּנֶֽיךָ</span><span class="sof-pasuq">׃</span></div>
+          <div id="25-18i" class="eng">because of you</div>
+          <div id="25-18t" class="tran hide">mip·pa·Nei·cha</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">כו</a><br>
+          <a href="#" title="Go Up" class="enn">26</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="26-1w">וָאֶשְׁלַ֤ח</span></div>
+          <div id="26-1i" class="eng">And I sent</div>
+          <div id="26-1t" class="tran hide">va·'esh·Lach</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="26-2w">מַלְאָכִים֙</span></div>
+          <div id="26-2i" class="eng">messengers</div>
+          <div id="26-2t" class="tran hide">mal·'a·Chim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="26-3w">מִמִּדְבַּ֣ר</span></div>
+          <div id="26-3i" class="eng">from the Wilderness</div>
+          <div id="26-3t" class="tran hide">mi·mid·Bar</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="26-4w">קְדֵמ֔וֹת</span></div>
+          <div id="26-4i" class="eng">of Kedemoth</div>
+          <div id="26-4t" class="tran hide">ke·de·Mot,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="26-5w">אֶל</span><span class="maqaf">־</span></div>
+          <div id="26-5i" class="eng">to</div>
+          <div id="26-5t" class="tran hide">'el-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="26-6w">סִיח֖וֹן</span></div>
+          <div id="26-6i" class="eng">Sihon</div>
+          <div id="26-6t" class="tran hide">si·Chon</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="26-7w">מֶ֣לֶךְ</span></div>
+          <div id="26-7i" class="eng">king</div>
+          <div id="26-7t" class="tran hide">Me·lech</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="26-8w">חֶשְׁבּ֑וֹן</span></div>
+          <div id="26-8i" class="eng">of Heshbon</div>
+          <div id="26-8t" class="tran hide">chesh·Bon;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="26-9w">דִּבְרֵ֥י</span></div>
+          <div id="26-9i" class="eng">with words</div>
+          <div id="26-9t" class="tran hide">div·Rei</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="26-10w">שָׁל֖וֹם</span></div>
+          <div id="26-10i" class="eng">of peace</div>
+          <div id="26-10t" class="tran hide">sha·Lom</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="26-11w">לֵאמֹֽר</span><span class="sof-pasuq">׃</span></div>
+          <div id="26-11i" class="eng">saying</div>
+          <div id="26-11t" class="tran hide">le·Mor.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">כז</a><br>
+          <a href="#" title="Go Up" class="enn">27</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="27-1w">אֶעְבְּרָ֣ה</span></div>
+          <div id="27-1i" class="eng">Let me pass through</div>
+          <div id="27-1t" class="tran hide">'e'·be·Rah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="27-2w">בְאַרְצֶ֔ךָ</span></div>
+          <div id="27-2i" class="eng">your land</div>
+          <div id="27-2t" class="tran hide">ve·'ar·Tze·cha,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="27-3w">בַּדֶּ֥רֶךְ</span></div>
+          <div id="27-3i" class="eng">the way</div>
+          <div id="27-3t" class="tran hide">bad·De·rech</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="27-4w">בַּדֶּ֖רֶךְ</span></div>
+          <div id="27-4i" class="eng">to the road</div>
+          <div id="27-4t" class="tran hide">bad·De·rech</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="27-5w">אֵלֵ֑ךְ</span></div>
+          <div id="27-5i" class="eng">I will keep strictly</div>
+          <div id="27-5t" class="tran hide">'e·Lech;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="27-6w">לֹ֥א</span></div>
+          <div id="27-6i" class="eng">and neither</div>
+          <div id="27-6t" class="tran hide">lo</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="27-7w">אָס֖וּר</span></div>
+          <div id="27-7i" class="eng">I will turn</div>
+          <div id="27-7t" class="tran hide">'a·Sur</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="27-8w">יָמִ֥ין</span></div>
+          <div id="27-8i" class="eng">right</div>
+          <div id="27-8t" class="tran hide">ya·Min</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="27-9w">וּשְׂמֹֽאול</span><span class="sof-pasuq">׃</span></div>
+          <div id="27-9i" class="eng">or left</div>
+          <div id="27-9t" class="tran hide">u·se·Mol.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">כח</a><br>
+          <a href="#" title="Go Up" class="enn">28</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="28-1w">אֹ֣כֶל</span></div>
+          <div id="28-1i" class="eng">Food</div>
+          <div id="28-1t" class="tran hide">'O·chel</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="28-2w">בַּכֶּ֤סֶף</span></div>
+          <div id="28-2i" class="eng">for silver</div>
+          <div id="28-2t" class="tran hide">bak·Ke·sef</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="28-3w">תַּשְׁבִּרֵ֙נִי֙</span></div>
+          <div id="28-3i" class="eng">you shall sell me</div>
+          <div id="28-3t" class="tran hide">tash·bi·Re·ni</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="28-4w">וְאָכַ֔לְתִּי</span></div>
+          <div id="28-4i" class="eng">that I may eat</div>
+          <div id="28-4t" class="tran hide">ve·'a·Chal·ti,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="28-5w">וּמַ֛יִם</span></div>
+          <div id="28-5i" class="eng">and water</div>
+          <div id="28-5t" class="tran hide">u·Ma·yim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="28-6w">בַּכֶּ֥סֶף</span></div>
+          <div id="28-6i" class="eng">for silver</div>
+          <div id="28-6t" class="tran hide">bak·Ke·sef</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="28-7w">תִּתֶּן</span><span class="maqaf">־</span></div>
+          <div id="28-7i" class="eng">give</div>
+          <div id="28-7t" class="tran hide">tit·ten-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="28-8w">לִ֖י</span></div>
+          <div id="28-8i" class="eng">me</div>
+          <div id="28-8t" class="tran hide">li</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="28-9w">וְשָׁתִ֑יתִי</span></div>
+          <div id="28-9i" class="eng">that I may drink</div>
+          <div id="28-9t" class="tran hide">ve·sha·Ti·ti;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="28-10w">רַ֖ק</span></div>
+          <div id="28-10i" class="eng">only</div>
+          <div id="28-10t" class="tran hide">rak</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="28-11w">אֶעְבְּרָ֥ה</span></div>
+          <div id="28-11i" class="eng">let me pass through</div>
+          <div id="28-11t" class="tran hide">'e'·be·Rah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="28-12w">בְרַגְלָֽי</span><span class="sof-pasuq">׃</span></div>
+          <div id="28-12i" class="eng">on foot</div>
+          <div id="28-12t" class="tran hide">ve·rag·Lai.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">כט</a><br>
+          <a href="#" title="Go Up" class="enn">29</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-1w">כַּאֲשֶׁ֨ר</span></div>
+          <div id="29-1i" class="eng">Just as</div>
+          <div id="29-1t" class="tran hide">ka·'a·Sher</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-2w">עָֽשׂוּ</span><span class="maqaf">־</span></div>
+          <div id="29-2i" class="eng">did</div>
+          <div id="29-2t" class="tran hide">'a·su-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-3w">לִ֜י</span></div>
+          <div id="29-3i" class="eng">for me</div>
+          <div id="29-3t" class="tran hide">li</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-4w">בְּנֵ֣י</span></div>
+          <div id="29-4i" class="eng">the sons</div>
+          <div id="29-4t" class="tran hide">be·Nei</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-5w">עֵשָׂ֗ו</span></div>
+          <div id="29-5i" class="eng">of Esau</div>
+          <div id="29-5t" class="tran hide">'e·Sav,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-6w">הַיֹּֽשְׁבִים֙</span></div>
+          <div id="29-6i" class="eng">who dwell</div>
+          <div id="29-6t" class="tran hide">hai·yo·she·Vim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-7w">בְּשֵׂעִ֔יר</span></div>
+          <div id="29-7i" class="eng">in Seir</div>
+          <div id="29-7t" class="tran hide">be·se·'Ir,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-8w">וְהַמּ֣וֹאָבִ֔ים</span></div>
+          <div id="29-8i" class="eng">and the Moabites</div>
+          <div id="29-8t" class="tran hide">ve·ham·Mo·'a·Vim,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-9w">הַיֹּשְׁבִ֖ים</span></div>
+          <div id="29-9i" class="eng">who dwell</div>
+          <div id="29-9t" class="tran hide">hai·yo·she·Vim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-10w">בְּעָ֑ר</span></div>
+          <div id="29-10i" class="eng">in Ar</div>
+          <div id="29-10t" class="tran hide">be·'Ar;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-11w">עַ֤ד</span></div>
+          <div id="29-11i" class="eng">until</div>
+          <div id="29-11t" class="tran hide">'ad</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-12w">אֲשֶֽׁר</span><span class="maqaf">־</span></div>
+          <div id="29-12i" class="eng">that</div>
+          <div id="29-12t" class="tran hide">'a·Sher-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-13w">אֶֽעֱבֹר֙</span></div>
+          <div id="29-13i" class="eng">I cross</div>
+          <div id="29-13t" class="tran hide">'e·'e·Vor</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-14w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="29-14i" class="eng">-</div>
+          <div id="29-14t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-15w">הַיַּרְדֵּ֔ן</span></div>
+          <div id="29-15i" class="eng">the Jordan</div>
+          <div id="29-15t" class="tran hide">hai·yar·Den,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-16w">אֶל</span><span class="maqaf">־</span></div>
+          <div id="29-16i" class="eng">to</div>
+          <div id="29-16t" class="tran hide">'el-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-17w">הָאָ֕רֶץ</span></div>
+          <div id="29-17i" class="eng">the land</div>
+          <div id="29-17t" class="tran hide">ha·'A·retz</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-18w">אֲשֶׁר</span><span class="maqaf">־</span></div>
+          <div id="29-18i" class="eng">which</div>
+          <div id="29-18t" class="tran hide">'a·Sher-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-19w">יְהֹוָ֥ה</span></div>
+          <div id="29-19i" class="eng">YHWH</div>
+          <div id="29-19t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-20w">אֱלֹהֵ֖ינוּ</span></div>
+          <div id="29-20i" class="eng">our God</div>
+          <div id="29-20t" class="tran hide">'e·lo·Hei·nu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-21w">נֹתֵ֥ן</span></div>
+          <div id="29-21i" class="eng">is giving</div>
+          <div id="29-21t" class="tran hide">no·Ten</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="29-22w">לָֽנוּ</span><span class="sof-pasuq">׃</span></div>
+          <div id="29-22i" class="eng">|| to us.</div>
+          <div id="29-22t" class="tran hide">La·nu.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">ל</a><br>
+          <a href="#" title="Go Up" class="enn">30</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-1w">וְלֹ֣א</span></div>
+          <div id="30-1i" class="eng">But not</div>
+          <div id="30-1t" class="tran hide">ve·Lo</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-2w">אָבָ֗ה</span></div>
+          <div id="30-2i" class="eng">would</div>
+          <div id="30-2t" class="tran hide">'a·Vah,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-3w">סִיחֹן֙</span></div>
+          <div id="30-3i" class="eng">Sihon</div>
+          <div id="30-3t" class="tran hide">si·Chon</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-4w">מֶ֣לֶךְ</span></div>
+          <div id="30-4i" class="eng">king</div>
+          <div id="30-4t" class="tran hide">Me·lech</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-5w">חֶשְׁבּ֔וֹן</span></div>
+          <div id="30-5i" class="eng">of Heshbon</div>
+          <div id="30-5t" class="tran hide">chesh·Bon,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-6w">הַעֲבִרֵ֖נוּ</span></div>
+          <div id="30-6i" class="eng">let us pass</div>
+          <div id="30-6t" class="tran hide">ha·'a·vi·Re·nu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-7w">בּ֑וֹ</span></div>
+          <div id="30-7i" class="eng">through</div>
+          <div id="30-7t" class="tran hide">bo;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-8w">כִּֽי</span><span class="maqaf">־</span></div>
+          <div id="30-8i" class="eng">for</div>
+          <div id="30-8t" class="tran hide">ki-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-9w">הִקְשָׁה֩</span></div>
+          <div id="30-9i" class="eng">hardened</div>
+          <div id="30-9t" class="tran hide">hik·Shah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-10w">יְהֹוָ֨ה</span></div>
+          <div id="30-10i" class="eng">YHWH</div>
+          <div id="30-10t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-11w">אֱלֹהֶ֜יךָ</span></div>
+          <div id="30-11i" class="eng">your God</div>
+          <div id="30-11t" class="tran hide">'e·lo·Hei·cha</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-12w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="30-12i" class="eng">-</div>
+          <div id="30-12t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-13w">רוּח֗וֹ</span></div>
+          <div id="30-13i" class="eng">his spirit</div>
+          <div id="30-13t" class="tran hide">ru·Cho,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-14w">וְאִמֵּץ֙</span></div>
+          <div id="30-14i" class="eng">and made obstinate</div>
+          <div id="30-14t" class="tran hide">ve·'im·Metz</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-15w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="30-15i" class="eng">-</div>
+          <div id="30-15t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-16w">לְבָב֔וֹ</span></div>
+          <div id="30-16i" class="eng">his heart</div>
+          <div id="30-16t" class="tran hide">le·va·Vo,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-17w">לְמַ֛עַן</span></div>
+          <div id="30-17i" class="eng">that</div>
+          <div id="30-17t" class="tran hide">le·Ma·'an</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-18w">תִּתּ֥וֹ</span></div>
+          <div id="30-18i" class="eng">He might deliver him</div>
+          <div id="30-18t" class="tran hide">tit·To</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-19w">בְיָדְךָ֖</span></div>
+          <div id="30-19i" class="eng">into your hand</div>
+          <div id="30-19t" class="tran hide">ve·ya·de·Cha</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-20w">כַּיּ֥וֹם</span></div>
+          <div id="30-20i" class="eng">in the day</div>
+          <div id="30-20t" class="tran hide">kai·Yom</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="30-21w">הַזֶּֽה</span><span class="sof-pasuq">׃</span></div>
+          <div id="30-21i" class="eng">this</div>
+          <div id="30-21t" class="tran hide">haz·Zeh.</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="parsh heb t">{ס}</div>
+          <div class="eng parsh">&nbsp;</div>
+          <div class="tran parsh hide">s</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">לא</a><br>
+          <a href="#" title="Go Up" class="enn">31</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-1w">וַיֹּ֤אמֶר</span></div>
+          <div id="31-1i" class="eng">And said</div>
+          <div id="31-1t" class="tran hide">vai·Yo·mer</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-2w">יְהֹוָה֙</span></div>
+          <div id="31-2i" class="eng">YHWH</div>
+          <div id="31-2t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-3w">אֵלַ֔י</span></div>
+          <div id="31-3i" class="eng">to me</div>
+          <div id="31-3t" class="tran hide">'e·Lai,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-4w">רְאֵ֗ה</span></div>
+          <div id="31-4i" class="eng">see</div>
+          <div id="31-4t" class="tran hide">re·'Eh,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-5w">הַֽחִלֹּ֙תִי֙</span></div>
+          <div id="31-5i" class="eng">I have begun</div>
+          <div id="31-5t" class="tran hide">ha·chil·Lo·ti</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-6w">תֵּ֣ת</span></div>
+          <div id="31-6i" class="eng">to give over</div>
+          <div id="31-6t" class="tran hide">tet</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-7w">לְפָנֶ֔יךָ</span></div>
+          <div id="31-7i" class="eng">to you</div>
+          <div id="31-7t" class="tran hide">le·fa·Nei·cha,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-8w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="31-8i" class="eng">-</div>
+          <div id="31-8t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-9w">סִיחֹ֖ן</span></div>
+          <div id="31-9i" class="eng">Sihon</div>
+          <div id="31-9t" class="tran hide">si·Chon</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-10w">וְאֶת</span><span class="maqaf">־</span></div>
+          <div id="31-10i" class="eng">and</div>
+          <div id="31-10t" class="tran hide">ve·'Et</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-11w">אַרְצ֑וֹ</span></div>
+          <div id="31-11i" class="eng">his land</div>
+          <div id="31-11t" class="tran hide">ar·Tzo;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-12w">הָחֵ֣ל</span></div>
+          <div id="31-12i" class="eng">Begin</div>
+          <div id="31-12t" class="tran hide">ha·Chel</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-13w">רָ֔שׁ</span></div>
+          <div id="31-13i" class="eng">to possess</div>
+          <div id="31-13t" class="tran hide">Rash,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-14w">לָרֶ֖שֶׁת</span></div>
+          <div id="31-14i" class="eng">to possess</div>
+          <div id="31-14t" class="tran hide">la·Re·shet</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-15w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="31-15i" class="eng">-</div>
+          <div id="31-15t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="31-16w">אַרְצֽוֹ</span><span class="sof-pasuq">׃</span></div>
+          <div id="31-16i" class="eng">his land</div>
+          <div id="31-16t" class="tran hide">ar·Tzo.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">לב</a><br>
+          <a href="#" title="Go Up" class="enn">32</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="32-1w">וַיֵּצֵא֩</span></div>
+          <div id="32-1i" class="eng">And came out</div>
+          <div id="32-1t" class="tran hide">vai·ye·Tze</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="32-2w">סִיחֹ֨ן</span></div>
+          <div id="32-2i" class="eng">Sihon</div>
+          <div id="32-2t" class="tran hide">si·Chon</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="32-3w">לִקְרָאתֵ֜נוּ</span></div>
+          <div id="32-3i" class="eng">against us</div>
+          <div id="32-3t" class="tran hide">lik·ra·Te·nu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="32-4w">ה֧וּא</span></div>
+          <div id="32-4i" class="eng">he</div>
+          <div id="32-4t" class="tran hide">hu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="32-5w">וְכׇל</span><span class="maqaf">־</span></div>
+          <div id="32-5i" class="eng">and all</div>
+          <div id="32-5t" class="tran hide">ve·chol</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="32-6w">עַמּ֛וֹ</span></div>
+          <div id="32-6i" class="eng">his people</div>
+          <div id="32-6t" class="tran hide">am·Mo</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="32-7w">לַמִּלְחָמָ֖ה</span></div>
+          <div id="32-7i" class="eng">to fight</div>
+          <div id="32-7t" class="tran hide">lam·mil·cha·Mah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="32-8w">יָֽהְצָה</span><span class="sof-pasuq">׃</span></div>
+          <div id="32-8i" class="eng">at Jahaz</div>
+          <div id="32-8t" class="tran hide">Ya·he·tzah.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">לג</a><br>
+          <a href="#" title="Go Up" class="enn">33</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="33-1w">וַֽיִּתְּנֵ֛הוּ</span></div>
+          <div id="33-1i" class="eng">And delivered him</div>
+          <div id="33-1t" class="tran hide">vai·yit·te·Ne·hu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="33-2w">יְהֹוָ֥ה</span></div>
+          <div id="33-2i" class="eng">YHWH</div>
+          <div id="33-2t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="33-3w">אֱלֹהֵ֖ינוּ</span></div>
+          <div id="33-3i" class="eng">our God</div>
+          <div id="33-3t" class="tran hide">'e·lo·Hei·nu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="33-4w">לְפָנֵ֑ינוּ</span></div>
+          <div id="33-4i" class="eng">over to us</div>
+          <div id="33-4t" class="tran hide">le·fa·Nei·nu;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="33-5w">וַנַּ֥ךְ</span></div>
+          <div id="33-5i" class="eng">so we defeated</div>
+          <div id="33-5t" class="tran hide">van·Nach</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="33-6w">אֹת֛וֹ</span></div>
+          <div id="33-6i" class="eng">him</div>
+          <div id="33-6t" class="tran hide">o·To</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="33-7w">וְאֶת</span><span class="maqaf">־</span></div>
+          <div id="33-7i" class="eng">and</div>
+          <div id="33-7t" class="tran hide">ve·'Et</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="33-8w" class="kq-trivial">בָּנָ֖ו</span></div>
+          <div id="33-8i" class="eng">his sons</div>
+          <div id="33-8t" class="tran hide">ba·Nav</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="33-9w">וְאֶת</span><span class="maqaf">־</span></div>
+          <div id="33-9i" class="eng">and</div>
+          <div id="33-9t" class="tran hide">ve·'Et</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="33-10w">כׇּל</span><span class="maqaf">־</span></div>
+          <div id="33-10i" class="eng">all</div>
+          <div id="33-10t" class="tran hide">kol-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="33-11w">עַמּֽוֹ</span><span class="sof-pasuq">׃</span></div>
+          <div id="33-11i" class="eng">his people</div>
+          <div id="33-11t" class="tran hide">am·Mo.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">לד</a><br>
+          <a href="#" title="Go Up" class="enn">34</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-1w">וַנִּלְכֹּ֤ד</span></div>
+          <div id="34-1i" class="eng">And we took</div>
+          <div id="34-1t" class="tran hide">van·nil·Kod</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-2w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="34-2i" class="eng">-</div>
+          <div id="34-2t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-3w">כׇּל</span><span class="maqaf">־</span></div>
+          <div id="34-3i" class="eng">all</div>
+          <div id="34-3t" class="tran hide">kol-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-4w">עָרָיו֙</span></div>
+          <div id="34-4i" class="eng">his cities</div>
+          <div id="34-4t" class="tran hide">'a·Rav</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-5w">בָּעֵ֣ת</span></div>
+          <div id="34-5i" class="eng">at the time</div>
+          <div id="34-5t" class="tran hide">ba·'Et</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-6w">הַהִ֔וא</span></div>
+          <div id="34-6i" class="eng">that</div>
+          <div id="34-6t" class="tran hide">ha·Hiv,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-7w">וַֽנַּחֲרֵם֙</span></div>
+          <div id="34-7i" class="eng">and devoted to destruction</div>
+          <div id="34-7t" class="tran hide">van·na·cha·Rem</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-8w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="34-8i" class="eng">-</div>
+          <div id="34-8t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-9w">כׇּל</span><span class="maqaf">־</span></div>
+          <div id="34-9i" class="eng">every</div>
+          <div id="34-9t" class="tran hide">kol-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-10w">עִ֣יר</span></div>
+          <div id="34-10i" class="eng">city</div>
+          <div id="34-10t" class="tran hide">'ir</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-11w">מְתִ֔ם</span></div>
+          <div id="34-11i" class="eng">the men</div>
+          <div id="34-11t" class="tran hide">me·Tim,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-12w">וְהַנָּשִׁ֖ים</span></div>
+          <div id="34-12i" class="eng">and the women</div>
+          <div id="34-12t" class="tran hide">ve·han·na·Shim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-13w">וְהַטָּ֑ף</span></div>
+          <div id="34-13i" class="eng">and little ones</div>
+          <div id="34-13t" class="tran hide">ve·hat·Taf;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-14w">לֹ֥א</span></div>
+          <div id="34-14i" class="eng">none</div>
+          <div id="34-14t" class="tran hide">lo</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-15w">הִשְׁאַ֖רְנוּ</span></div>
+          <div id="34-15i" class="eng">we left</div>
+          <div id="34-15t" class="tran hide">hish·'Ar·nu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="34-16w">שָׂרִֽיד</span><span class="sof-pasuq">׃</span></div>
+          <div id="34-16i" class="eng">remaining</div>
+          <div id="34-16t" class="tran hide">sa·Rid.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">לה</a><br>
+          <a href="#" title="Go Up" class="enn">35</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="35-1w">רַ֥ק</span></div>
+          <div id="35-1i" class="eng">Only</div>
+          <div id="35-1t" class="tran hide">rak</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="35-2w">הַבְּהֵמָ֖ה</span></div>
+          <div id="35-2i" class="eng">the livestock</div>
+          <div id="35-2t" class="tran hide">hab·be·he·Mah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="35-3w">בָּזַ֣זְנוּ</span></div>
+          <div id="35-3i" class="eng">we plundered</div>
+          <div id="35-3t" class="tran hide">ba·Zaz·nu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="35-4w">לָ֑נוּ</span></div>
+          <div id="35-4i" class="eng">for ourselves</div>
+          <div id="35-4t" class="tran hide">La·nu;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="35-5w">וּשְׁלַ֥ל</span></div>
+          <div id="35-5i" class="eng">and with the spoil</div>
+          <div id="35-5t" class="tran hide">u·she·Lal</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="35-6w">הֶעָרִ֖ים</span></div>
+          <div id="35-6i" class="eng">of the cities</div>
+          <div id="35-6t" class="tran hide">he·'a·Rim</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="35-7w">אֲשֶׁ֥ר</span></div>
+          <div id="35-7i" class="eng">which</div>
+          <div id="35-7t" class="tran hide">'a·Sher</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="35-8w">לָכָֽדְנוּ</span><span class="sof-pasuq">׃</span></div>
+          <div id="35-8i" class="eng">we took</div>
+          <div id="35-8t" class="tran hide">la·Cha·de·nu.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">לו</a><br>
+          <a href="#" title="Go Up" class="enn">36</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-1w">מֵֽעֲרֹעֵ֡ר</span></div>
+          <div id="36-1i" class="eng">From Aroer</div>
+          <div id="36-1t" class="tran hide">me·'a·ro·'Er</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-2w">אֲשֶׁר֩</span></div>
+          <div id="36-2i" class="eng">which [is]</div>
+          <div id="36-2t" class="tran hide">'a·Sher</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-3w">עַל</span><span class="maqaf">־</span></div>
+          <div id="36-3i" class="eng">on</div>
+          <div id="36-3t" class="tran hide">'al-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-4w">שְׂפַת</span><span class="maqaf">־</span></div>
+          <div id="36-4i" class="eng">the bank</div>
+          <div id="36-4t" class="tran hide">se·fat-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-5w">נַ֨חַל</span></div>
+          <div id="36-5i" class="eng">of the River</div>
+          <div id="36-5t" class="tran hide">Na·chal</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-6w">אַרְנֹ֜ן</span></div>
+          <div id="36-6i" class="eng">Arnon</div>
+          <div id="36-6t" class="tran hide">'ar·Non</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-7w">וְהָעִ֨יר</span></div>
+          <div id="36-7i" class="eng">and [from] the city</div>
+          <div id="36-7t" class="tran hide">ve·ha·'Ir</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-8w">אֲשֶׁ֤ר</span></div>
+          <div id="36-8i" class="eng">that [is]</div>
+          <div id="36-8t" class="tran hide">'a·Sher</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-9w">בַּנַּ֙חַל֙</span></div>
+          <div id="36-9i" class="eng">in the ravine</div>
+          <div id="36-9t" class="tran hide">ban·Na·chal</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-10w">וְעַד</span><span class="maqaf">־</span></div>
+          <div id="36-10i" class="eng">and as far as</div>
+          <div id="36-10t" class="tran hide">ve·'ad-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-11w">הַגִּלְעָ֔ד</span></div>
+          <div id="36-11i" class="eng">Gilead</div>
+          <div id="36-11t" class="tran hide">hag·gil·'Ad,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-12w">לֹ֤א</span></div>
+          <div id="36-12i" class="eng">not</div>
+          <div id="36-12t" class="tran hide">lo</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-13w">הָֽיְתָה֙</span></div>
+          <div id="36-13i" class="eng">there was</div>
+          <div id="36-13t" class="tran hide">ha·ye·Tah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-14w">קִרְיָ֔ה</span></div>
+          <div id="36-14i" class="eng">one city</div>
+          <div id="36-14t" class="tran hide">kir·Yah,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-15w">אֲשֶׁ֥ר</span></div>
+          <div id="36-15i" class="eng">which [was]</div>
+          <div id="36-15t" class="tran hide">'a·Sher</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-16w">שָׂגְבָ֖ה</span></div>
+          <div id="36-16i" class="eng">too high</div>
+          <div id="36-16t" class="tran hide">sa·ge·Vah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-17w">מִמֶּ֑נּוּ</span></div>
+          <div id="36-17i" class="eng">for us</div>
+          <div id="36-17t" class="tran hide">mi·Men·nu;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-18w">אֶת</span><span class="maqaf">־</span></div>
+          <div id="36-18i" class="eng">-</div>
+          <div id="36-18t" class="tran hide">'et-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-19w">הַכֹּ֕ל</span></div>
+          <div id="36-19i" class="eng">all</div>
+          <div id="36-19t" class="tran hide">hak·Kol</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-20w">נָתַ֛ן</span></div>
+          <div id="36-20i" class="eng">delivered</div>
+          <div id="36-20t" class="tran hide">na·Tan</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-21w">יְהֹוָ֥ה</span></div>
+          <div id="36-21i" class="eng">YHWH</div>
+          <div id="36-21t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-22w">אֱלֹהֵ֖ינוּ</span></div>
+          <div id="36-22i" class="eng">our God</div>
+          <div id="36-22t" class="tran hide">'e·lo·Hei·nu</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="36-23w">לְפָנֵֽינוּ</span><span class="sof-pasuq">׃</span></div>
+          <div id="36-23i" class="eng">to us</div>
+          <div id="36-23t" class="tran hide">le·fa·Nei·nu.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verse">
+      <div class="verse-number">
+        <div class="no">
+          <a href="#" title="Go Up" lang="he" class="heb r">לז</a><br>
+          <a href="#" title="Go Up" class="enn">37</a>
+        </div>
+        <div class="tran hide"><a href="#" title="Go Up">&nbsp;&nbsp;</a></div>
+      </div>
+      <div class="verse-text">
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-1w">רַ֛ק</span></div>
+          <div id="37-1i" class="eng">Only</div>
+          <div id="37-1t" class="tran hide">rak</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-2w">אֶל</span><span class="maqaf">־</span></div>
+          <div id="37-2i" class="eng">near</div>
+          <div id="37-2t" class="tran hide">'el-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-3w">אֶ֥רֶץ</span></div>
+          <div id="37-3i" class="eng">the land</div>
+          <div id="37-3t" class="tran hide">'E·retz</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-4w">בְּנֵי</span><span class="maqaf">־</span></div>
+          <div id="37-4i" class="eng">of the sons</div>
+          <div id="37-4t" class="tran hide">be·nei-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-5w">עַמּ֖וֹן</span></div>
+          <div id="37-5i" class="eng">of Ammon</div>
+          <div id="37-5t" class="tran hide">am·Mon</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-6w">לֹ֣א</span></div>
+          <div id="37-6i" class="eng">not</div>
+          <div id="37-6t" class="tran hide">lo</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-7w">קָרָ֑בְתָּ</span></div>
+          <div id="37-7i" class="eng">you did go</div>
+          <div id="37-7t" class="tran hide">ka·Ra·ve·ta;</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-8w">כׇּל</span><span class="maqaf">־</span></div>
+          <div id="37-8i" class="eng">anywhere</div>
+          <div id="37-8t" class="tran hide">kol-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-9w">יַ֞ד</span></div>
+          <div id="37-9i" class="eng">along</div>
+          <div id="37-9t" class="tran hide">yad</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-10w">נַ֤חַל</span></div>
+          <div id="37-10i" class="eng">the River</div>
+          <div id="37-10t" class="tran hide">Na·chal</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-11w">יַבֹּק֙</span></div>
+          <div id="37-11i" class="eng">Jabbok</div>
+          <div id="37-11t" class="tran hide">yab·Bok</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-12w">וְעָרֵ֣י</span></div>
+          <div id="37-12i" class="eng">or to the cities</div>
+          <div id="37-12t" class="tran hide">ve·'a·Rei</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-13w">הָהָ֔ר</span></div>
+          <div id="37-13i" class="eng">of the mountains</div>
+          <div id="37-13t" class="tran hide">ha·Har,</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-14w">וְכֹ֥ל</span></div>
+          <div id="37-14i" class="eng">or</div>
+          <div id="37-14t" class="tran hide">ve·Chol</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-15w">אֲשֶׁר</span><span class="maqaf">־</span></div>
+          <div id="37-15i" class="eng">wherever</div>
+          <div id="37-15t" class="tran hide">'a·Sher-</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-16w">צִוָּ֖ה</span></div>
+          <div id="37-16i" class="eng">had forbidden us</div>
+          <div id="37-16t" class="tran hide">tziv·Vah</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-17w">יְהֹוָ֥ה</span></div>
+          <div id="37-17i" class="eng">YHWH</div>
+          <div id="37-17t" class="tran hide">'a·do·Nai</div>
+        </div>
+        <div class="col">
+          <div lang="he" class="heb t"><span id="37-18w">אֱלֹהֵֽינוּ</span><span class="sof-pasuq">׃</span></div>
+          <div id="37-18i" class="eng">our God</div>
+          <div id="37-18t" class="tran hide">'e·lo·Hei·nu.</div>
+        </div>
+      </div>
+    </div>
+
+    <br>
+  </main>
+
+  <div id="volume" class="fadeout">
+    <div id="barFull" class="bar"></div>
+    <div id="barEmpty" class="bar"></div>
+    <div id="sliderBtn"></div>
+  </div>
+
+  <script src="../../js/howler.core.min.js"></script>
+  <script src="../../js/tanakh.min.js"></script>
+  <script src="../../js/site-dev.js"></script>
+  <script src="../../js/player-dev.js"></script>
+  <script>
+    tanakh.init(5, 2);
+  </script>
+</body>
+
+</html>
