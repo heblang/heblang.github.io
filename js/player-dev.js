@@ -17,7 +17,21 @@ document.addEventListener('pageCompleted', (event) => {
       this.startWord = 1;       // to prevent pausing before saying the word
       this.suspendStep = false; // set to true if suspending of this.step logic is wanted
       this.blankAudio = 0;      // start with no blank audio
-      this.isIntialized = 0;    // hack to make silenced IPhone work
+
+      // hack to make silenced IPhone work
+      const that = this;
+      that.isIntialized = 0;
+      that.initSound = new Howl({
+        src: ['../../media/white-sound.mp3'],
+        html5: true,
+        preload: true,
+        onloaderror: () => alert('Error initializing the sound'),
+        onend: () => {
+          that.sound.play();
+          enable('pauseBtn');
+          this.unload();
+        }
+      });
     }
     get sound() {
       return this.playlist[this.index].howl;
@@ -97,16 +111,7 @@ document.addEventListener('pageCompleted', (event) => {
         }
       }
       else {
-        var initSound = new Howl({
-          src: ['../../media/white-sound.mp3'],
-          html5: true,
-          onloaderror: () => alert('Error initializing the sound'),
-          onend: () => {
-            sound.play();
-            enable('pauseBtn');
-          }
-        });
-        initSound.play();
+        this.initSound.play();
         this.isIntialized = true;
       }
       if (!this.requestHighlightId) {
