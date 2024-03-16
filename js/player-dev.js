@@ -204,7 +204,7 @@ document.addEventListener('pageCompleted', (event) => {
       const chapterNo = page.info.chapter.n.toString().padStart(3, '0');
       const playlist = [{}]; // 1 based index
       const playlistLength = page.cues.length - 1;
-      const ext = ['m4a'];
+      const ext = [page.isMobileEdge ? 'mp3' : 'm4a', page.isMobileEdge ? 'm4a' : 'mp3'];
       const usePause = this.hasPause;
       let unloadedTracks = playlistLength;
       let audioPrefix = '';
@@ -220,7 +220,6 @@ document.addEventListener('pageCompleted', (event) => {
         const file = `${bookNo}_${book}_${chapterNo}_${verseNo}`;
         const howl = new Howl({
           src: [`../../media/${audioPrefix}${file}.${ext[0]}`],
-          format: ['m4a'],
           html5: false,
           preload: true,
           onplayerror: function (_, e) {
