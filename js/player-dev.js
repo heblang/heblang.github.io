@@ -29,7 +29,7 @@ document.addEventListener('pageCompleted', (event) => {
         onend: () => {
           that.sound.play();
           enable('pauseBtn');
-          this.unload();
+          that.initSound.unload();
         }
       });
     }
