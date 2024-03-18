@@ -395,20 +395,6 @@ document.addEventListener('pageCompleted', (event) => {
     pause: 'pause'
   };
 
-  if (isSessionAvail) {
-    const pauseStoredVal = parseInt(window.sessionStorage.getItem(sessionKey.pause) || 0);
-    const currentPause = parseInt(controls.wordPause.value.trim() || 0);
-    if (pauseStoredVal != currentPause) {
-      controls.wordPause.value = pauseStoredVal;
-    }
-
-    const speedStoredVal = parseFloat(window.sessionStorage.getItem(sessionKey.speed) || 1);
-    const currentSpeed = parseFloat(controls.speed.value);
-    if (speedStoredVal != currentSpeed) {
-      controls.speed.value = speedStoredVal;
-    }
-  }
-
   const toggleVolume = () => {
     let display = (controls.volume.style.display === 'block') ? 'none' : 'block';
 
@@ -462,7 +448,7 @@ document.addEventListener('pageCompleted', (event) => {
   }, (passiveSupported ? { passive: true } : false));
 
   controls.wordPause.addEventListener('change', () => {
-    var val = parseInt(controls.wordPause.value.trim() || 0);
+    const val = parseInt(controls.wordPause.value.trim() || 0);
     player.setPlaylist(val);
     if (isSessionAvail) {
       window.sessionStorage.setItem(sessionKey.pause, val);
@@ -599,4 +585,21 @@ document.addEventListener('pageCompleted', (event) => {
   }, (passiveSupported ? { passive: true } : false));
 
   const player = new Player();
+  if (isSessionAvail) {
+    const pauseStoredVal = parseInt(window.sessionStorage.getItem(sessionKey.pause) || 0);
+    const currentPause = parseInt(controls.wordPause.value.trim() || 0);
+    if (pauseStoredVal != currentPause) {
+      controls.wordPause.value = pauseStoredVal;
+      const val = parseInt(controls.wordPause.value.trim() || 0);
+      player.setPlaylist(val);
+    }
+
+    const speedStoredVal = parseFloat(window.sessionStorage.getItem(sessionKey.speed) || 1);
+    const currentSpeed = parseFloat(controls.speed.value);
+    if (speedStoredVal != currentSpeed) {
+      controls.speed.value = speedStoredVal;
+      const rate = parseFloat(speedStoredVal);
+      player.rate(rate);
+    }
+  }
 });
