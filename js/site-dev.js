@@ -27,7 +27,7 @@ window.tanakh || (window.tanakh = {});
   })();
 
   const controls = {};
-  const elemIds = ['fontFamily', 'niqqud', 'transliterate', 'syllables', 'stickyHeader', 'currentBook'];
+  const elemIds = ['fontFamily', 'niqqud', 'transliterate', 'syllables', 'stickyHeader', 'currentBook', 'gotoChapter'];
   for (let i = 0; i < elemIds.length; i++) {
     const elemId = elemIds[i];
     if (!(controls[elemId] = document.getElementById(elemId))) {
@@ -392,4 +392,20 @@ window.tanakh || (window.tanakh = {});
       document.getElementsByTagName('header')[0].classList.remove('sticky');
     }
   }, (passiveSupported ? { passive: true } : false));
+
+  function zeroFill(number, totalLength) {
+    const numberString = number.toString();
+    return numberString.padStart(totalLength, '0');
+  }
+
+  controls.gotoChapter.addEventListener('change',
+    function () {
+      const bookFill = zeroFill(page.info.book.n, 2);
+      const bookName = page.info.book.p;
+      const chapterFill = zeroFill(controls.gotoChapter.value, 3);
+      const selectedPage = `${bookFill}_${bookName}_${chapterFill}.html`;
+      window.location.href = selectedPage;
+    },
+    (passiveSupported ? { passive: true } : false));
+
 })();
