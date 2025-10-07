@@ -3,46 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yuchanan Audio Files</title>
+    <title>Yuchanan Alap - Chapter 1</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        select { width: 100%; padding: 10px; font-size: 16px; margin-bottom: 20px; }
+        audio { width: 100%; }
+        h1 { text-align: center; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+    </style>
 </head>
 <body>
-    <h1>Yuchanan Audio Index</h1>
-    <ul>
-        <li>
-            <strong>04_Yuchanan_01_01.m4a</strong>
-            <audio controls loop>
-                <source src="04_Yuchanan_01_01.m4a" type="audio/mp4">
-                Your browser does not support the audio element.
-            </audio>
-        </li>
-        <li>
-            <strong>04_Yuchanan_01_02.m4a</strong>
-            <audio controls loop>
-                <source src="04_Yuchanan_01_02.m4a" type="audio/mp4">
-                Your browser does not support the audio element.
-            </audio>
-        </li>
-        <li>
-            <strong>04_Yuchanan_01_03.m4a</strong>
-            <audio controls loop>
-                <source src="04_Yuchanan_01_03.m4a" type="audio/mp4">
-                Your browser does not support the audio element.
-            </audio>
-        </li>
-        <li>
-            <strong>04_Yuchanan_01_04.m4a</strong>
-            <audio controls loop>
-                <source src="04_Yuchanan_01_04.m4a" type="audio/mp4">
-                Your browser does not support the audio element.
-            </audio>
-        </li>
-        <li>
-            <strong>04_Yuchanan_01_05.m4a</strong>
-            <audio controls loop>
-                <source src="04_Yuchanan_01_05.m4a" type="audio/mp4">
-                Your browser does not support the audio element.
-            </audio>
-        </li>
-    </ul>
+    <h1>Yuchanan Alap - Chapter 1</h1>
+    <label for="chapterSelect">Select Chapter:</label>
+    <select id="chapterSelect">
+    </select>
+    <label for="verseSelect">Select Verse:</label>
+    <select id="verseSelect">
+    </select>
+    <audio id="audioPlayer" controls loop preload="auto">
+        <source src="04_Yuchanan_01_01.m4a" type="audio/mp4">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        const chapterSelect = document.getElementById('chapterSelect');
+        const verseSelect = document.getElementById('verseSelect');
+        const audio = document.getElementById('audioPlayer');
+        const h1 = document.querySelector('h1');
+
+        const numChapters = 21;
+        const versesPerChapter = [0, 51, 25, 36, 54, 47, 71, 53, 59, 41, 42, 57, 50, 38, 31, 27, 33, 26, 40, 42, 31, 25];
+
+        // Eastern Syriac letter names for numerical representation (abjad system)
+        const unitNames = ['', 'Alap', 'Beth', 'Gamal', 'Dalath', 'He', 'Waw', 'Zayn', 'Heth', 'Teth'];
+        const aramOrdinals = [];
+        for (let i = 1; i <= 21; i++) {
+            let name;
+            if (i === 10) {
+                name = 'Yodh';
+            } else if (i === 20) {
+                name = 'Kaph';
+            } else if (i > 10 && i < 20) {
+                name = 'Yodh ' + unitNames[i - 10];
+            } else if (i === 21) {
+                name = 'Kaph Alap';
+            } else {
+                name = unitNames[i];
+            }
+            aramOrdinals[i] = name;
+        }
+
+        // Populate chapters using consonant/letter names
+        for (let i = 1; i <= numChapters; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = aramOrdinals[i];
+            chapterSelect.add(opt);
+        }
+
+        // Set default to chapter 1
+        chapterSelect.value = 1;
+
+        // Populate default verses for chapter 1
+        for (let v = 1; v <= versesPerChapter[1]; v++) {
+            const opt = document.createElement('option');
+            opt.value = v;
+            const paddedCh = '01';
+            const paddedV = v.toString().padStart(2, '0');
+            opt.textContent = `Verse ${v} - 04_Yuchanan_${paddedCh}_${paddedV}.m4a`;
+            verseSelect.add(opt);
+        }
+        // Set default to verse 1
+        verseSelect.value = 1;
+
+        // Update title and h1 for default
+        const syriacName = aramOrdinals[1];
+        document.title = `Yuchanan ${syriacName} - Chapter 1`;
+        h1.textContent = `Yuchanan ${syriacName} - Chapter 1`;
+
+        // Auto-play the default
+        audio.play().catch(e => console.log('Playback prevented:', e));
+
+        // Chapter change handler
+        chapterSelect.addEventListener('change', function() {
+            const ch = parseInt(this.value);
+            verseSelect.innerHTML = '';
+            audio.src = '';
+            audio.load();
+            if (ch) {
+                const syriacName = aramOrdinals[ch];
+                document.title = `Yuchanan ${syriacName} - Chapter ${ch}`;
+                h1.textContent = `Yuchanan ${syriacName} - Chapter ${ch}`;
+                for (let v = 1; v <= versesPerChapter[ch]; v++) {
+                    const opt = document.createElement('option');
+                    opt.value = v;
+                    const paddedCh = ch.toString().padStart(2, '0');
+                    const paddedV = v.toString().padStart(2, '0');
+                    opt.textContent = `Verse ${v} - 04_Yuchanan_${paddedCh}_${paddedV}.m4a`;
+                    verseSelect.add(opt);
+                }
+                // Default to verse 1 on chapter change
+                verseSelect.value = 1;
+                verseSelect.dispatchEvent(new Event('change'));
+            } else {
+                document.title = 'Yuchanan Audio Player - Gospel of John';
+                h1.textContent = 'Yuchanan Audio Player - Gospel of John';
+            }
+        });
+
+        // Verse change handler
+        verseSelect.addEventListener('change', function() {
+            const v = parseInt(this.value);
+            const ch = parseInt(chapterSelect.value);
+            if (ch && v) {
+                const paddedCh = ch.toString().padStart(2, '0');
+                const paddedV = v.toString().padStart(2, '0');
+                const file = `04_Yuchanan_${paddedCh}_${paddedV}.m4a`;
+                audio.src = file;
+                audio.load();
+                audio.play().catch(e => console.log('Playback prevented:', e));
+            } else {
+                audio.src = '';
+                audio.load();
+            }
+        });
+    </script>
 </body>
 </html>
