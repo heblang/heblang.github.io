@@ -36,7 +36,8 @@ Premium models are available through GitHub Copilot Chat:
 
 3. **Model Availability**:
    - Premium models require a Copilot Individual, Business, or Enterprise subscription
-   - Some models may be limited based on your subscription tier
+   - Model availability varies by subscription tier and may change over time
+   - Some advanced models (e.g., o1-preview, Claude 3.5 Sonnet) may have specific tier requirements
 
 ## Step 3: Configure Model Preferences
 
@@ -45,15 +46,12 @@ Premium models are available through GitHub Copilot Chat:
 1. Open Settings (Ctrl+, or Cmd+,)
 2. Search for "Copilot"
 3. Configure preferences:
-   - `github.copilot.editor.enableAutoCompletions`: Enable/disable completions
+   - `github.copilot.editor.enableAutoCompletion`: Enable/disable completions
    - `github.copilot.enable`: Enable/disable Copilot entirely
 
 ### Via Chat Interface
 
-You can specify which model to use directly in your chat prompts:
-```
-@workspace /explain using claude-3.5-sonnet
-```
+Select your preferred model using the model selector dropdown in the chat interface before starting your conversation. Once selected, all subsequent messages will use that model until you switch to a different one.
 
 ## Step 4: Using Premium Models Effectively
 
@@ -89,7 +87,7 @@ You can specify which model to use directly in your chat prompts:
 - Check your internet connection
 - Verify GitHub Copilot service status
 - Try switching to a different model
-- Check VS Code's Output panel for error messages (View > Output > GitHub Copilot)
+- Check VS Code's Output panel for error messages (View → Output → GitHub Copilot)
 
 ## Additional Resources
 
