@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123f35">
+  <meta name="description" content="Learn the Hebrew and meaning of Genesis 1, one verse at a time.">
+  <title>Practice Genesis 1 | Torah Hebrew</title>
+  <link rel="stylesheet" type="text/css" media="screen" href="../../font/font.css">
+  <link rel="stylesheet" type="text/css" media="screen" href="genesis-1-practice.css">
+  <script defer src="../../js/tanakh.min.js"></script>
+  <script defer src="genesis-1-practice.js?v=1"></script>
+</head>
+
+<body>
+  <div class="app-shell" id="app" data-state="loading">
+    <header class="topbar">
+      <a class="brand" href="01_Bereshit_001.html" aria-label="Return to Genesis 1 reader">
+        <span class="brand-mark heb" lang="he" aria-hidden="true">א</span>
+        <span>
+          <strong>Torah Hebrew</strong>
+          <small>Bereshit · Chapter 1</small>
+        </span>
+      </a>
+
+      <div class="topbar-stats" aria-label="Learning progress">
+        <span class="stat" title="Practice streak">
+          <span class="stat-symbol streak-symbol" aria-hidden="true">◆</span>
+          <span><strong id="streakCount">0</strong><small>day streak</small></span>
+        </span>
+        <span class="stat" title="Experience earned">
+          <span class="stat-symbol xp-symbol" aria-hidden="true">✦</span>
+          <span><strong id="xpCount">0</strong><small>XP</small></span>
+        </span>
+      </div>
+    </header>
+
+    <main>
+      <section class="track-view" id="trackView" aria-labelledby="chapterTitle">
+        <div class="chapter-banner">
+          <div class="chapter-title-block">
+            <p class="eyebrow">Torah Hebrew · Genesis 1</p>
+            <h1 id="chapterTitle">In the beginning</h1>
+            <p class="chapter-hebrew heb" lang="he" dir="rtl">בְּרֵאשִׁית בָּרָא אֱלֹהִים</p>
+          </div>
+          <div class="chapter-progress-block">
+            <div class="progress-copy">
+              <span>Chapter mastery</span>
+              <strong id="masteryLabel">0%</strong>
+            </div>
+            <div class="progress-track" role="progressbar" aria-label="Chapter mastery" aria-valuemin="0"
+              aria-valuemax="100" aria-valuenow="0" id="masteryProgress">
+              <span id="masteryFill"></span>
+            </div>
+            <p id="nextGoal">Verse 1 is ready</p>
+          </div>
+        </div>
+
+        <div class="practice-layout">
+          <nav class="lesson-path" aria-label="Genesis 1 learning path">
+            <div class="path-loading" id="pathLoading">
+              <span class="loading-ring" aria-hidden="true"></span>
+              <p>Preparing Genesis 1…</p>
+            </div>
+            <div id="lessonTrack"></div>
+          </nav>
+
+          <aside class="verse-studio" id="verseStudio" aria-live="polite">
+            <div class="studio-kicker">
+              <span id="studioStage">Verse lesson</span>
+              <span class="mastery-badge" id="studioMastery">New</span>
+            </div>
+            <div id="studioContent">
+              <p class="studio-placeholder">Choose an open lesson from the path.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="lesson-view" id="lessonView" aria-labelledby="exerciseTitle" hidden>
+        <header class="lesson-header">
+          <button class="close-button" id="closeLesson" type="button" aria-label="Leave lesson" title="Leave lesson">×</button>
+          <div class="lesson-progress" role="progressbar" aria-label="Lesson progress" aria-valuemin="0"
+            aria-valuemax="100" aria-valuenow="0" id="lessonProgress">
+            <span id="lessonProgressFill"></span>
+          </div>
+          <div class="focus-meter" id="focusMeter" aria-label="Three focus points remaining">
+            <span aria-hidden="true">●</span>
+            <span aria-hidden="true">●</span>
+            <span aria-hidden="true">●</span>
+          </div>
+        </header>
+
+        <div class="exercise-shell">
+          <div class="exercise-heading">
+            <p class="eyebrow" id="exerciseEyebrow">Listen</p>
+            <h2 id="exerciseTitle">Meet the verse</h2>
+            <p id="exercisePrompt"></p>
+          </div>
+          <div class="exercise-content" id="exerciseContent"></div>
+        </div>
+
+        <footer class="answer-bar" id="answerBar">
+          <div class="answer-message" id="answerMessage" aria-live="polite"></div>
+          <button class="primary-button" id="checkAnswer" type="button">Continue</button>
+        </footer>
+      </section>
+
+      <section class="completion-view" id="completionView" aria-labelledby="completionTitle" hidden>
+        <div class="completion-medallion" aria-hidden="true">
+          <span class="heb" lang="he">א</span>
+        </div>
+        <p class="eyebrow">Lesson complete</p>
+        <h2 id="completionTitle">Verse mastered</h2>
+        <p id="completionSummary"></p>
+        <div class="reward-row">
+          <span><strong id="earnedXp">+20</strong><small>XP earned</small></span>
+          <span><strong id="lessonAccuracy">100%</strong><small>accuracy</small></span>
+          <span><strong id="nextVerseLabel">Verse 2</strong><small>up next</small></span>
+        </div>
+        <button class="primary-button" id="returnToPath" type="button">Continue on path</button>
+      </section>
+
+      <section class="error-view" id="errorView" aria-labelledby="errorTitle" hidden>
+        <p class="eyebrow">Unable to load</p>
+        <h1 id="errorTitle">The practice path is unavailable</h1>
+        <p id="errorMessage">Genesis 1 could not be prepared.</p>
+        <a class="primary-button" href="01_Bereshit_001.html">Open Genesis 1 reader</a>
+      </section>
+    </main>
+  </div>
+
+  <noscript>
+    <div class="noscript-message">JavaScript is required for synchronized audio practice.</div>
+  </noscript>
+</body>
+
+</html>
