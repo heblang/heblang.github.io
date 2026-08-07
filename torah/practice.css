@@ -20,6 +20,41 @@
   --display-font: Georgia, "Times New Roman", serif;
 }
 
+body[data-practice-theme="garden"] {
+  --green: #267254;
+  --green-dark: #244c3e;
+  --green-light: #dceee4;
+  --gold: #d9ab4d;
+  --gold-soft: #fff0bd;
+  --sky: #4f91a1;
+  --sky-soft: #dfeff0;
+  --coral: #c75f54;
+}
+
+body[data-practice-theme="sinai"] {
+  --green: #266b70;
+  --green-dark: #263f46;
+  --green-light: #dcebec;
+  --gold: #e5ad4d;
+  --gold-soft: #ffefbf;
+  --sky: #527d9d;
+  --sky-soft: #e0eaf0;
+  --coral: #bd5848;
+  --coral-soft: #f8e5e1;
+}
+
+body[data-practice-theme="covenant"] {
+  --green: #326554;
+  --green-dark: #284650;
+  --green-light: #e0eee7;
+  --gold: #d7ac52;
+  --gold-soft: #fff1c5;
+  --sky: #527e9d;
+  --sky-soft: #e1ebf1;
+  --coral: #b85e55;
+  --coral-soft: #f7e7e4;
+}
+
 * {
   box-sizing: border-box;
   letter-spacing: 0;
@@ -193,12 +228,33 @@ main {
   background-color: var(--green-dark);
   background-image:
     linear-gradient(90deg, var(--green-dark) 0%, rgba(16, 63, 53, 0.97) 48%, rgba(16, 63, 53, 0.28) 100%),
-    url("genesis-creation.svg");
+    url("bereshit/genesis-creation.svg");
   background-repeat: no-repeat;
   background-position: center, right center;
   background-size: cover, auto 100%;
   box-shadow: var(--shadow);
   animation: rise-in 520ms ease-out both;
+}
+
+body[data-practice-theme="garden"] .chapter-banner {
+  background-color: #244c3e;
+  background-image:
+    linear-gradient(90deg, #244c3e 0%, rgba(36, 76, 62, 0.96) 48%, rgba(36, 76, 62, 0.18) 100%),
+    url("bereshit/genesis-garden.svg");
+}
+
+body[data-practice-theme="sinai"] .chapter-banner {
+  background-color: #263f46;
+  background-image:
+    linear-gradient(90deg, #263f46 0%, rgba(38, 63, 70, 0.97) 48%, rgba(38, 63, 70, 0.2) 100%),
+    url("shemot/exodus-sinai.svg");
+}
+
+body[data-practice-theme="covenant"] .chapter-banner {
+  background-color: #284650;
+  background-image:
+    linear-gradient(90deg, #284650 0%, rgba(40, 70, 80, 0.97) 48%, rgba(40, 70, 80, 0.18) 100%),
+    url("devarim/deuteronomy-covenant.svg");
 }
 
 .chapter-title-block {
@@ -1644,7 +1700,7 @@ main {
     padding: 26px 22px;
     background-image:
       linear-gradient(180deg, rgba(16, 63, 53, 0.91) 0%, var(--green-dark) 78%),
-      url("genesis-creation.svg");
+      url("bereshit/genesis-creation.svg");
     background-position: center, right top;
     background-size: cover, auto 72%;
   }

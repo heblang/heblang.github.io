@@ -5,6 +5,7 @@
     genesis1: {
       source: '01_Bereshit_001.html', bookIndex: 0, chapterIndex: 0, verseCount: 31,
       book: 'Bereshit', chapter: 1, title: 'In the beginning', hebrew: 'בְּרֵאשִׁית בָּרָא אֱלֹהִים',
+      englishBook: 'Genesis', unitLabel: 'Day', theme: 'creation', mark: 'א',
       audioPrefix: '../../media/01_Bereshit_001_', groups: [
         [1, 5, 'Light', 'light'], [6, 8, 'The expanse', 'sky'], [9, 13, 'Land and seed', 'land'],
         [14, 19, 'Lights above', 'sun'], [20, 23, 'Water and wing', 'water'], [24, 31, 'Life on earth', 'life']
@@ -12,26 +13,49 @@
     },
     genesis2: {
       source: '01_Bereshit_002.html', bookIndex: 0, chapterIndex: 1, verseCount: 25,
-      book: 'Bereshit', chapter: 2, title: 'The seventh day', hebrew: 'וַיְכֻלּוּ הַשָּׁמַיִם וְהָאָרֶץ',
-      audioPrefix: '../../media/01_Bereshit_002_'
+      book: 'Bereshit', chapter: 2, title: 'Rest and the garden', hebrew: 'וַיְכֻלּוּ הַשָּׁמַיִם וְהָאָרֶץ',
+      englishBook: 'Genesis', unitLabel: 'Movement', theme: 'garden', mark: 'ב',
+      audioPrefix: '../../media/01_Bereshit_002_', groups: [
+        [1, 3, 'Rest and blessing', 'light'], [4, 7, 'Breath of life', 'sky'],
+        [8, 14, 'The garden and rivers', 'land'], [15, 17, 'The command', 'sun'],
+        [18, 20, 'A fitting companion', 'water'], [21, 25, 'One flesh', 'life']
+      ]
     },
     exodus20: {
       source: '../shemot/02_Shemot_020.html', bookIndex: 1, chapterIndex: 19, verseCount: 23,
       book: 'Shemot', chapter: 20, title: 'Words of covenant', hebrew: 'וַיְדַבֵּר אֱלֹהִים אֵת כָּל הַדְּבָרִים',
-      audioPrefix: '../../media/02_Shemot_020_'
+      englishBook: 'Exodus', unitLabel: 'Teaching', theme: 'sinai', mark: 'כ',
+      audioPrefix: '../../media/02_Shemot_020_', groups: [
+        [1, 2, 'The voice and covenant', 'light'], [3, 6, 'No other gods', 'sky'],
+        [7, 11, 'Name and Sabbath', 'land'], [12, 17, 'Life with your neighbor', 'sun'],
+        [18, 21, 'Awe at Sinai', 'water'], [22, 23, 'Worship in simplicity', 'life']
+      ]
     },
     deuteronomy28: {
       source: '../devarim/05_Devarim_028.html', bookIndex: 4, chapterIndex: 27, verseCount: 69,
-      book: 'Devarim', chapter: 28, title: 'A life of blessing', hebrew: 'וּבָאוּ עָלֶיךָ כָּל הַבְּרָכוֹת הָאֵלֶּה',
-      audioPrefix: '../../media/05_Devarim_028_'
+      book: 'Devarim', chapter: 28, title: 'Blessing and consequence', hebrew: 'וּבָאוּ עָלֶיךָ כָּל הַבְּרָכוֹת הָאֵלֶּה',
+      englishBook: 'Deuteronomy', unitLabel: 'Passage', theme: 'covenant', mark: 'כח',
+      audioPrefix: '../../media/05_Devarim_028_', groups: [
+        [1, 6, 'Blessings near and far', 'light'], [7, 14, 'Abundance and purpose', 'sky'],
+        [15, 24, 'Turning away', 'land'], [25, 35, 'Defeat and loss', 'sun'],
+        [36, 44, 'Exile and reversal', 'water'], [45, 48, 'Why the warnings came', 'life'],
+        [49, 57, 'The distant nation', 'sky'], [58, 63, 'Awe and consequence', 'sun'],
+        [64, 69, 'Scattered among nations', 'water']
+      ]
     }
   };
 
-  const chapterKey = new URLSearchParams(window.location.search).get('chapter') || 'genesis1';
-  const chapterConfig = CHAPTERS[chapterKey] || CHAPTERS.genesis1;
+  const requestedChapterKey = document.body.dataset.chapterKey ||
+    new URLSearchParams(window.location.search).get('chapter') || 'genesis1';
+  const chapterKey = Object.prototype.hasOwnProperty.call(CHAPTERS, requestedChapterKey)
+    ? requestedChapterKey
+    : 'genesis1';
+  const chapterConfig = CHAPTERS[chapterKey];
+  const readerPath = document.body.dataset.readerPath || chapterConfig.source;
   const STORAGE_KEY = `torah-hebrew-${chapterKey}-progress-v1`;
   const TOTAL_VERSES = chapterConfig.verseCount;
   const DAY_GROUPS = buildDayGroups(chapterConfig);
+  const CHAPTER_REFERENCE = `${chapterConfig.englishBook} ${chapterConfig.chapter}`;
 
   const elements = {
     app: document.getElementById('app'),
@@ -81,33 +105,29 @@
   let progress = loadProgress();
 
   function buildDayGroups(config) {
-    if (config.groups) {
-      return config.groups.map(([start, end, title, tone], index) => ({ day: index + 1, title, start, end, tone }));
-    }
-
-    const groupSize = Math.ceil(config.verseCount / 6);
-    const groups = [];
-    for (let start = 1, day = 1; start <= config.verseCount; start += groupSize, day += 1) {
-      groups.push({
-        day,
-        title: `Verses ${start}–${Math.min(config.verseCount, start + groupSize - 1)}`,
-        start,
-        end: Math.min(config.verseCount, start + groupSize - 1),
-        tone: ['light', 'sky', 'land', 'sun', 'water', 'life'][(day - 1) % 6]
-      });
-    }
-    return groups;
+    return config.groups.map(([start, end, title, tone], index) => ({ day: index + 1, title, start, end, tone }));
   }
 
   async function init() {
     bindEvents();
-    document.title = `Practice ${chapterConfig.book} ${chapterConfig.chapter} | Torah Hebrew`;
-    document.querySelector('.brand').href = chapterConfig.source;
-    document.querySelector('.brand small').textContent = `${chapterConfig.book} · Chapter ${chapterConfig.chapter}`;
+    document.body.dataset.practiceTheme = chapterConfig.theme;
+    document.title = `Practice ${chapterConfig.englishBook} ${chapterConfig.chapter} | Torah Hebrew`;
+    document.querySelector('meta[name="description"]').content =
+      `Learn the Hebrew and meaning of ${CHAPTER_REFERENCE}, one verse at a time.`;
+    document.querySelector('.brand').href = readerPath;
+    document.querySelector('.brand').setAttribute('aria-label', `Return to ${chapterConfig.englishBook} ${chapterConfig.chapter} reader`);
+    document.querySelector('.brand-mark').textContent = chapterConfig.mark;
+    document.querySelector('.completion-medallion .heb').textContent = chapterConfig.mark;
+    document.querySelector('.brand small').textContent = `${chapterConfig.book} · ${chapterConfig.englishBook} ${chapterConfig.chapter}`;
     document.querySelector('#chapterTitle').textContent = chapterConfig.title;
     document.querySelector('.chapter-hebrew').textContent = chapterConfig.hebrew;
-    document.querySelector('.chapter-banner .eyebrow').textContent = `Torah Hebrew · ${chapterConfig.book} ${chapterConfig.chapter}`;
-    document.querySelector('.lesson-path').setAttribute('aria-label', `${chapterConfig.book} ${chapterConfig.chapter} learning path`);
+    document.querySelector('.chapter-banner .eyebrow').textContent = `Torah Hebrew · ${chapterConfig.englishBook} ${chapterConfig.chapter}`;
+    document.querySelector('.lesson-path').setAttribute('aria-label', `${chapterConfig.englishBook} ${chapterConfig.chapter} learning path`);
+    document.querySelector('#pathLoading p').textContent = `Preparing ${chapterConfig.englishBook} ${chapterConfig.chapter}…`;
+    document.querySelector('#errorMessage').textContent = `${CHAPTER_REFERENCE} could not be prepared.`;
+    const errorLink = document.querySelector('#errorView a');
+    errorLink.href = readerPath;
+    errorLink.textContent = `Open ${CHAPTER_REFERENCE} reader`;
 
     try {
       chapter = await loadChapter();
@@ -127,12 +147,12 @@
       window.tanakh.books[chapterConfig.bookIndex][chapterConfig.chapterIndex];
 
     if (!Array.isArray(timingChapter) || timingChapter.length !== TOTAL_VERSES) {
-      throw new Error('Genesis 1 timing data is incomplete.');
+      throw new Error(`${CHAPTER_REFERENCE} timing data is incomplete.`);
     }
 
-    const response = await fetch(chapterConfig.source, { cache: 'force-cache' });
+    const response = await fetch(readerPath, { cache: 'force-cache' });
     if (!response.ok) {
-      throw new Error(`Genesis 1 returned ${response.status}.`);
+      throw new Error(`${CHAPTER_REFERENCE} returned ${response.status}.`);
     }
 
     const sourceText = await response.text();
@@ -160,7 +180,7 @@
         const cue = timingWord && timingWord.t;
 
         if (sourceVerseNumber !== verseNumber || !cue || !Number.isFinite(cue.s) || !Number.isFinite(cue.e)) {
-          throw new Error(`Missing cue for Genesis 1:${verseNumber}, word ${wordNumber}.`);
+          throw new Error(`Missing cue for ${CHAPTER_REFERENCE}:${verseNumber}, word ${wordNumber}.`);
         }
 
         const hebrewContainer = wordElement.closest('[lang="he"]');
@@ -179,7 +199,7 @@
       });
 
       if (words.length !== timingVerse.length) {
-        throw new Error(`Text and timing counts differ for Genesis 1:${verseNumber}.`);
+        throw new Error(`Text and timing counts differ for ${CHAPTER_REFERENCE}:${verseNumber}.`);
       }
 
       const hebrewNumberElement = verseElement.querySelector('.verse-number [lang="he"]');
@@ -422,7 +442,7 @@
           <header class="day-heading">
             <span class="day-number">${group.day}</span>
             <span>
-              <small>Day ${numberWord(group.day)}</small>
+              <small>${chapterConfig.unitLabel} ${group.day}</small>
               <h2 id="day-${group.day}-title">${group.title}</h2>
             </span>
             <span class="day-range">${group.start}–${group.end}</span>
@@ -478,11 +498,11 @@
       <div class="studio-verse-heading">
         <span class="verse-index">${verse.hebrewNumber || verseNumber}</span>
         <div>
-          <p>Genesis 1:${verseNumber}</p>
+          <p>${CHAPTER_REFERENCE}:${verseNumber}</p>
           <h2>${completed ? 'Strengthen this verse' : 'Learn this verse'}</h2>
         </div>
       </div>
-      <div class="studio-words" dir="rtl" aria-label="Genesis 1 verse ${verseNumber}">
+      <div class="studio-words" dir="rtl" aria-label="${CHAPTER_REFERENCE} verse ${verseNumber}">
         ${renderWordButtons(verse, true)}
       </div>
       <div class="word-insight" id="studioWordMeaning">
@@ -507,7 +527,7 @@
     const unlocked = isReviewUnlocked(groupIndex);
     const learnedCount = progress.completedVerses.filter((verse) => verse <= group.end).length;
 
-    elements.studioStage.textContent = `Cumulative review · Day ${group.day}`;
+    elements.studioStage.textContent = `Cumulative review · ${chapterConfig.unitLabel} ${group.day}`;
     elements.studioMastery.textContent = completed ? 'Mastered' : unlocked ? 'Ready' : 'Locked';
     elements.studioMastery.dataset.status = completed ? 'complete' : unlocked ? 'open' : 'locked';
 
@@ -516,7 +536,7 @@
         <div class="locked-studio review-lock">
           <span class="locked-symbol" aria-hidden="true">${learnedCount}/${group.end}</span>
           <h2>Gather verses 1–${group.end}</h2>
-          <p>Complete the open verse lessons in Day ${numberWord(group.day)} first.</p>
+          <p>Complete the open verse lessons in ${chapterConfig.unitLabel.toLowerCase()} ${group.day} first.</p>
         </div>
       `;
       return;
@@ -612,7 +632,7 @@
     const groupIndex = DAY_GROUPS.findIndex((group) => verseNumber >= group.start && verseNumber <= group.end);
     const group = DAY_GROUPS[groupIndex];
     if (verseNumber === group.start && groupIndex > 0) {
-      return `Finish the verses 1–${DAY_GROUPS[groupIndex - 1].end} review to open Day ${numberWord(group.day)}.`;
+      return `Finish the verses 1–${DAY_GROUPS[groupIndex - 1].end} review to open ${chapterConfig.unitLabel.toLowerCase()} ${group.day}.`;
     }
     return `Master verse ${verseNumber - 1} to continue.`;
   }
@@ -841,7 +861,7 @@
 
   function renderExploreStep(step) {
     const verse = step.verse;
-    setExerciseHeading(`Genesis 1:${verse.number}`, 'Listen closely', 'Hear the verse, then trace it from any word.');
+    setExerciseHeading(`${CHAPTER_REFERENCE}:${verse.number}`, 'Listen closely', 'Hear the verse, then trace it from any word.');
     elements.exerciseContent.innerHTML = `
       <div class="listen-stage">
         ${renderAudioButton(verse.number, `Hear verse ${verse.number}`)}
@@ -856,7 +876,7 @@
 
   function renderMeaningStep(step) {
     setExerciseHeading(
-      `Word meaning · Genesis 1:${step.verse.number}`,
+      `Word meaning · ${CHAPTER_REFERENCE}:${step.verse.number}`,
       'Choose the meaning',
       `<span class="prompt-word heb" lang="he" dir="rtl">${escapeHtml(step.target.hebrew)}</span>`
     );
@@ -869,7 +889,7 @@
       : `<span>${escapeHtml(word.hebrew)}</span>`
     ).join(' ');
 
-    setExerciseHeading(`Recall · Genesis 1:${step.verse.number}`, 'Complete the verse', 'Choose the missing Hebrew word.');
+    setExerciseHeading(`Recall · ${CHAPTER_REFERENCE}:${step.verse.number}`, 'Complete the verse', 'Choose the missing Hebrew word.');
     elements.exerciseContent.innerHTML = `
       <div class="cloze-verse heb" lang="he" dir="rtl">${verseMarkup}</div>
       ${renderChoiceGrid(step.options, step.selection)}
@@ -889,7 +909,7 @@
     });
     const phraseMeaning = buildVerseMeaning(step.targetWords);
 
-    setExerciseHeading(`Word order · Genesis 1:${step.verse.number}`, 'Build the phrase', escapeHtml(phraseMeaning));
+    setExerciseHeading(`Word order · ${CHAPTER_REFERENCE}:${step.verse.number}`, 'Build the phrase', escapeHtml(phraseMeaning));
     elements.exerciseContent.innerHTML = `
       <div class="answer-slots" dir="rtl" aria-label="Your Hebrew phrase">
         ${selectedWords.length
@@ -1048,7 +1068,7 @@
       return `${step.target.hebrew} · ${step.target.transliteration}`;
     }
     if (step.type === 'audio-choice') {
-      return `That was Genesis 1:${step.verse.number}.`;
+      return `That was ${CHAPTER_REFERENCE}:${step.verse.number}.`;
     }
     return 'Read the phrase from right to left.';
   }
@@ -1365,7 +1385,7 @@
     elements.completionView.hidden = true;
     elements.errorView.hidden = false;
     elements.errorMessage.textContent = window.location.protocol === 'file:'
-      ? 'Open this page from a local web server so it can read the Genesis chapter data.'
+      ? `Open this page from a local web server so it can read the ${CHAPTER_REFERENCE} data.`
       : error.message;
   }
 
@@ -1421,10 +1441,6 @@
       return `Review 1–${DAY_GROUPS[node.group].end}`;
     }
     return `Verse ${node.verse}`;
-  }
-
-  function numberWord(number) {
-    return ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six'][number] || String(number);
   }
 
   function escapeHtml(value) {
